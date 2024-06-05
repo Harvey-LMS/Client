@@ -7,15 +7,15 @@ import Link from "next/link";
 
 const LoginPage = () => {
   return (
-    <div className="flex flex-col justify-center pt-20 text-base leading-6 bg-slate-100">
+    <div className="flex flex-col justify-center mb-20 text-base leading-6 bg-slate-100">
       <div className="flex flex-col justify-center items-end self-center px-16 py-20 mt-7 max-w-full w-[1195px] max-md:pl-5">
         <Image
           alt="Harvey"
           loading="lazy"
           src={Login}
           className="flex mr-[610px] mb-[-600px]"
-          width={600}
-          height={550}
+          width={550}
+          height={500}
         />
         <div className="flex flex-col px-8 py-7 mt-5 mb-4 max-w-full bg-white rounded-md shadow-lg w-[450px] max-md:px-5">
           <div className="flex gap-3 justify-center items-start self-center pb-8 text-2xl font-semibold tracking-wide whitespace-nowrap text-zinc-700 text-opacity-90">
@@ -23,7 +23,7 @@ const LoginPage = () => {
               alt="brand"
               loading="lazy"
               src={Brand}
-              className="shrink-0 aspect-square w-[49px]"
+              className="shrink-0 aspect-[0.98] w-[49px]"
             />
             <div className="mt-2.5">Harvey</div>
           </div>
