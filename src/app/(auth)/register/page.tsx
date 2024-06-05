@@ -3,11 +3,12 @@ import Register from "@/assets/Register.svg";
 import Brand from "@/assets/Brand.svg";
 import Underline from "@/assets/underline.svg";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const RegisterPage = () => {
    return (
       <div
-         className="w-full flex flex-col items-center justify-center rounded-md shadow-sm max-md:px-5 sm:mt-5 md:shadow-none"
+         className="m-auto w-full"
       >
          <div className="flex flex-row justify-center gap-5 max-md:flex-col max-md:gap-0">
             <div className="flex flex-col max-md:ml-0 max-md:w-full">
@@ -59,9 +60,9 @@ const RegisterPage = () => {
                      <span className="text-zinc-700">
                         Bạn đã có tài khoản?
                      </span>{" "}
-                     <span className="text-lime-600">
+                     <Link href="login" className="text-lime-600 hover:underline">
                         Đăng nhập
-                     </span>
+                     </Link>
                   </div>
                </div>
             </div>
