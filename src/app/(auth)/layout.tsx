@@ -8,9 +8,7 @@ const AuthLogin = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="w-full h-screen p-10">
       <div className="p-10 h-full ">
-        <div className="flex justify-center h-full ">
-          {children}
-        </div>
+        <div className="flex justify-center h-full ">{children}</div>
       </div>
       {/* content */}
     </div>

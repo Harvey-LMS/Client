@@ -1,6 +1,7 @@
 import Brand from "@/assets/Brand.svg";
 import Login from "@/assets/Login.svg";
 import { Button } from "@/components/ui/button";
+import { Input } from "@nextui-org/input";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -33,15 +34,16 @@ const LoginPage = () => {
           <div className="text-sm tracking-normal text-zinc-700 text-opacity-60">
             Vui lòng đăng nhập tài khoản của bạn
           </div>
-          <input
+          {/* <input
             placeholder="Email"
             className="justify-center px-3 py-4 mt-5 tracking-normal whitespace-nowrap rounded-md border border-solid border-zinc-700 border-opacity-20 text-zinc-700 text-opacity-40"
-          ></input>
-          <input
-            placeholder="Mật khẩu"
-            type="password"
-            className="flex flex-col justify-center px-3 py-4 mt-5 tracking-normal rounded-md border border-solid border-zinc-700 border-opacity-20 text-zinc-700 text-opacity-40"
-          ></input>
+          ></input> */}
+          <div className="mt-5">
+            <Input variant="bordered" type="email" label="Email" />
+          </div>
+          <div className="mt-5">
+            <Input variant="bordered" type="password" label="Mật khẩu" />
+          </div>
           <div className="flex gap-2 pb-4 text-sm tracking-normal">
             <div className="flex gap-2.5 p-2.5 text-zinc-700 text-opacity-90">
               <input type="checkbox" />
@@ -49,7 +51,7 @@ const LoginPage = () => {
             </div>
             <Link
               href={"/"}
-              className="flex-1 self-start mt-3 text-right text-lime-600"
+              className="flex-1 self-start mt-3 text-right text-lime-600 hover:underline"
             >
               Quên mật khẩu?
             </Link>
@@ -62,7 +64,7 @@ const LoginPage = () => {
           </Button>
           <div className="mt-7 tracking-normal leading-6 text-center text-lime-600">
             <span className="text-zinc-700">Bạn chưa có tài khoản?</span>{" "}
-            <Link href={"/"} className="text-lime-600">
+            <Link href={"/register"} className="text-lime-600 hover:underline">
               Tạo tài khoản mới
             </Link>
           </div>
