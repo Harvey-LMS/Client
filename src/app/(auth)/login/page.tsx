@@ -1,6 +1,7 @@
 import Brand from "@/assets/Brand.svg";
 import Login from "@/assets/Login.svg";
 import { Button } from "@/components/ui/button";
+import { Input } from "@nextui-org/input";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -14,8 +15,8 @@ const LoginPage = () => {
           loading="lazy"
           src={Login}
           className="flex mr-[610px] mb-[-600px]"
-          width={600}
-          height={550}
+          width={550}
+          height={500}
         />
         <div className="flex flex-col px-8 py-7 mt-5 mb-4 max-w-full bg-white border-gray-300 rounded-3xl shadow-lg border w-[450px] max-md:px-5">
           <div className="flex gap-3 justify-center items-start self-center pb-8 text-2xl font-semibold tracking-wide whitespace-nowrap text-zinc-700 text-opacity-90">
@@ -23,7 +24,7 @@ const LoginPage = () => {
               alt="brand"
               loading="lazy"
               src={Brand}
-              className="shrink-0 aspect-square w-[49px]"
+              className="shrink-0 aspect-[0.98] w-[49px]"
             />
             <div className="mt-2.5">Harvey</div>
           </div>
@@ -33,28 +34,24 @@ const LoginPage = () => {
           <div className="text-sm tracking-normal text-zinc-700 text-opacity-60">
             Vui lòng đăng nhập tài khoản của bạn
           </div>
-          <input
+          {/* <input
             placeholder="Email"
             className="justify-center px-3 py-4 mt-5 tracking-normal whitespace-nowrap rounded-md border border-solid border-zinc-700 border-opacity-20 text-zinc-700 text-opacity-40"
-          ></input>
-          <input
-            placeholder="Mật khẩu"
-            type="password"
-            className="flex flex-col justify-center px-3 py-4 mt-5 tracking-normal rounded-md border border-solid border-zinc-700 border-opacity-20 text-zinc-700 text-opacity-40"
-          ></input>
+          ></input> */}
+          <div className="mt-5">
+            <Input variant="bordered" type="email" label="Email" />
+          </div>
+          <div className="mt-5">
+            <Input variant="bordered" type="password" label="Mật khẩu" />
+          </div>
           <div className="flex gap-2 pb-4 text-sm tracking-normal">
             <div className="flex gap-2.5 p-2.5 text-zinc-700 text-opacity-90">
-              <img
-                alt=""
-                loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/6ed11005b47c0c583d53c84b2d2c7b1a73188a6b0512868888e71354dbfab1a6?"
-                className="shrink-0 w-6 aspect-square"
-              />
+              <input type="checkbox" />
               <div className="my-auto">Ghi nhớ đăng nhập</div>
             </div>
             <Link
               href={"/"}
-              className="flex-1 self-start mt-3 text-right text-lime-600"
+              className="flex-1 self-start mt-3 text-right text-lime-600 hover:underline"
             >
               Quên mật khẩu?
             </Link>
@@ -67,13 +64,12 @@ const LoginPage = () => {
           </Button>
           <div className="mt-7 tracking-normal leading-6 text-center text-lime-600">
             <span className="text-zinc-700">Bạn chưa có tài khoản?</span>{" "}
-            <Link href={"/"} className="text-lime-600">
+            <Link href={"/register"} className="text-lime-600 hover:underline">
               Tạo tài khoản mới
             </Link>
           </div>
         </div>
       </div>
-
     </div>
   );
 };
