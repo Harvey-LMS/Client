@@ -2,9 +2,14 @@ import Brand from "@/assets/Brand.svg";
 import Login from "@/assets/Login.svg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@nextui-org/input";
+import { Metadata } from "next";
 
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Harvey | Login",
+};
 
 const LoginPage = () => {
   return (
@@ -50,7 +55,7 @@ const LoginPage = () => {
               <div className="my-auto">Ghi nhớ đăng nhập</div>
             </div>
             <Link
-              href={"/"}
+              href={"/login/forgot-password"}
               className="flex-1 self-start mt-3 text-right text-lime-600 hover:underline"
             >
               Quên mật khẩu?

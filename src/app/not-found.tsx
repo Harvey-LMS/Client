@@ -2,6 +2,11 @@ import Image from "next/image";
 import NotFoundImg from "@/assets/404_Not_Found.svg";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "404 Not Found",
+};
 
 const NotFound = () => {
   return (
@@ -23,8 +28,8 @@ const NotFound = () => {
       </div>
       <div className="justify-center text-center items-center">
         <div className="mb-4">
-          <span>
-            Liên hệ với chúng tôi qua{" "}
+          <span className="text-xl">
+            Liên hệ với chúng tôi qua {""}
             <span className="font-semibold">test@gmail.com</span>
           </span>
         </div>
