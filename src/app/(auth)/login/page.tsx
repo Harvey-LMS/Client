@@ -7,8 +7,8 @@ import Link from "next/link";
 
 const LoginPage = () => {
   return (
-    <div className="flex flex-col justify-center pt-20 text-base leading-6 bg-slate-100">
-      <div className="flex flex-col justify-center items-end self-center px-16 py-20 mt-7 max-w-full w-[1195px] max-md:pl-5">
+    <div className="flex flex-col justify-center text-base leading-6 ">
+      <div className="flex flex-col justify-center items-end self-center px-16 py-20 max-w-full w-[1195px] max-md:pl-5">
         <Image
           alt="Harvey"
           loading="lazy"
@@ -17,7 +17,7 @@ const LoginPage = () => {
           width={600}
           height={550}
         />
-        <div className="flex flex-col px-8 py-7 mt-5 mb-4 max-w-full bg-white rounded-md shadow-lg w-[450px] max-md:px-5">
+        <div className="flex flex-col px-8 py-7 mt-5 mb-4 max-w-full bg-white border-gray-300 rounded-3xl shadow-lg border w-[450px] max-md:px-5">
           <div className="flex gap-3 justify-center items-start self-center pb-8 text-2xl font-semibold tracking-wide whitespace-nowrap text-zinc-700 text-opacity-90">
             <Image
               alt="brand"
@@ -60,8 +60,8 @@ const LoginPage = () => {
             </Link>
           </div>
           <Button
-            variant={"defaultConfig"}
-            className="justify-center text-center items-center px-16 py-2 text-base font-medium tracking-wide leading-7 text-white uppercase bg-lime-700 rounded-md max-md:px-5"
+            variant={"default"}
+            className="justify-center text-center items-center px-16 py-2 text-base font-medium tracking-wide leading-7 text-white uppercase rounded-md max-md:px-5"
           >
             Đăng nhập
           </Button>
@@ -73,14 +73,7 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
-      <img
-        alt=""
-        loading="lazy"
-        src={
-          "https://cdn.builder.io/api/v1/image/assets/TEMP/f9558039289ff29d134492aae32ab2e422ceaa81920e87fe2413484b18656e5f?"
-        }
-        className="w-full aspect-[5] max-md:max-w-full"
-      />
+
     </div>
   );
 };
