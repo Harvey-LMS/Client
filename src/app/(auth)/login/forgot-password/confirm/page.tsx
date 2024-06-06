@@ -31,8 +31,7 @@ const ConfirmEmailPage = () => {
           <span className="text-2xl">Xác nhận Email</span>
           <br />
           <span className="text-sm font-normal !leading-none">
-            Mã xác nhận đã được gửi đến *est@gmail.com, vui lòng nhấp vào tiếp
-            tục để nhập mã
+            Vui lòng kiểm tra email để thực hiện xác thực tài khoản của bạn
           </span>
         </div>
         <div className="mb-4">
