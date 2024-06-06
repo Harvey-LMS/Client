@@ -6,11 +6,12 @@ import Tree_2 from "@/assets/Pot_Tree_2.svg";
 
 const AuthLogin = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="w-full h-screen p-10">
+    <div className="w-full h-screen p-10 harvey bg-background text-foreground ">
       <div className="p-10 h-full ">
-        <div className="flex justify-center h-full ">{children}</div>
+        <div className="flex justify-center h-full">
+          {children}
+        </div>
       </div>
-      {/* content */}
     </div>
   );
 };
