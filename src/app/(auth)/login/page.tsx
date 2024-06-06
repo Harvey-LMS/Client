@@ -1,6 +1,5 @@
 import Brand from "@/assets/Brand.svg";
 import Login from "@/assets/Login.svg";
-import { Button } from "@/components/ui/button";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -59,12 +58,11 @@ const LoginPage = () => {
               Quên mật khẩu?
             </Link>
           </div>
-          <Button
-            variant={"default"}
+          <button
             className="justify-center text-center items-center px-16 py-2 text-base font-medium tracking-wide leading-7 text-white uppercase rounded-md max-md:px-5"
           >
             Đăng nhập
-          </Button>
+          </button>
           <div className="mt-7 tracking-normal leading-6 text-center text-lime-600">
             <span className="text-zinc-700">Bạn chưa có tài khoản?</span>{" "}
             <Link href={"/"} className="text-lime-600">
