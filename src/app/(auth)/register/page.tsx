@@ -83,36 +83,9 @@ const RegisterPage = () => {
                   </div>
                </div>
             </div>
-            <input
-              className="justify-center px-3 py-4 mt-6 tracking-normal rounded-md border border-solid border-zinc-700 border-opacity-20 max-md:max-w-full text-black"
-              placeholder="Họ và tên"
-            ></input>
-            <input
-              className="justify-center px-3 py-4 mt-3.5 tracking-normal whitespace-nowrap rounded-md border border-solid border-zinc-700 border-opacity-20 max-md:pr-5 max-md:max-w-full text-black"
-              placeholder="Email"
-            ></input>
-            <input
-              className="justify-center px-3 py-4 mt-3.5 tracking-normal rounded-md border border-solid border-zinc-700 border-opacity-20 max-md:pr-5 max-md:max-w-full text-black"
-              placeholder="Mật khẩu"
-            ></input>
-            <input
-              className="justify-center px-3 py-4 mt-3.5 tracking-normal rounded-md border border-solid border-zinc-700 border-opacity-20 max-md:pr-5 max-md:max-w-full text-black"
-              placeholder="Nhập lại mật khẩu"
-            ></input>
-            <Button className="justify-center items-center self-center px-16 py-2 mt-3.5 max-w-full text-base font-medium tracking-wide leading-7 text-white uppercase w-[405px] max-md:px-5">
-              Đăng Ký
-            </Button>
-            <div className="mt-7 tracking-normal leading-6 text-center text-lime-600 max-md:max-w-full">
-              <span className="text-zinc-700">Bạn đã có tài khoản?</span>{" "}
-              <Link href="login" className="text-lime-600 hover:underline">
-                Đăng nhập
-              </Link>
-            </div>
-          </div>
-        </div>
+         </div>
       </div>
-    </div>
-  );
+   );
 };
 
 export default RegisterPage;
