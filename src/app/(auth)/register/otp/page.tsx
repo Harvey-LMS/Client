@@ -26,11 +26,6 @@ import { useState } from "react";
 import { GoCheckCircleFill } from "react-icons/go";
 import { useEffect } from "react";
 
-
-// export const metadata: Metadata = {
-//     title: 'Harvey | Register',
-// }
-
 const RegisterOTP = () => {
     const email = "*est@gmail.com"
     const [open, setOpen] = useState(false)
