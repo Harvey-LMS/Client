@@ -13,7 +13,7 @@ import { RadioGroup, Radio } from "@nextui-org/radio";
 
 const Page = () => {
     return (
-        <div className="flex flex-row justify-start items-start gap-10 p-10 max-md:flex-col">
+        <div className="flex flex-row justify-start items-start gap-10 p-10 max-md:flex-col max-md:items-center">
             <div className="flex flex-col gap-5 justify-start items-center w-[400px]">
                 <div className="flex flex-col justify-center items-center
                 p-8 rounded-2xl
@@ -95,6 +95,14 @@ const Page = () => {
                                 </RadioGroup>
                             </div>
                             <div className="flex flex-row gap-3 justify-start items-center w-8/12 max-md:w-full">
+                                <p className="text-xl font-semibold text-right w-4/12 whitespace-nowrap max-md:w-full max-md:text-left">Ngày sinh:</p>
+                                <Input
+                                    className="text-black max-md:max-w-full text-right"
+                                    variant="bordered"
+                                    type="date"
+                                />
+                            </div>
+                            <div className="flex flex-row gap-3 justify-start items-center w-8/12 max-md:w-full">
                                 <p className="text-xl font-semibold text-right w-4/12 whitespace-nowrap max-md:w-full max-md:text-left">Số điện thoại:</p>
                                 <Input
                                     className="text-black max-md:max-w-full text-right"
@@ -108,14 +116,6 @@ const Page = () => {
                                     className="text-black max-md:max-w-full text-right"
                                     variant="bordered"
                                     placeholder="abc@gmail.com"
-                                />
-                            </div>
-                            <div className="flex flex-row gap-3 justify-start items-center w-8/12 max-md:w-full">
-                                <p className="text-xl font-semibold text-right w-4/12 whitespace-nowrap max-md:w-full max-md:text-left">Ngày sinh:</p>
-                                <Input
-                                    className="text-black max-md:max-w-full text-right"
-                                    variant="bordered"
-                                    type="date"
                                 />
                             </div>
                             <div className="flex flex-row gap-3 justify-start items-start w-8/12 max-md:w-full">
