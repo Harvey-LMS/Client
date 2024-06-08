@@ -36,13 +36,15 @@ const ConfirmEmailPage = () => {
           </span>
         </div>
         <div className="mb-4">
-          <Button
-            className="w-full justify-center text-center items-center px-16 py-2 
+          <Link href="/">
+            <Button
+              color="primary"
+              className="w-full justify-center text-center items-center px-16 py-2 
           text-base font-medium tracking-wide leading-7 text-white uppercase rounded-md max-md:px-5"
-            asChild
-          >
-            <Link href="/">Quay về trang chủ</Link>
-          </Button>
+            >
+              Quay về trang chủ
+            </Button>
+          </Link>
         </div>
         <div className="justify-center text-center items-center">
           <span>Không nhận được mail? </span>
