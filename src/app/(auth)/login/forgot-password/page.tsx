@@ -14,11 +14,11 @@ const ForgotPasswordPage = () => {
   return (
     <div className="flex flex-col justify-center text-base leading-8 ">
       <div
-        className="flex flex-col px-8 py-7 mt-5 mb-4 max-w-full bg-white border-gray-300  
+        className="flex flex-col px-8 py-7 mt-5 mb-4 max-w-full bg-white border-gray-300 
       rounded-3xl shadow-lg border w-[450px] max-md:px-5"
       >
         <div
-          className="flex gap-3 justify-center items-start self-center pb-8 text-2xl 
+          className="flex gap-3 justify-center items-start self-center pb-8 text-2xl
        font-semibold tracking-wide whitespace-nowrap text-zinc-700 text-opacity-90"
         >
           <Image
@@ -44,7 +44,7 @@ const ForgotPasswordPage = () => {
           <Link href="/login/forgot-password/confirm">
             <Button
               color="primary"
-              className="w-full justify-center text-center items-center px-16 py-2  
+              className="w-full justify-center text-center items-center px-16 py-2 
           text-base font-medium tracking-wide leading-7 text-white uppercase rounded-md max-md:px-5"
             >
               Xác nhận

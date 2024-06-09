@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
 import Image from "next/image";
-import RegisterSVG from "@/assets/Register.svg"
+import RegisterSVG from "@/assets/Register.svg";
 import Brand from "@/assets/Brand.svg";
 import Link from "next/link";
 import { Input } from "@nextui-org/input";
@@ -449,8 +449,11 @@ const Register = () => {
                     </div>
                 </div>
             </div>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Register;
