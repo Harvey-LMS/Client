@@ -1,6 +1,4 @@
-import Brand from "@/assets/Brand.svg";
 import Login from "@/components/container/login";
-
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
