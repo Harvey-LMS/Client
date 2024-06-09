@@ -80,8 +80,21 @@ const Login = () => {
               label="Tên đăng nhập"
               onChange={(e) => setUserName(e.target.value)}
             />
+            <Input
+              variant="bordered"
+              type="email"
+              label="Tên đăng nhập"
+              onChange={(e) => setUserName(e.target.value)}
+            />
           </div>
           <div className="mt-5">
+            <Input
+              className="text-black max-md:max-w-full"
+              variant="bordered"
+              label="Mật khẩu"
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <Input
               className="text-black max-md:max-w-full"
               variant="bordered"
