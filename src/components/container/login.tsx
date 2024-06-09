@@ -12,6 +12,7 @@ const Login = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [users, setUsers] = useState<any[] | null>(null);
+  const [isShowErr, setIsShowErr] = useState(false);
 
   useEffect(() => {
     fetch("https://66651c7fd122c2868e3fcdef.mockapi.io/Account")
@@ -25,7 +26,7 @@ const Login = () => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (!username || !password) {
-      console.log("Enter username or password");
+      setIsShowErr(true);
       return;
     }
     if (users != null) {
@@ -80,21 +81,8 @@ const Login = () => {
               label="Tên đăng nhập"
               onChange={(e) => setUserName(e.target.value)}
             />
-            <Input
-              variant="bordered"
-              type="email"
-              label="Tên đăng nhập"
-              onChange={(e) => setUserName(e.target.value)}
-            />
           </div>
           <div className="mt-5">
-            <Input
-              className="text-black max-md:max-w-full"
-              variant="bordered"
-              label="Mật khẩu"
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
             <Input
               className="text-black max-md:max-w-full"
               variant="bordered"
@@ -115,6 +103,7 @@ const Login = () => {
               Quên mật khẩu?
             </Link>
           </div>
+
           <Link href="/">
             <Button
               color="primary"
@@ -132,6 +121,11 @@ const Login = () => {
               Tạo tài khoản mới
             </Link>
           </div>
+          {isShowErr && (
+            <span className="text-center text-md text-red-700 m-3">
+              Hãy nhập đầy đủ thông tin
+            </span>
+          )}
         </div>
       </div>
     </div>
