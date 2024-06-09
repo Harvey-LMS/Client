@@ -12,6 +12,13 @@ import { useEffect } from "react";
 import OTPInput from "@/components/otp";
 
 import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+
+import {
   Dialog,
   DialogClose,
   DialogContent,
@@ -21,21 +28,105 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+const otpTEMP = {
+  otp: 332123
+}
+
 const RegisterOTP = () => {
   const email = "*est@gmail.com";
-  const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [erro, setErro] = useState("");
 
-  // const [erro, setErro] = useState("")
-  const [erro, setErro] = useState("Mã xác thực không hợp lệ");
+  const [isCount, setIsCount] = useState<boolean>(true);
+  const [timeCount, setTimeCount] = useState<number>(60);
+  const [disableSend, setDisableSend] = useState<boolean>(false);
+
+  const [countOTP, setCountOTP] = useState<number>(1);
+
+  const [value, setValue] = useState<string>("");
+  const [disableButton, setDisableButton] = useState<boolean>(false);
+
+  const handleValue = (e: string) => {
+    setValue(e);
+  }
+
+  const time = () => {
+    setIsCount(true);
+    const setTime = setTimeout(() => {
+        setTimeCount(timeCount - 1);
+    }, 100);
+
+    if (timeCount === 0) {
+      clearTimeout(setTime);
+      setIsCount(false);
+    }
+  }
+
+  const handleSend = () => {
+    if (disableSend) {
+      return;
+    }
+    if (isCount === false) {
+      setTimeCount(60);
+      time();
+    }
+  }
+
+  useEffect(() => {
+    time()
+  }
+  )
 
   const handleOpen = () => {
-    // setOpen(!open);
-    setOpen(true);
-    console.log(open);
-    setTimeout(() => {
-      setOpen(false);
-    }, 1500);
+    // API
+
+    // Fail accept countOTP++
+    if (value === otpTEMP.otp.toString()) {
+      // Direct to next page
+
+      setOpenModal(true);
+
+      const openModalTimeOut = setTimeout(() => {
+        setOpenModal(false);
+      }, 1500);
+
+      openModalTimeOut;
+
+      return () => {
+        clearTimeout(openModalTimeOut);
+      };
+    } else {
+      setErro("Mã xác thực không hợp lệ");
+      setCountOTP(countOTP + 1);
+      if (countOTP === 3) {
+        setErro("Bạn đã nhập sai mã OTP quá 3 lần, vui lòng thử lại sau 5 phút");
+        setDisableButton(true);
+        setIsCount(false);
+        setDisableSend(true);
+        const disableAll = setTimeout(() => {
+          setDisableButton(false);
+          setCountOTP(1);
+        }, 300000);
+
+        disableAll;
+
+        return () => {
+          clearTimeout(disableAll);
+        };
+
+
+      }
+    }
+
+
+
+
+
   };
+
+
+
+
   return (
     <div className="m-auto">
       <div className="flex flex-col max-md:ml-0 max-md:w-full bg-white border-gray-300 rounded-3xl shadow-lg border px-5 py-6">
@@ -59,13 +150,32 @@ const RegisterOTP = () => {
                 Vui lòng nhập mã OTP từ email vào bên dưới
               </span>
             </div>
-            <OTPInput></OTPInput>
+            <InputOTP
+              value={value}
+              onChange={handleValue}
+              maxLength={6}
+              containerClassName="text-black justify-center items-center text-center"
+            >
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+              </InputOTPGroup>
+              <InputOTPSeparator />
+              <InputOTPGroup>
+                <InputOTPSlot index={3} />
+                <InputOTPSlot index={4} />
+                <InputOTPSlot index={5} />
+              </InputOTPGroup>
+            </InputOTP>
             <span className="text-danger">{erro}</span>
             <Button
               color="primary"
-              className="justify-center items-center self-center px-16 py-2  max-w-full text-base 
-                    font-medium tracking-wide leading-7 text-white uppercase w-[405px] max-md:px-5"
+              className={`justify-center items-center self-center px-16 py-2  max-w-full text-base 
+                    font-medium tracking-wide leading-7 text-white uppercase w-[405px] max-md:px-5 disabled:opacity-50` +
+                `${disableButton ? ' cursor-not-allowed' : ' cursor-pointer'}`}
               onClick={handleOpen}
+              disabled={disableButton}
             >
               Xác thực
             </Button>
@@ -73,14 +183,17 @@ const RegisterOTP = () => {
               <span className="text-zinc-700">
                 Chưa nhận được mã xác thực ?
               </span>{" "}
-              <p className="text-lime-600 hover:underline cursor-pointer">
-                Gửi lại
-              </p>
+              <div onClick={handleSend} className="w-fix">
+                <p className={`text-lime-600 ${isCount ? 'cursor-auto' : 'cursor-pointer hover:underline'}`} >
+                  {isCount ? `Gửi lại sau ${timeCount}s` : "Gửi lại"}
+                </p>
+              </div>
+
             </div>
           </div>
         </div>
       </div>
-      <Dialog open={open}>
+      <Dialog open={openModal}>
         <DialogContent className="rounded-lg">
           <DialogHeader className="flex flex-col justify-center items-center m-auto gap-3">
             <div className="flex flex-row gap-3 justify-center items-center text-2xl font-semibold tracking-wide whitespace-nowrap text-zinc-700">
@@ -92,7 +205,6 @@ const RegisterOTP = () => {
               />
               <div className="">Harvey</div>
             </div>
-
             <DialogTitle className="flex flex-col justify-center items-center">
               <GoCheckCircleFill className="text-1xl w-16 h-16 rounded-full text-white  bg-primary" />
               <p className="mt-10">Đăng ký thành công</p>

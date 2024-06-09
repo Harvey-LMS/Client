@@ -13,24 +13,35 @@ import { BiSolidShow } from "react-icons/bi";
 import { RadioGroup, Radio } from "@nextui-org/radio";
 import React, { use, useEffect, useRef, useState } from "react";
 import { redirect } from "next/navigation";
+import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
+
+import { useRouter } from 'next/navigation';
 
 interface Errors {
-    isError:{
+    isError: {
         username: boolean;
         email: boolean;
         password: boolean;
         confirmPassword: boolean;
     },
-    errorMessage:{
+    errorMessage: {
         username: string;
         email: string;
         password: string;
         confirmPassword: string;
     }
-    
+}
+
+interface User{
+    username:string,
+    gmail:string,
+    password:string
+
 }
 
 const Register = () => {
+    const router = useRouter();
     const [errors, setErrors] = useState<Errors>({
         isError: {
             username: false,
@@ -47,8 +58,7 @@ const Register = () => {
     });
 
     const [userName, setUserName] = useState<string>("")
-    const [userNameIsError, setUserNameIsError] = useState<boolean>(false)
-
+    
     const handleUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserName(e.target.value)
 
@@ -83,7 +93,7 @@ const Register = () => {
             return false
         }
 
-        if (userName.match(/^[a-zA-Z0-9]+$/)) {
+        if (userName.match(/^(?=.{3,20}$)(?![_.-])(?!.*[_.-]{2})[a-zA-Z0-9_-]+([^._-])$/)) {
             setErrors({
                 isError: {
                     ...errors.isError,
@@ -94,6 +104,35 @@ const Register = () => {
                     username: ""
                 }
             })
+  
+            const call = async () => {
+                try{
+                    const request = await fetch("https://66656af6d122c2868e409b34.mockapi.io/user")
+                    const data = await request.json()
+                    console.log(data)
+
+                    data.forEach((element:any) => {
+                        if (element.username.toLowerCase() === userName.toLowerCase()) {
+                            setErrors({
+                                isError: {
+                                    ...errors.isError,
+                                    username: true
+                                },
+                                errorMessage: {
+                                    ...errors.errorMessage,
+                                    username: "Tên đăng nhập đã tồn tại"
+                                }
+                            })
+                        }
+                    });
+
+                } catch(e) {
+                    console.log(e)
+                }
+            }
+            call()
+
+
             return true
         } else {
             setErrors({
@@ -133,7 +172,7 @@ const Register = () => {
     }
 
     const checkEmail = () => {
-        if (email === ''){
+        if (email === '') {
             setErrors({
                 isError: {
                     ...errors.isError,
@@ -157,6 +196,33 @@ const Register = () => {
                     email: ""
                 }
             })
+
+            const call = async () => {
+                try {
+                    const request = await fetch("https://66656af6d122c2868e409b34.mockapi.io/user")
+                    const data = await request.json()
+                    console.log(data)
+
+                    data.forEach((element: any) => {
+                        if (element.gmail.toLowerCase() === email.toLowerCase()) {
+                            setErrors({
+                                isError: {
+                                    ...errors.isError,
+                                    email: true
+                                },
+                                errorMessage: {
+                                    ...errors.errorMessage,
+                                    email: "Tên đăng nhập đã tồn tại"
+                                }
+                            })
+                        }
+                    });
+
+                } catch (e) {
+                    console.log(e)
+                }
+            }
+            call()
             return true
         } else {
             setErrors({
@@ -178,7 +244,7 @@ const Register = () => {
     const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value)
 
-        if (e.target.value.length >= 6 && e.target.value.match((/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,}$/))) {
+        if (e.target.value.match((/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/))) {
             setErrors({
                 isError: {
                     ...errors.isError,
@@ -208,7 +274,7 @@ const Register = () => {
             return false
         }
 
-        if (password.length >= 6 && password.match((/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,}$/))) {
+        if (password.match((/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/))) {
             setErrors({
                 isError: {
                     ...errors.isError,
@@ -256,10 +322,10 @@ const Register = () => {
             })
             setButton(false)
         }
-        if (e.target.value.length > 0 ){
+        if (e.target.value.length > 0) {
             setButton(false)
         }
-        else{
+        else {
             setButton(true)
         }
     }
@@ -319,12 +385,52 @@ const Register = () => {
     }
 
     const [button, setButton] = useState<boolean>(true)
+    const [response, setResponse] = useState<any>(null);
+
+
 
     const register = () => {
         if (checkUserName() && checkEmail() && checkPassword() && checkConfirmPassword()) {
+// API
             
-            redirect("/register/otp")
         }
+
+        console.log("asd")
+
+        const valueTemp : User = {
+            username: userName,
+            gmail: email,
+            password: password
+        }
+
+        const handlerPOST = async () => {
+            try {
+                const res = await fetch('https://66656af6d122c2868e409b34.mockapi.io/user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'                    
+                    },
+                    body: JSON.stringify(valueTemp),
+                });
+                
+                if (!res.ok) {
+                    throw new Error('Network response was not ok');
+                }else{
+                    const data = await res.json();
+                    router.push("/register/otp")
+                }
+
+                
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+                // Xử lý lỗi tại đây
+            }
+
+        };
+        handlerPOST();
+
+
+
     }
 
 
@@ -333,7 +439,7 @@ const Register = () => {
             className="m-auto w-full"
         >
             <div className="flex flex-row justify-center gap-5 max-md:flex-col max-md:gap-0">
-                <div className="flex flex-col max-md:ml-0 max-md:w-full max-sm:hidden max-md:hidden">
+                <div className="flex flex-col max-md:ml-0 max-md:w-full max-lg:hidden max-sm:hidden max-md:hidden min-md:hidden">
                     <Image
                         alt="HarveyRegister"
                         src={RegisterSVG}
@@ -423,14 +529,14 @@ const Register = () => {
                             />
                         </div>
 
-                        <Button 
-                        disabled= {button}
+                        <Button
+                            disabled={button}
                             color="primary" className={`justify-center items-center self-center px-16 py-2 
                         mt-3.5 max-w-full text-base font-medium tracking-wide leading-7
                         text-white uppercase w-[405px] max-md:px-5 disabled:cursor-not-allowed disabled:opacity-45 `}
                             onClick={register}
                         >
-                            
+
                             {/* <Link href="/register/otp" className="cursor-not-allowed">
                                 Đăng Ký
                             </Link> */}
@@ -449,11 +555,8 @@ const Register = () => {
                     </div>
                 </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Register;
