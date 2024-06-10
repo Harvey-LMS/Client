@@ -58,8 +58,8 @@ const ConfirmEmailPage = () => {
           <span className="text-2xl">Xác nhận Email</span>
           <br />
           <span className="text-sm font-normal !leading-none">
-            Mã xác nhận đã được gửi đến ***{email.substring(6)}, vui lòng nhấp
-            mã vào để xác thực
+            Mã xác nhận đã được gửi đến ***{email.slice(-13)}, vui lòng nhấp mã
+            vào để xác thực
           </span>
         </div>
         <OTPInput></OTPInput>
