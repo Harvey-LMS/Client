@@ -8,11 +8,33 @@ import { Button } from "@nextui-org/react";
 import { useState } from "react";
 import { useEffect } from "react";
 
+interface Errors {
+  isError: {
+    username: boolean;
+    password: boolean;
+  };
+  errorMsg: {
+    username: string;
+    password: string;
+  };
+}
+
 const Login = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [users, setUsers] = useState<any[] | null>(null);
   const [isShowErr, setIsShowErr] = useState(false);
+
+  const [errors, setErrors] = useState<Errors>({
+    isError: {
+      username: false,
+      password: false,
+    },
+    errorMsg: {
+      username: "",
+      password: "",
+    },
+  });
 
   useEffect(() => {
     fetch("https://66651c7fd122c2868e3fcdef.mockapi.io/Account")
@@ -23,20 +45,87 @@ const Login = () => {
       .catch((error) => console.error("=>Error:", error));
   }, []);
 
+  const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserName(e.target.value);
+    if (errors.isError.username) {
+      if (username.length > 0) {
+        setErrors({
+          isError: {
+            ...errors.isError,
+            username: false,
+          },
+          errorMsg: {
+            ...errors.errorMsg,
+            username: "",
+          },
+        });
+      }
+    }
+  };
+
+  const checkUserName = () => {
+    if (username === "") {
+      setErrors({
+        isError: {
+          ...errors.isError,
+          username: true,
+        },
+        errorMsg: {
+          ...errors.errorMsg,
+          username: "Tên đăng nhập không được để trống",
+        },
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    if (errors.isError.password) {
+      if (password.length > 0) {
+        setErrors({
+          isError: {
+            ...errors.isError,
+            password: false,
+          },
+          errorMsg: {
+            ...errors.errorMsg,
+            password: "",
+          },
+        });
+      }
+    }
+  };
+
+  const checkPassword = () => {
+    if (password === "") {
+      setErrors({
+        isError: {
+          ...errors.isError,
+          password: true,
+        },
+        errorMsg: {
+          ...errors.errorMsg,
+          password: "Mật khẩu không được để trống",
+        },
+      });
+      return false;
+    }
+    return true;
+  };
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!username || !password) {
-      setIsShowErr(true);
-      return;
-    }
-    if (users != null) {
+    // check username pwd
+
+    if (users != null && checkUserName() && checkPassword()) {
       const user = users.find(
         (user: any) => user.username === username && user.password === password
       );
       if (user) {
         console.log("Login successful");
         window.location.href = "/";
-        // Navigate to the next page or set the user to the global state
       } else {
         console.log("Invalid username or password");
       }
@@ -79,7 +168,10 @@ const Login = () => {
               variant="bordered"
               type="email"
               label="Tên đăng nhập"
-              onChange={(e) => setUserName(e.target.value)}
+              onBlur={checkUserName}
+              onChange={handleUsername}
+              isInvalid={errors.isError.username}
+              errorMessage={errors.errorMsg.username}
             />
           </div>
           <div className="mt-5">
@@ -88,7 +180,10 @@ const Login = () => {
               variant="bordered"
               label="Mật khẩu"
               type="password"
-              onChange={(e) => setPassword(e.target.value)}
+              onBlur={checkPassword}
+              onChange={handlePassword}
+              isInvalid={errors.isError.password}
+              errorMessage={errors.errorMsg.password}
             />
           </div>
           <div className="flex gap-2 pb-4 text-sm tracking-normal">
@@ -121,15 +216,14 @@ const Login = () => {
               Tạo tài khoản mới
             </Link>
           </div>
-          {isShowErr && (
+          {/* {isShowErr && (
             <span className="text-center text-md text-red-700 m-3">
               Hãy nhập đầy đủ thông tin
             </span>
-          )}
+          )} */}
         </div>
       </div>
     </div>
   );
 };
-
 export default Login;
