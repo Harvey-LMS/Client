@@ -11,7 +11,7 @@ import { useEffect } from "react";
 const Login = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [users, setUsers] = useState(null);
+  const [users, setUsers] = useState<any[]>([]);
 
   useEffect(() => {
     fetch("https://66651c7fd122c2868e3fcdef.mockapi.io/Account")
@@ -54,6 +54,7 @@ const Login = () => {
           height={500}
         />
         <div className="flex flex-col px-8 py-7 mt-5 mb-4 max-w-full bg-white border-gray-300 rounded-3xl shadow-lg border w-[450px] max-md:px-5">
+          <div className="flex gap-3 max-md:hidden justify-center items-start self-center pb-8 text-2xl font-semibold tracking-wide whitespace-nowrap text-zinc-700 text-opacity-90"></div>
           <div className="flex gap-3 max-md:hidden justify-center items-start self-center pb-8 text-2xl font-semibold tracking-wide whitespace-nowrap text-zinc-700 text-opacity-90">
             <Image
               alt="brand"
