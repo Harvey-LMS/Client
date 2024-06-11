@@ -244,6 +244,10 @@ const Register = () => {
     const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value)
 
+        if (errors.isError.confirmPassword) {
+            setConfirmPassword("")
+        }
+
         if (e.target.value.match((/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/))) {
             setErrors({
                 isError: {
@@ -321,11 +325,9 @@ const Register = () => {
                 }
             })
             setButton(false)
+            return 
         }
-        if (e.target.value.length > 0) {
-            setButton(false)
-        }
-        else {
+        if(errors.isError.username || errors.isError.email || errors.isError.password || errors.isError.confirmPassword ){ 
             setButton(true)
         }
     }
@@ -387,47 +389,62 @@ const Register = () => {
     const [button, setButton] = useState<boolean>(true)
     const [response, setResponse] = useState<any>(null);
 
+useEffect(()=> {
+    
+
+    if(errors.isError.username || errors.isError.email || errors.isError.password || errors.isError.confirmPassword ){ 
+        setButton(true)
+        return
+    }
+    else if (userName === "" || email === "" || password === "" || confirmPassword === "") {
+            setButton(true)
+            return
+        }
+    else
+    {
+        setButton(false)
+        return
+    }
+
+},[errors])
 
 
     const register = () => {
         if (checkUserName() && checkEmail() && checkPassword() && checkConfirmPassword()) {
-// API
+            const valueTemp : User = {
+                username: userName,
+                gmail: email,
+                password: password
+            }
+    
+            const handlerPOST = async () => {
+                try {
+                    const res = await fetch('https://66656af6d122c2868e409b34.mockapi.io/user', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'                    
+                        },
+                        body: JSON.stringify(valueTemp),
+                    });
+                    
+                    if (!res.ok) {
+                        throw new Error('Network response was not ok');
+                    }else{
+                        const data = await res.json();
+                        router.push("/register/otp")
+                    }
+    
+                    
+                } catch (error) {
+                    console.error('There was a problem with the fetch operation:', error);
+                }
+    
+            };
+            handlerPOST();
             
         }
 
-        console.log("asd")
 
-        const valueTemp : User = {
-            username: userName,
-            gmail: email,
-            password: password
-        }
-
-        const handlerPOST = async () => {
-            try {
-                const res = await fetch('https://66656af6d122c2868e409b34.mockapi.io/user', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'                    
-                    },
-                    body: JSON.stringify(valueTemp),
-                });
-                
-                if (!res.ok) {
-                    throw new Error('Network response was not ok');
-                }else{
-                    const data = await res.json();
-                    router.push("/register/otp")
-                }
-
-                
-            } catch (error) {
-                console.error('There was a problem with the fetch operation:', error);
-                // Xử lý lỗi tại đây
-            }
-
-        };
-        handlerPOST();
 
 
 

@@ -77,6 +77,13 @@ const RegisterOTP = () => {
   }
   )
 
+  const handleClick = () => {
+    if (erro !== ""){
+      setErro("");
+      setValue("")
+    }
+  }
+
   const handleOpen = () => {
     // API
 
@@ -153,6 +160,7 @@ const RegisterOTP = () => {
             <InputOTP
               value={value}
               onChange={handleValue}
+              onClick={handleClick}
               maxLength={6}
               containerClassName="text-black justify-center items-center text-center"
             >
