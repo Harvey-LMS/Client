@@ -97,7 +97,6 @@ const ConfirmEmailPage = () => {
               />
               <div className="">Harvey</div>
             </div>
-
             <DialogTitle className="flex flex-col justify-center items-center">
               <GoCheckCircleFill className="text-1xl w-16 h-16 rounded-full text-white  bg-primary" />
               <p className="mt-10">Xác thực thành công</p>

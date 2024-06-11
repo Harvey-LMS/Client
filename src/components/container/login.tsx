@@ -12,10 +12,12 @@ interface Errors {
   isError: {
     username: boolean;
     password: boolean;
+    isLogin: boolean;
   };
   errorMsg: {
     username: string;
     password: string;
+    isLogin: string;
   };
 }
 
@@ -29,10 +31,12 @@ const Login = () => {
     isError: {
       username: false,
       password: false,
+      isLogin: false,
     },
     errorMsg: {
       username: "",
       password: "",
+      isLogin: "",
     },
   });
 
@@ -127,6 +131,16 @@ const Login = () => {
         console.log("Login successful");
         window.location.href = "/";
       } else {
+        setErrors({
+          isError: {
+            ...errors.isError,
+            isLogin: false,
+          },
+          errorMsg: {
+            ...errors.errorMsg,
+            isLogin: "Tên đăng nhập hoặc mật khẩu không đúng",
+          },
+        });
         console.log("Invalid username or password");
       }
     }
@@ -216,11 +230,11 @@ const Login = () => {
               Tạo tài khoản mới
             </Link>
           </div>
-          {/* {isShowErr && (
+          {errors.isError.isLogin && (
             <span className="text-center text-md text-red-700 m-3">
-              Hãy nhập đầy đủ thông tin
+              {errors.errorMsg.isLogin}
             </span>
-          )} */}
+          )}
         </div>
       </div>
     </div>
