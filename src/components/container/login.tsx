@@ -121,8 +121,6 @@ const Login = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // check username pwd
-
     if (users != null && checkUserName() && checkPassword()) {
       const user = users.find(
         (user: any) => user.username === username && user.password === password
@@ -134,14 +132,13 @@ const Login = () => {
         setErrors({
           isError: {
             ...errors.isError,
-            isLogin: false,
+            isLogin: true,
           },
           errorMsg: {
             ...errors.errorMsg,
             isLogin: "Tên đăng nhập hoặc mật khẩu không đúng",
           },
         });
-        console.log("Invalid username or password");
       }
     }
   };
@@ -173,10 +170,11 @@ const Login = () => {
           <div className="text-sm tracking-normal text-zinc-700 text-opacity-60">
             Vui lòng đăng nhập tài khoản của bạn
           </div>
-          {/* <input
-                placeholder="Email"
-                className="justify-center px-3 py-4 mt-5 tracking-normal whitespace-nowrap rounded-md border border-solid border-zinc-700 border-opacity-20 text-zinc-700 text-opacity-40"
-              ></input> */}
+          {errors.isError.isLogin && (
+            <span className="text-sm text-danger-600 mt-2">
+              {errors.errorMsg.isLogin}
+            </span>
+          )}
           <div className="mt-5">
             <Input
               variant="bordered"
@@ -230,11 +228,6 @@ const Login = () => {
               Tạo tài khoản mới
             </Link>
           </div>
-          {errors.isError.isLogin && (
-            <span className="text-center text-md text-red-700 m-3">
-              {errors.errorMsg.isLogin}
-            </span>
-          )}
         </div>
       </div>
     </div>

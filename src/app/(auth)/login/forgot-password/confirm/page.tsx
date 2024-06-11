@@ -8,6 +8,13 @@ import OTPInput from "@/components/otp";
 import { useEffect, useState } from "react";
 
 import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+
+import {
   Dialog,
   DialogClose,
   DialogContent,
@@ -22,19 +29,38 @@ import { GoCheckCircleFill } from "react-icons/go";
 //   title: "Harvey | Confirm Email",
 // };
 
+const generateOTP = () => {
+  let otp = Math.floor(100000 + Math.random() * 900000);
+  return otp;
+};
+
+const otpTEMP = {
+  otp: generateOTP(),
+};
+
 const ConfirmEmailPage = () => {
   const [isShowErr, setIsShowErr] = useState("");
   const [email, setEmail] = useState("");
   useEffect(() => {
     setEmail(localStorage.getItem("email") || "");
   }, []);
-  const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const handleOpen: () => void = () => {
-    setOpen(true);
-    setTimeout(() => {
-      setOpen(false);
-    }, 1500);
+    if (otpTEMP.otp.toString() === otpValue) {
+      setOpenModal(true);
+      setTimeout(() => {
+        setOpenModal(false);
+      }, 1500);
+    }
   };
+
+  const [otpValue, setOtpValue] = useState("");
+
+  const handleOtpValue = (e: string) => {
+    setOtpValue(e);
+    console.log(otpValue);
+  };
+  console.log("otp:", otpTEMP.otp.toString());
 
   return (
     <div className="flex flex-col justify-center text-base leading-8 ">
@@ -62,7 +88,25 @@ const ConfirmEmailPage = () => {
             vào để xác thực
           </span>
         </div>
-        <OTPInput></OTPInput>
+        {/* <OTPInput></OTPInput> */}
+        <InputOTP
+          value={otpValue}
+          onChange={handleOtpValue}
+          maxLength={6}
+          containerClassName="text-black justify-center items-center text-center"
+        >
+          <InputOTPGroup>
+            <InputOTPSlot index={0} />
+            <InputOTPSlot index={1} />
+            <InputOTPSlot index={2} />
+          </InputOTPGroup>
+          <InputOTPSeparator />
+          <InputOTPGroup>
+            <InputOTPSlot index={3} />
+            <InputOTPSlot index={4} />
+            <InputOTPSlot index={5} />
+          </InputOTPGroup>
+        </InputOTP>
         {isShowErr && (
           <span className="text-danger">Mã xác thực không hợp lệ</span>
         )}
@@ -85,7 +129,7 @@ const ConfirmEmailPage = () => {
           </Link>
         </div>
       </div>
-      <Dialog open={open}>
+      <Dialog open={openModal}>
         <DialogContent className="rounded-lg">
           <DialogHeader className="flex flex-col justify-center items-center m-auto gap-3">
             <div className="flex flex-row gap-3 justify-center items-center text-2xl font-semibold tracking-wide whitespace-nowrap text-zinc-700">
