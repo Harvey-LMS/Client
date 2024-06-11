@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Metadata } from "next";
 import OTPInput from "@/components/otp";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   InputOTP,
@@ -24,6 +24,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { GoCheckCircleFill } from "react-icons/go";
+import { useRouter } from "next/navigation";
 
 // export const metadata: Metadata = {
 //   title: "Harvey | Confirm Email",
@@ -45,12 +46,29 @@ const ConfirmEmailPage = () => {
     setEmail(localStorage.getItem("email") || "");
   }, []);
   const [openModal, setOpenModal] = useState(false);
-  const handleOpen: () => void = () => {
+  const router = useRouter();
+
+  const [count, setCount] = useState(1);
+  const [isCount, setIsCount] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleConfirmOTP = (e: React.FormEvent) => {
+    e.preventDefault();
     if (otpTEMP.otp.toString() === otpValue) {
       setOpenModal(true);
       setTimeout(() => {
         setOpenModal(false);
       }, 1500);
+      router.push("/login/forgot-password/change-password");
+    } else {
+      setCount(count + 1);
+      if (count < 3) {
+        setError("Mã xác thực không hợp lệ");
+        setIsCount(true);
+      } else if (count === 3) {
+        setError("Bạn đã nhập sai OTP 3 lần, vui lòng thử lại sau 5 phút");
+        setIsCount(true);
+      }
     }
   };
 
@@ -58,7 +76,6 @@ const ConfirmEmailPage = () => {
 
   const handleOtpValue = (e: string) => {
     setOtpValue(e);
-    console.log(otpValue);
   };
   console.log("otp:", otpTEMP.otp.toString());
 
@@ -107,8 +124,10 @@ const ConfirmEmailPage = () => {
             <InputOTPSlot index={5} />
           </InputOTPGroup>
         </InputOTP>
-        {isShowErr && (
-          <span className="text-danger">Mã xác thực không hợp lệ</span>
+        {isCount && (
+          <span className="text-danger-600 text-sm text-center mt-4">
+            {error}
+          </span>
         )}
         <div className="mb-4 mt-4">
           <Link href="/login/forgot-password/confirm">
@@ -116,7 +135,7 @@ const ConfirmEmailPage = () => {
               color="primary"
               className="max-w-full w-full justify-center text-center items-center px-16 py-2 
           text-base font-medium tracking-wide leading-7 text-white uppercase rounded-md max-md:px-5"
-              onClick={handleOpen}
+              onClick={(e) => handleConfirmOTP(e)}
             >
               Xác thực
             </Button>
