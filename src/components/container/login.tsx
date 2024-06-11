@@ -7,6 +7,7 @@ import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/react";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 interface Errors {
   isError: {
@@ -25,7 +26,9 @@ const Login = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [users, setUsers] = useState<any[] | null>(null);
-  const [isShowErr, setIsShowErr] = useState(false);
+  // const [isShowErr, setIsShowErr] = useState(false);
+
+  const router = useRouter();
 
   const [errors, setErrors] = useState<Errors>({
     isError: {
@@ -127,7 +130,7 @@ const Login = () => {
       );
       if (user) {
         console.log("Login successful");
-        window.location.href = "/";
+        router.push("/otp");
       } else {
         setErrors({
           isError: {
@@ -145,7 +148,10 @@ const Login = () => {
 
   return (
     <div className="flex flex-col justify-center text-base leading-6 max-md:flex-col">
-      <div className="flex flex-col justify-center items-end self-center px-16 py-20 max-w-full w-[1195px] max-md:pl-1 max-md:w-full">
+      <div
+        className="flex flex-col justify-center items-end self-center px-16 py-20
+       max-w-full w-[1195px] max-md:w-full max-md:pr-[220px]"
+      >
         <Image
           alt="Harvey"
           loading="lazy"
@@ -154,7 +160,7 @@ const Login = () => {
           width={550}
           height={500}
         />
-        <div className="flex flex-col px-8 py-7 mt-5 mb-4 max-w-full bg-white border-gray-300 rounded-3xl shadow-lg border w-[450px] max-md:px-5">
+        <div className="flex flex-col px-8 py-7 mt-5 mb-4 max-w-full bg-white border-gray-300 rounded-3xl shadow-lg border w-[450px] ">
           <div className="flex gap-3 max-md:hidden justify-center items-start self-center pb-8 text-2xl font-semibold tracking-wide whitespace-nowrap text-zinc-700 text-opacity-90">
             <Image
               alt="brand"
@@ -170,12 +176,13 @@ const Login = () => {
           <div className="text-sm tracking-normal text-zinc-700 text-opacity-60">
             Vui lòng đăng nhập tài khoản của bạn
           </div>
+
           {errors.isError.isLogin && (
             <span className="text-sm text-danger-600 mt-2">
               {errors.errorMsg.isLogin}
             </span>
           )}
-          <div className="mt-5">
+          <div className="mt-5 max-md:flex-col">
             <Input
               variant="bordered"
               type="email"
@@ -210,7 +217,6 @@ const Login = () => {
               Quên mật khẩu?
             </Link>
           </div>
-
           <Link href="/">
             <Button
               color="primary"
@@ -221,7 +227,6 @@ const Login = () => {
               Đăng nhập
             </Button>
           </Link>
-
           <div className="mt-7 tracking-normal leading-6 text-center text-lime-600">
             <span className="text-zinc-700">Bạn chưa có tài khoản?</span>{" "}
             <Link href={"/register"} className="text-lime-600 hover:underline">
