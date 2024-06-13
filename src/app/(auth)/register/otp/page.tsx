@@ -122,8 +122,8 @@ const RegisterOTP = () => {
         };
 
 
+        }
       }
-    }
 
 
 
