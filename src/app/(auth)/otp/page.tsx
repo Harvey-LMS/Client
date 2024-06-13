@@ -28,8 +28,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+const generateOTP = () => {
+  let otp = Math.floor(100000 + Math.random() * 900000);
+  console.log(otp);
+  return otp;
+};
+
 const otpTEMP = {
-  otp: 332123,
+  otp: generateOTP(),
 };
 
 const RegisterOTP = () => {
@@ -37,52 +43,75 @@ const RegisterOTP = () => {
   const [openModal, setOpenModal] = useState(false);
   const [erro, setErro] = useState("");
 
-  const [isCount, setIsCount] = useState<boolean>(true);
-  const [timeCount, setTimeCount] = useState<number>(60);
-  const [disableSend, setDisableSend] = useState<boolean>(false);
+  const [disableButton, setDisableButton] = useState(true);
 
-  const [countOTP, setCountOTP] = useState<number>(1);
+  const [otp, setOtp] = useState('');
+  const [attempts, setAttempts] = useState(0);
+  const [canRetry, setCanRetry] = useState(true);
+  const [retryTimeLeft, setRetryTimeLeft] = useState(0);
+  const [canResend, setCanResend] = useState(false);
+  const [resendTimeLeft, setResendTimeLeft] = useState(60);
 
-  const [value, setValue] = useState<string>("");
-  const [disableButton, setDisableButton] = useState<boolean>(false);
+  const handleOtp = (e: string) => {
+    setOtp(e);
+  }
 
-  const handleValue = (e: string) => {
-    setValue(e);
-  };
-
-  const time = () => {
-    setIsCount(true);
-    const setTime = setTimeout(() => {
-      setTimeCount(timeCount - 1);
-    }, 100);
-
-    if (timeCount === 0) {
-      clearTimeout(setTime);
-      setIsCount(false);
-    }
-  };
-
-  const handleSend = () => {
-    if (disableSend) {
-      return;
-    }
-    if (isCount === false) {
-      setTimeCount(60);
-      time();
-    }
+  const handleResendOTP = () => {
+    if (!canRetry) return;
+    setCanResend(false);
+    setResendTimeLeft(60);
   };
 
   useEffect(() => {
-    time();
-  });
+    if (otp.length === 6) {
+      setDisableButton(false);
+    } else {
+      setDisableButton(true);
+    }
+  }, [otp]);
+
+  useEffect(() => {
+    let retryTimer: NodeJS.Timeout;
+    if (!canRetry && retryTimeLeft > 0) {
+      retryTimer = setInterval(() => {
+        setRetryTimeLeft((prev) => prev - 1);
+        setErro(`Bạn đã nhập sai mã OTP quá 3 lần. Vui lòng thử lại sau ${retryTimeLeft} giây nữa.`);
+      }, 10);
+    } else if (retryTimeLeft === 0) {
+      setCanRetry(true);
+      setAttempts(0);
+      setErro("");
+    }
+
+    return () => clearInterval(retryTimer);
+  }, [canRetry, retryTimeLeft]);
+
+
+  useEffect(() => {
+    let resendTimer: NodeJS.Timeout;
+    if (!canResend && resendTimeLeft > 0) {
+      resendTimer = setInterval(() => {
+        setResendTimeLeft((prev) => prev - 1);
+      }, 10);
+    } else if (resendTimeLeft === 0) {
+      setCanResend(true);
+    }
+
+    return () => clearInterval(resendTimer);
+  }, [canResend, resendTimeLeft]);
+
+  const handleClick = () => {
+    if (erro !== "") {
+      setErro("");
+      setOtp("")
+    }
+  }
 
   const handleOpen = () => {
     // API
 
     // Fail accept countOTP++
-    if (value === otpTEMP.otp.toString()) {
-      // Direct to next page
-
+    if (otp === otpTEMP.otp.toString()) {
       setOpenModal(true);
 
       const openModalTimeOut = setTimeout(() => {
@@ -93,30 +122,25 @@ const RegisterOTP = () => {
 
       return () => {
         clearTimeout(openModalTimeOut);
+        // Direct to next page
       };
-    } else {
-      setErro("Mã xác thực không hợp lệ");
-      setCountOTP(countOTP + 1);
-      if (countOTP === 3) {
-        setErro(
-          "Bạn đã nhập sai mã OTP quá 3 lần, vui lòng thử lại sau 5 phút"
-        );
-        setDisableButton(true);
-        setIsCount(false);
-        setDisableSend(true);
-        const disableAll = setTimeout(() => {
-          setDisableButton(false);
-          setCountOTP(1);
-        }, 300000);
-
-        disableAll;
-
-        return () => {
-          clearTimeout(disableAll);
-        };
-      }
     }
-  };
+    else{
+      setErro("Mã OTP không chính xác, bạn còn "+ (2 - attempts) +" lần thử.")
+      setOtp("")
+      setAttempts((prev) => prev + 1);
+      setCanResend(false);
+      if (attempts + 1 >= 3) {
+        setErro(`Bạn đã nhập sai mã OTP quá 3 lần. Vui lòng thử lại sau 300 giây nữa.`);
+        setCanRetry(false);
+        setRetryTimeLeft(299); // 5 minutes in seconds
+    }
+  }
+    }
+
+
+
+
 
   return (
     <div className="m-auto">
@@ -142,8 +166,10 @@ const RegisterOTP = () => {
               </span>
             </div>
             <InputOTP
-              value={value}
-              onChange={handleValue}
+            disabled={!canRetry}
+              value={otp}
+              onChange={handleOtp}
+              onClick={handleClick}
               maxLength={6}
               containerClassName="text-black justify-center items-center text-center"
             >
@@ -176,13 +202,9 @@ const RegisterOTP = () => {
               <span className="text-zinc-700">
                 Chưa nhận được mã xác thực ?
               </span>{" "}
-              <div onClick={handleSend} className="w-fix">
-                <p
-                  className={`text-lime-600 ${
-                    isCount ? "cursor-auto" : "cursor-pointer hover:underline"
-                  }`}
-                >
-                  {isCount ? `Gửi lại sau ${timeCount}s` : "Gửi lại"}
+              <div onClick={handleResendOTP} className="w-fix">
+                <p className={`text-lime-600 ${!canResend ? 'cursor-auto' : 'cursor-pointer hover:underline'}`} >
+                  {!canResend ? `Gửi lại sau ${resendTimeLeft}s` : "Gửi lại"}
                 </p>
               </div>
             </div>
