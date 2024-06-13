@@ -37,48 +37,56 @@ const RegisterOTP = () => {
   const [openModal, setOpenModal] = useState(false);
   const [erro, setErro] = useState("");
 
-  const [isCount, setIsCount] = useState<boolean>(true);
-  const [timeCount, setTimeCount] = useState<number>(60);
-  const [disableSend, setDisableSend] = useState<boolean>(false);
+  const [canRetry, setCanRetry] = useState<boolean>(true);
+  const [retryTimeLeft, setRetryTimeLeft] = useState<number>(60);
+  const [canResend, setCanResend] = useState<boolean>(false);
 
   const [countOTP, setCountOTP] = useState<number>(1);
 
   const [value, setValue] = useState<string>("");
+
   const [disableButton, setDisableButton] = useState<boolean>(false);
+  const [timeDisableAll, setTimeDisableAll] = useState(
+    { minutes: 5, seconds: 0 }
+  );
 
   const handleValue = (e: string) => {
     setValue(e);
   }
 
-  const time = () => {
-    setIsCount(true);
-    const setTime = setTimeout(() => {
-        setTimeCount(timeCount - 1);
-    }, 100);
+  // const time = () => {
+  //   setCanRetry(true);
+  //   const setTime = setTimeout(() => {
+  //     setRetryTimeLeft(retryTimeLeft - 1);
+  //   }, 100);
 
-    if (timeCount === 0) {
-      clearTimeout(setTime);
-      setIsCount(false);
-    }
-  }
+  //   if (retryTimeLeft === 0) {
+  //     clearTimeout(setTime);
+  //     setCanRetry(false);
+  //   }
+  // }
 
-  const handleSend = () => {
-    if (disableSend) {
-      return;
-    }
-    if (isCount === false) {
-      setTimeCount(60);
-      time();
-    }
-  }
+  const handleResendOTP = () => {
+    setCanResend(false);
+    setResendTimeLeft(60);
+  };
 
   useEffect(() => {
-    time()
-  }
-  )
+    let retryTimer: NodeJS.Timeout;
+    if (!canRetry && retryTimeLeft > 0) {
+      retryTimer = setInterval(() => {
+        setRetryTimeLeft((prev) => prev - 1);
+      }, 10);
+    } else if (retryTimeLeft === 0) {
+      setCanRetry(true);
+      setAttempts(0);
+    }
+
+    return () => clearInterval(retryTimer);
+  }, [canRetry, retryTimeLeft]);
 
   const handleClick = () => {
-    if (erro !== ""){
+    if (erro !== "") {
       setErro("");
       setValue("")
     }
@@ -103,33 +111,19 @@ const RegisterOTP = () => {
         clearTimeout(openModalTimeOut);
       };
     } else {
-      setErro("Mã xác thực không hợp lệ");
+      setErro(`Mã xác thực không hợp lệ, còn ${3 - countOTP} lần`);
       setCountOTP(countOTP + 1);
       if (countOTP === 3) {
-        setErro("Bạn đã nhập sai mã OTP quá 3 lần, vui lòng thử lại sau 5 phút");
+        setErro(`Bạn đã nhập sai mã OTP quá 3 lần, vui lòng thử lại sau`+ timeDisableAll.minutes + ":" + timeDisableAll.seconds);
         setDisableButton(true);
-        setIsCount(false);
-        setDisableSend(true);
-        const disableAll = setTimeout(() => {
-          setDisableButton(false);
-          setCountOTP(1);
-        }, 300000);
+        setCanRetry(false);
+        setCanResend(true);
 
-        disableAll;
-
-        return () => {
-          clearTimeout(disableAll);
-        };
-
-
-        }
+        // Nếu mà lúc f5 thì load lại otp nó còn bao nhiêu phút 
       }
-
-
-
-
-
+    }
   };
+
 
 
 
@@ -192,8 +186,8 @@ const RegisterOTP = () => {
                 Chưa nhận được mã xác thực ?
               </span>{" "}
               <div onClick={handleSend} className="w-fix">
-                <p className={`text-lime-600 ${isCount ? 'cursor-auto' : 'cursor-pointer hover:underline'}`} >
-                  {isCount ? `Gửi lại sau ${timeCount}s` : "Gửi lại"}
+                <p className={`text-lime-600 ${canRetry ? 'cursor-auto' : 'cursor-pointer hover:underline'}`} >
+                  {canRetry ? `Gửi lại sau ${retryTimeLeft}s` : "Gửi lại"}
                 </p>
               </div>
 
