@@ -16,233 +16,241 @@ import { redirect } from "next/navigation";
 import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 interface Errors {
-    isError: {
-        username: boolean;
-        email: boolean;
-        password: boolean;
-        confirmPassword: boolean;
-    },
-    errorMessage: {
-        username: string;
-        email: string;
-        password: string;
-        confirmPassword: string;
-    }
+  isError: {
+    username: boolean;
+    email: boolean;
+    password: boolean;
+    confirmPassword: boolean;
+  };
+  errorMessage: {
+    username: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+  };
 }
 
-interface User{
-    username:string,
-    gmail:string,
-    password:string
-
+interface User {
+  username: string;
+  gmail: string;
+  password: string;
 }
 
 const Register = () => {
-    const router = useRouter();
-    const [errors, setErrors] = useState<Errors>({
-        isError: {
+  const router = useRouter();
+  const [errors, setErrors] = useState<Errors>({
+    isError: {
+      username: false,
+      email: false,
+      password: false,
+      confirmPassword: false,
+    },
+    errorMessage: {
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  const [userName, setUserName] = useState<string>("");
+
+  const handleUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserName(e.target.value);
+
+    if (errors.isError.username) {
+      if (e.target.value.match(/^[a-zA-Z0-9]+$/)) {
+        setErrors({
+          isError: {
+            ...errors.isError,
             username: false,
-            email: false,
-            password: false,
-            confirmPassword: false
+          },
+          errorMessage: {
+            ...errors.errorMessage,
+            username: "",
+          },
+        });
+      }
+    }
+  };
+
+  const checkUserName = () => {
+    if (userName === "") {
+      setErrors({
+        isError: {
+          ...errors.isError,
+          username: true,
         },
         errorMessage: {
-            username: "",
+          ...errors.errorMessage,
+          username: "Tên đăng nhập không được để trống",
+        },
+      });
+      return false;
+    }
+
+    if (
+      userName.match(
+        /^(?=.{3,20}$)(?![_.-])(?!.*[_.-]{2})[a-zA-Z0-9_-]+([^._-])$/
+      )
+    ) {
+      setErrors({
+        isError: {
+          ...errors.isError,
+          username: false,
+        },
+        errorMessage: {
+          ...errors.errorMessage,
+          username: "",
+        },
+      });
+
+      const call = async () => {
+        try {
+          const request = await fetch(
+            "https://66656af6d122c2868e409b34.mockapi.io/user"
+          );
+          const data = await request.json();
+          console.log(data);
+
+          data.forEach((element: any) => {
+            if (element.username.toLowerCase() === userName.toLowerCase()) {
+              setErrors({
+                isError: {
+                  ...errors.isError,
+                  username: true,
+                },
+                errorMessage: {
+                  ...errors.errorMessage,
+                  username: "Tên đăng nhập đã tồn tại",
+                },
+              });
+            }
+          });
+        } catch (e) {
+          console.log(e);
+        }
+      };
+      call();
+
+      return true;
+    } else {
+      setErrors({
+        isError: {
+          ...errors.isError,
+          username: true,
+        },
+        errorMessage: {
+          ...errors.errorMessage,
+          username: "Tên đăng nhập không chứa ký tự đặc biệt",
+        },
+      });
+      return false;
+    }
+  };
+
+  // //
+  const [email, setEmail] = useState<string>("");
+
+  const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+
+    if (errors.isError.email) {
+      if (
+        e.target.value.match(
+          /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/i
+        )
+      ) {
+        setErrors({
+          isError: {
+            ...errors.isError,
+            email: false,
+          },
+          errorMessage: {
+            ...errors.errorMessage,
             email: "",
-            password: "",
-            confirmPassword: ""
-        }
-    });
-
-    const [userName, setUserName] = useState<string>("")
-    
-    const handleUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUserName(e.target.value)
-
-        if (errors.isError.username) {
-            if (e.target.value.match(/^[a-zA-Z0-9]+$/)) {
-                setErrors({
-                    isError: {
-                        ...errors.isError,
-                        username: false
-                    },
-                    errorMessage: {
-                        ...errors.errorMessage,
-                        username: ""
-                    }
-                })
-            }
-        }
+          },
+        });
+      }
     }
+  };
 
-    const checkUserName = () => {
-        if (userName === "") {
-            setErrors({
-                isError: {
-                    ...errors.isError,
-                    username: true
-                },
-                errorMessage: {
-                    ...errors.errorMessage,
-                    username: "Tên đăng nhập không được để trống"
-                }
-            })
-            return false
-        }
-
-        if (userName.match(/^(?=.{3,20}$)(?![_.-])(?!.*[_.-]{2})[a-zA-Z0-9_-]+([^._-])$/)) {
-            setErrors({
-                isError: {
-                    ...errors.isError,
-                    username: false
-                },
-                errorMessage: {
-                    ...errors.errorMessage,
-                    username: ""
-                }
-            })
-  
-            const call = async () => {
-                try{
-                    const request = await fetch("https://66656af6d122c2868e409b34.mockapi.io/user")
-                    const data = await request.json()
-                    console.log(data)
-
-                    data.forEach((element:any) => {
-                        if (element.username.toLowerCase() === userName.toLowerCase()) {
-                            setErrors({
-                                isError: {
-                                    ...errors.isError,
-                                    username: true
-                                },
-                                errorMessage: {
-                                    ...errors.errorMessage,
-                                    username: "Tên đăng nhập đã tồn tại"
-                                }
-                            })
-                        }
-                    });
-
-                } catch(e) {
-                    console.log(e)
-                }
-            }
-            call()
-
-
-            return true
-        } else {
-            setErrors({
-                isError: {
-                    ...errors.isError,
-                    username: true
-                },
-                errorMessage: {
-                    ...errors.errorMessage,
-                    username: "Tên đăng nhập không chứa ký tự đặc biệt"
-                }
-            })
-            return false
-        }
+  const checkEmail = () => {
+    if (email === "") {
+      setErrors({
+        isError: {
+          ...errors.isError,
+          email: true,
+        },
+        errorMessage: {
+          ...errors.errorMessage,
+          email: "Email không được để trống",
+        },
+      });
+      return false;
     }
+    if (email.match(/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/i)) {
+      setErrors({
+        isError: {
+          ...errors.isError,
+          email: false,
+        },
+        errorMessage: {
+          ...errors.errorMessage,
+          email: "",
+        },
+      });
 
-    // //
-    const [email, setEmail] = useState<string>("")
+      const call = async () => {
+        try {
+          const request = await fetch(
+            "https://66656af6d122c2868e409b34.mockapi.io/user"
+          );
+          const data = await request.json();
+          console.log(data);
 
-    const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value)
-
-        if (errors.isError.email) {
-            if (e.target.value.match(/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/i)) {
-                setErrors({
-                    isError: {
-                        ...errors.isError,
-                        email: false
-                    },
-                    errorMessage: {
-                        ...errors.errorMessage,
-                        email: ""
-                    }
-                })
+          data.forEach((element: any) => {
+            if (element.gmail.toLowerCase() === email.toLowerCase()) {
+              setErrors({
+                isError: {
+                  ...errors.isError,
+                  email: true,
+                },
+                errorMessage: {
+                  ...errors.errorMessage,
+                  email: "Tên đăng nhập đã tồn tại",
+                },
+              });
             }
+          });
+        } catch (e) {
+          console.log(e);
         }
+      };
+      call();
+      return true;
+    } else {
+      setErrors({
+        isError: {
+          ...errors.isError,
+          email: true,
+        },
+        errorMessage: {
+          ...errors.errorMessage,
+          email: "Email không hợp lệ",
+        },
+      });
+      return false;
     }
+  };
 
-    const checkEmail = () => {
-        if (email === '') {
-            setErrors({
-                isError: {
-                    ...errors.isError,
-                    email: true
-                },
-                errorMessage: {
-                    ...errors.errorMessage,
-                    email: "Email không được để trống"
-                }
-            })
-            return false
-        }
-        if (email.match(/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/i)) {
-            setErrors({
-                isError: {
-                    ...errors.isError,
-                    email: false
-                },
-                errorMessage: {
-                    ...errors.errorMessage,
-                    email: ""
-                }
-            })
+  const [password, setPassword] = useState<string>("");
 
-            const call = async () => {
-                try {
-                    const request = await fetch("https://66656af6d122c2868e409b34.mockapi.io/user")
-                    const data = await request.json()
-                    console.log(data)
-
-                    data.forEach((element: any) => {
-                        if (element.gmail.toLowerCase() === email.toLowerCase()) {
-                            setErrors({
-                                isError: {
-                                    ...errors.isError,
-                                    email: true
-                                },
-                                errorMessage: {
-                                    ...errors.errorMessage,
-                                    email: "Tên đăng nhập đã tồn tại"
-                                }
-                            })
-                        }
-                    });
-
-                } catch (e) {
-                    console.log(e)
-                }
-            }
-            call()
-            return true
-        } else {
-            setErrors({
-                isError: {
-                    ...errors.isError,
-                    email: true
-                },
-                errorMessage: {
-                    ...errors.errorMessage,
-                    email: "Email không hợp lệ"
-                }
-            })
-            return false
-        }
-    }
-
-    const [password, setPassword] = useState<string>("")
-
-    const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value)
+  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
 
         if (errors.isError.confirmPassword) {
             setConfirmPassword("")
@@ -262,53 +270,93 @@ const Register = () => {
             return true
         }
     }
+  };
 
-    const checkPassword = () => {
-        if (password === "") {
-            setErrors({
-                isError: {
-                    ...errors.isError,
-                    password: true
-                },
-                errorMessage: {
-                    ...errors.errorMessage,
-                    password: "Mật khẩu không được để trống"
-                }
-            })
-            return false
-        }
-
-        if (password.match((/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/))) {
-            setErrors({
-                isError: {
-                    ...errors.isError,
-                    password: false
-                },
-                errorMessage: {
-                    ...errors.errorMessage,
-                    password: ""
-                }
-            })
-            return true
-        } else {
-            setErrors({
-                isError: {
-                    ...errors.isError,
-                    password: true
-                },
-                errorMessage: {
-                    ...errors.errorMessage,
-                    password: "Mật khẩu phải có ít nhất 8 ký tự"
-                }
-            })
-            return false
-        }
+  const checkPassword = () => {
+    if (password === "") {
+      setErrors({
+        isError: {
+          ...errors.isError,
+          password: true,
+        },
+        errorMessage: {
+          ...errors.errorMessage,
+          password: "Mật khẩu không được để trống",
+        },
+      });
+      return false;
     }
 
+    if (
+      password.match(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+      )
+    ) {
+      setErrors({
+        isError: {
+          ...errors.isError,
+          password: false,
+        },
+        errorMessage: {
+          ...errors.errorMessage,
+          password: "",
+        },
+      });
+      return true;
+    } else {
+      setErrors({
+        isError: {
+          ...errors.isError,
+          password: true,
+        },
+        errorMessage: {
+          ...errors.errorMessage,
+          password: "Mật khẩu phải có ít nhất 8 ký tự",
+        },
+      });
+      return false;
+    }
+  };
 
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
 
+  const handleConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setConfirmPassword(e.target.value);
 
-    const [confirmPassword, setConfirmPassword] = useState<string>("")
+    if (e.target.value === password) {
+      setErrors({
+        isError: {
+          ...errors.isError,
+          confirmPassword: false,
+        },
+        errorMessage: {
+          ...errors.errorMessage,
+          confirmPassword: "",
+        },
+      });
+      setButton(false);
+    }
+    if (e.target.value.length > 0) {
+      setButton(false);
+    } else {
+      setButton(true);
+    }
+  };
+
+  const checkConfirmPassword = () => {
+    if (confirmPassword === "") {
+      setErrors({
+        isError: {
+          ...errors.isError,
+          confirmPassword: true,
+        },
+        errorMessage: {
+          ...errors.errorMessage,
+          confirmPassword: "Mật khẩu không được để trống",
+        },
+      });
+      return false;
+    }
 
     const handleConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         setConfirmPassword(e.target.value)
@@ -331,63 +379,34 @@ const Register = () => {
             setButton(true)
         }
     }
+  };
 
-    const checkConfirmPassword = () => {
-        if (confirmPassword === "") {
-            setErrors({
-                isError: {
-                    ...errors.isError,
-                    confirmPassword: true
-                },
-                errorMessage: {
-                    ...errors.errorMessage,
-                    confirmPassword: "Mật khẩu không được để trống"
-                }
-            })
-            return false
-        }
+  const [passwordIsVisible, setPasswordVisible] = useState<boolean>(false);
+  const [confirmPasswordIsVisible, setConfirmPasswordVisible] =
+    useState<boolean>(false);
 
-        if (confirmPassword === password) {
-            setErrors({
-                isError: {
-                    ...errors.isError,
-                    confirmPassword: false
-                },
-                errorMessage: {
-                    ...errors.errorMessage,
-                    confirmPassword: ""
-                }
-            })
-            setButton(false)
-            return true
-        } else {
-            setErrors({
-                isError: {
-                    ...errors.isError,
-                    confirmPassword: true
-                },
-                errorMessage: {
-                    ...errors.errorMessage,
-                    confirmPassword: "Mật khẩu không khớp"
-                }
-            })
-            return false
-        }
+  const handlePasswordVisible = () => {
+    setPasswordVisible(!passwordIsVisible);
+  };
+
+  const handleConfirmPasswordVisible = () => {
+    setConfirmPasswordVisible(!confirmPasswordIsVisible);
+  };
+
+  const [button, setButton] = useState<boolean>(true);
+  const [response, setResponse] = useState<any>(null);
+
+  const register = () => {
+    if (
+      checkUserName() &&
+      checkEmail() &&
+      checkPassword() &&
+      checkConfirmPassword()
+    ) {
+      // API
     }
 
-    const [passwordIsVisible, setPasswordVisible] = useState<boolean>(false)
-    const [confirmPasswordIsVisible, setConfirmPasswordVisible] = useState<boolean>(false)
-
-    const handlePasswordVisible = () => {
-        setPasswordVisible(!passwordIsVisible)
-    }
-
-    const handleConfirmPasswordVisible = () => {
-        setConfirmPasswordVisible(!confirmPasswordIsVisible)
-    }
-
-    const [button, setButton] = useState<boolean>(true)
-    const [response, setResponse] = useState<any>(null);
+    console.log("asd");
 
 useEffect(()=> {
     
@@ -443,6 +462,13 @@ useEffect(()=> {
             handlerPOST();
             
         }
+      } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+        // Xử lý lỗi tại đây
+      }
+    };
+    handlerPOST();
+  };
 
 
 
@@ -551,29 +577,25 @@ useEffect(()=> {
                             color="primary" className={`justify-center items-center self-center px-16 py-2 
                         mt-3.5 max-w-full text-base font-medium tracking-wide leading-7
                         text-white uppercase w-[405px] max-md:px-5 disabled:cursor-not-allowed disabled:opacity-45 `}
-                            onClick={register}
-                        >
-
-                            {/* <Link href="/register/otp" className="cursor-not-allowed">
-                                Đăng Ký
+              onClick={register}
+            >
+              {/* <Link href="/register/otp" className="cursor-not-allowed"> 
+                                Đăng Ký 
                             </Link> */}
-                            Đăng Ký
-                        </Button>
+              Đăng Ký
+            </Button>
 
-
-                        <div className="mt-7 tracking-normal leading-6 text-center text-lime-600 max-md:max-w-full">
-                            <span className="text-zinc-700">
-                                Bạn đã có tài khoản?
-                            </span>{" "}
-                            <Link href="login" className="text-lime-600 hover:underline">
-                                Đăng nhập
-                            </Link>
-                        </div>
-                    </div>
-                </div>
+            <div className="mt-7 tracking-normal leading-6 text-center text-lime-600 max-md:max-w-full">
+              <span className="text-zinc-700">Bạn đã có tài khoản?</span>{" "}
+              <Link href="login" className="text-lime-600 hover:underline">
+                Đăng nhập
+              </Link>
             </div>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Register;

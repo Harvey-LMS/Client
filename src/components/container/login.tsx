@@ -7,11 +7,41 @@ import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/react";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+interface Errors {
+  isError: {
+    username: boolean;
+    password: boolean;
+    isLogin: boolean;
+  };
+  errorMsg: {
+    username: string;
+    password: string;
+    isLogin: string;
+  };
+}
 
 const Login = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [users, setUsers] = useState<any[] | null>(null);
+  // const [isShowErr, setIsShowErr] = useState(false);
+
+  const router = useRouter();
+
+  const [errors, setErrors] = useState<Errors>({
+    isError: {
+      username: false,
+      password: false,
+      isLogin: false,
+    },
+    errorMsg: {
+      username: "",
+      password: "",
+      isLogin: "",
+    },
+  });
 
   useEffect(() => {
     fetch("https://66651c7fd122c2868e3fcdef.mockapi.io/Account")
@@ -22,29 +52,106 @@ const Login = () => {
       .catch((error) => console.error("=>Error:", error));
   }, []);
 
+  const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserName(e.target.value);
+    if (errors.isError.username) {
+      if (username.length > 0) {
+        setErrors({
+          isError: {
+            ...errors.isError,
+            username: false,
+          },
+          errorMsg: {
+            ...errors.errorMsg,
+            username: "",
+          },
+        });
+      }
+    }
+  };
+
+  const checkUserName = () => {
+    if (username === "") {
+      setErrors({
+        isError: {
+          ...errors.isError,
+          username: true,
+        },
+        errorMsg: {
+          ...errors.errorMsg,
+          username: "Tên đăng nhập không được để trống",
+        },
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    if (errors.isError.password) {
+      if (password.length > 0) {
+        setErrors({
+          isError: {
+            ...errors.isError,
+            password: false,
+          },
+          errorMsg: {
+            ...errors.errorMsg,
+            password: "",
+          },
+        });
+      }
+    }
+  };
+
+  const checkPassword = () => {
+    if (password === "") {
+      setErrors({
+        isError: {
+          ...errors.isError,
+          password: true,
+        },
+        errorMsg: {
+          ...errors.errorMsg,
+          password: "Mật khẩu không được để trống",
+        },
+      });
+      return false;
+    }
+    return true;
+  };
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!username || !password) {
-      console.log("Enter username or password");
-      return;
-    }
-    if (users != null) {
+    if (users != null && checkUserName() && checkPassword()) {
       const user = users.find(
         (user: any) => user.username === username && user.password === password
       );
       if (user) {
         console.log("Login successful");
-        window.location.href = "/";
-        // Navigate to the next page or set the user to the global state
+        router.push("/register/otp");
       } else {
-        console.log("Invalid username or password");
+        setErrors({
+          isError: {
+            ...errors.isError,
+            isLogin: true,
+          },
+          errorMsg: {
+            ...errors.errorMsg,
+            isLogin: "Tên đăng nhập hoặc mật khẩu không đúng",
+          },
+        });
       }
     }
   };
 
   return (
     <div className="flex flex-col justify-center text-base leading-6 max-md:flex-col">
-      <div className="flex flex-col justify-center items-end self-center px-16 py-20 max-w-full w-[1195px] max-md:pl-1 max-md:w-full">
+      <div
+        className="flex flex-col justify-center items-end self-center px-16 py-20
+       max-w-full w-[1195px] max-md:w-full max-md:pr-[220px]"
+      >
         <Image
           alt="Harvey"
           loading="lazy"
@@ -53,7 +160,7 @@ const Login = () => {
           width={550}
           height={500}
         />
-        <div className="flex flex-col px-8 py-7 mt-5 mb-4 max-w-full bg-white border-gray-300 rounded-3xl shadow-lg border w-[450px] max-md:px-5">
+        <div className="flex flex-col px-8 py-7 mt-5 mb-4 max-w-full bg-white border-gray-300 rounded-3xl shadow-lg border w-[450px] ">
           <div className="flex gap-3 max-md:hidden justify-center items-start self-center pb-8 text-2xl font-semibold tracking-wide whitespace-nowrap text-zinc-700 text-opacity-90">
             <Image
               alt="brand"
@@ -69,16 +176,21 @@ const Login = () => {
           <div className="text-sm tracking-normal text-zinc-700 text-opacity-60">
             Vui lòng đăng nhập tài khoản của bạn
           </div>
-          {/* <input
-                placeholder="Email"
-                className="justify-center px-3 py-4 mt-5 tracking-normal whitespace-nowrap rounded-md border border-solid border-zinc-700 border-opacity-20 text-zinc-700 text-opacity-40"
-              ></input> */}
-          <div className="mt-5">
+
+          {errors.isError.isLogin && (
+            <span className="text-sm text-danger-600 mt-2">
+              {errors.errorMsg.isLogin}
+            </span>
+          )}
+          <div className="mt-5 max-md:flex-col">
             <Input
               variant="bordered"
               type="email"
               label="Tên đăng nhập"
-              onChange={(e) => setUserName(e.target.value)}
+              onBlur={checkUserName}
+              onChange={handleUsername}
+              isInvalid={errors.isError.username}
+              errorMessage={errors.errorMsg.username}
             />
           </div>
           <div className="mt-5">
@@ -87,7 +199,10 @@ const Login = () => {
               variant="bordered"
               label="Mật khẩu"
               type="password"
-              onChange={(e) => setPassword(e.target.value)}
+              onBlur={checkPassword}
+              onChange={handlePassword}
+              isInvalid={errors.isError.password}
+              errorMessage={errors.errorMsg.password}
             />
           </div>
           <div className="flex gap-2 pb-4 text-sm tracking-normal">
@@ -112,7 +227,6 @@ const Login = () => {
               Đăng nhập
             </Button>
           </Link>
-
           <div className="mt-7 tracking-normal leading-6 text-center text-lime-600">
             <span className="text-zinc-700">Bạn chưa có tài khoản?</span>{" "}
             <Link href={"/register"} className="text-lime-600 hover:underline">
@@ -124,5 +238,4 @@ const Login = () => {
     </div>
   );
 };
-
 export default Login;

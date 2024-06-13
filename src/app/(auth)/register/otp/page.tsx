@@ -29,8 +29,8 @@ import {
 } from "@/components/ui/dialog";
 
 const otpTEMP = {
-  otp: 332123
-}
+  otp: 332123,
+};
 
 const RegisterOTP = () => {
   const email = "*est@gmail.com";
@@ -182,9 +182,11 @@ const RegisterOTP = () => {
             <span className="text-danger">{erro}</span>
             <Button
               color="primary"
-              className={`justify-center items-center self-center px-16 py-2  max-w-full text-base 
+              className={
+                `justify-center items-center self-center px-16 py-2  max-w-full text-base 
                     font-medium tracking-wide leading-7 text-white uppercase w-[405px] max-md:px-5 disabled:opacity-50` +
-                `${disableButton ? ' cursor-not-allowed' : ' cursor-pointer'}`}
+                `${disableButton ? " cursor-not-allowed" : " cursor-pointer"}`
+              }
               onClick={handleOpen}
               disabled={disableButton}
             >
@@ -199,7 +201,6 @@ const RegisterOTP = () => {
                   {!canResend ? `Gửi lại sau ${resendTimeLeft}s` : "Gửi lại"}
                 </p>
               </div>
-
             </div>
           </div>
         </div>
