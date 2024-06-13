@@ -7,6 +7,7 @@ import Brand from "@/assets/Brand.svg";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Metadata } from "next";
+import { useRouter } from "next/navigation";
 
 // export const metadata: Metadata = {
 //   title: "Harvey | Forgot Password",
@@ -65,16 +66,32 @@ const ForgotPasswordPage = () => {
         },
       });
       return false;
+    } else {
+      if (!email.match(/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/i)) {
+        setErrors({
+          isError: {
+            ...errors.isError,
+            email: true,
+          },
+          errorMsg: {
+            ...errors.errorMsg,
+            email: "Email phải có dạng example@domainName",
+          },
+        });
+        return false;
+      }
     }
     return true;
   };
+
+  const router = useRouter();
 
   const handleForgotPwd = (e: React.FormEvent) => {
     e.preventDefault();
     if (checkEmail()) {
       console.log("Verify");
-      window.location.href = "/login/forgot-password/confirm";
       localStorage.setItem("email", email);
+      router.push("/otp");
     }
   };
 

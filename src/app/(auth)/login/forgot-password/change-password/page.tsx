@@ -220,7 +220,7 @@ const ChangePasswordPage = () => {
         setOpenModal(true);
         setTimeout(() => {
           setOpenModal(false);
-        }, 1000);
+        }, 2000);
         router.push("/login");
       }
     }

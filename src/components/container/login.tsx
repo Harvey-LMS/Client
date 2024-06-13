@@ -130,7 +130,7 @@ const Login = () => {
       );
       if (user) {
         console.log("Login successful");
-        router.push("/register/otp");
+        router.push("/otp");
       } else {
         setErrors({
           isError: {
