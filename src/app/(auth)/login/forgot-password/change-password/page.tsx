@@ -55,6 +55,7 @@ const ChangePasswordPage = () => {
 
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
+
     if (errors.isError.password) {
       if (password !== "") {
         setErrors({
@@ -67,6 +68,34 @@ const ChangePasswordPage = () => {
             password: "",
           },
         });
+        if (
+          e.target.value.match(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+          )
+        ) {
+          setErrors({
+            isError: {
+              ...errors.isError,
+              password: false,
+            },
+            errorMsg: {
+              ...errors.errorMsg,
+              password: "",
+            },
+          });
+        } else {
+          setErrors({
+            isError: {
+              ...errors.isError,
+              password: true,
+            },
+            errorMsg: {
+              ...errors.errorMsg,
+              password:
+                "Mật khẩu phải có ít nhất 8 ký tự, chữ cái in hoa, kí tự đặc biệt",
+            },
+          });
+        }
       }
     }
   };
@@ -83,6 +112,35 @@ const ChangePasswordPage = () => {
           password: "Mật khẩu không được để trống",
         },
       });
+    } else {
+      if (
+        password.match(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+        )
+      ) {
+        setErrors({
+          isError: {
+            ...errors.isError,
+            password: false,
+          },
+          errorMsg: {
+            ...errors.errorMsg,
+            password: "",
+          },
+        });
+      } else {
+        setErrors({
+          isError: {
+            ...errors.isError,
+            password: true,
+          },
+          errorMsg: {
+            ...errors.errorMsg,
+            password:
+              "Mật khẩu phải có ít nhất 8 ký tự, chữ cái in hoa, kí tự đặc biệt",
+          },
+        });
+      }
     }
   };
 
