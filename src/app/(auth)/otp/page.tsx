@@ -28,8 +28,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+const generateOTP = () => {
+  let otp = Math.floor(100000 + Math.random() * 900000);
+  console.log(otp);
+  return otp;
+};
+
 const otpTEMP = {
-  otp: 332123,
+  otp: generateOTP(),
 };
 
 const RegisterOTP = () => {
