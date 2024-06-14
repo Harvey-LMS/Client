@@ -95,9 +95,6 @@ const RegisterOTP = () => {
       }, 10);
     } else if (resendTimeLeft === 0) {
       setCanResend(true);
-      generateOTP();
-
-      console.log("OTP: ", otpTEMP.otp);
     }
 
     return () => clearInterval(resendTimer);
