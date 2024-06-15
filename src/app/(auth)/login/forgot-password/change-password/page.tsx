@@ -53,6 +53,9 @@ const ChangePasswordPage = () => {
     },
   });
 
+  const [openModal, setOpenModal] = useState(false);
+  const router = useRouter();
+
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
 
@@ -199,9 +202,6 @@ const ChangePasswordPage = () => {
     }
   };
 
-  const [openModal, setOpenModal] = useState(false);
-  const router = useRouter();
-
   const handleChangePwd = (e: React.FormEvent) => {
     e.preventDefault();
     if (password === "" || passwordConfirm === "") {
@@ -222,6 +222,19 @@ const ChangePasswordPage = () => {
           setOpenModal(false);
         }, 2000);
         router.push("/login");
+      } else {
+        setErrors({
+          isError: {
+            ...errors.isError,
+            isChangePwd: true,
+            passwordConfirm: false,
+          },
+          errorMsg: {
+            ...errors.errorMsg,
+            isChangePwd: "Mật khẩu xác nhận chưa khớp với mật khẩu mới",
+            passwordConfirm: "",
+          },
+        });
       }
     }
   };
@@ -258,6 +271,7 @@ const ChangePasswordPage = () => {
         )}
         <div className="mb-4">
           <Input
+            aria-label="password"
             size="md"
             type="password"
             label="Mật khẩu mới"
@@ -269,6 +283,7 @@ const ChangePasswordPage = () => {
             errorMessage={errors.errorMsg.password}
           ></Input>
           <Input
+            aria-label="passwordConfirm"
             size="md"
             type="password"
             label="Xác nhận mật khẩu"

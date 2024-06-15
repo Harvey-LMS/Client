@@ -38,7 +38,7 @@ const NotFound = () => {
             className="px-16 py-2 text-base font-medium tracking-wide leading-7 text-white"
             asChild
           >
-            <Link href="/">Quay về trang chủ</Link>
+            <Link href="/login">Quay về trang chủ</Link>
           </Button>
         </div>
       </div>

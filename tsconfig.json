@@ -12,6 +12,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "baseUrl": "./",
+    "types": ["jest"],
     "plugins": [
       {
         "name": "next"
@@ -26,7 +28,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "./frontend/src/**/*"
+    "./frontend/src/**/*",
+    "jest.config.ts",
+    "src/**/*"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "src/**/*.test.ts"]
 }
