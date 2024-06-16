@@ -13,6 +13,18 @@ jest.mock("next/navigation", () => ({
   useSearchParams: () => jest.fn(),
 }));
 
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    json: () =>
+      Promise.resolve([
+        {
+          username: "username 1",
+          password: "password 1",
+        },
+      ]),
+  })
+) as jest.Mock;
+
 const setup = () => {
   const utils = render(<Page />);
   const username = screen.getByLabelText("username");
@@ -32,10 +44,13 @@ test("input empty - 1", async () => {
   fireEvent.change(passwordElement, { target: { value: "password" } });
   expect(passwordElement.value).toBe("password");
 
-  // fireEvent.click(button);
-  // await waitFor(() => {
-  //   expect(
-  //     screen.getByText("Tên đăng nhập hoặc mật khẩu không đúng")
-  //   ).toBeInTheDocument();
-  // });
+  const api = "https://66651c7fd122c2868e3fcdef.mockapi.io/Account";
+  fireEvent.click(button);
+  await waitFor(() => {
+    expect(fetch).toHaveBeenCalledWith(api);
+  });
+  const error = await screen.findByText(
+    "Tên đăng nhập hoặc mật khẩu không đúng"
+  );
+  expect(error).toBeInTheDocument();
 });
