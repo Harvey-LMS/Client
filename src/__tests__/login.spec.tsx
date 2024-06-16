@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { screen, render, fireEvent } from "@testing-library/react";
+import { screen, render, fireEvent, waitFor } from "@testing-library/react";
 import Page from "@/components/container/login";
 
 jest.mock("next/navigation", () => ({
@@ -13,25 +13,29 @@ jest.mock("next/navigation", () => ({
   useSearchParams: () => jest.fn(),
 }));
 
-// setup for Page test Input Element
 const setup = () => {
-  render(<Page />);
-  const input = screen.getByLabelText("username");
-  const inputPassword = screen.getByLabelText("password");
+  const utils = render(<Page />);
+  const username = screen.getByLabelText("username");
+  const password = screen.getByLabelText("password");
   const button = screen.getByRole("button");
-  return { input, inputPassword, button };
+  return { username, password, button, ...utils };
 };
 
-// // case 1: input username and password are empty
-// test("input username and password are empty", async () => {
-//   const { input, inputPassword, button } = setup();
-//   const inputElement = input as HTMLInputElement;
-//   fireEvent.change(inputElement, { target: { value: "" } });
-//   expect(inputElement.value).toBe("");
+test("input empty - 1", async () => {
+  const { username, password, button } = setup();
 
-//   const inputPasswordElement = inputPassword as HTMLInputElement;
-//   fireEvent.change(inputPasswordElement, { target: { value: "" } });
-//   expect(inputPasswordElement.value).toBe("");
+  const usernameElement = username as HTMLInputElement;
+  fireEvent.change(usernameElement, { target: { value: "username 1" } });
+  expect(usernameElement.value).toBe("username 1");
 
-//   // Check button click event show error empty
-// });
+  const passwordElement = password as HTMLInputElement;
+  fireEvent.change(passwordElement, { target: { value: "password" } });
+  expect(passwordElement.value).toBe("password");
+
+  // fireEvent.click(button);
+  // await waitFor(() => {
+  //   expect(
+  //     screen.getByText("Tên đăng nhập hoặc mật khẩu không đúng")
+  //   ).toBeInTheDocument();
+  // });
+});

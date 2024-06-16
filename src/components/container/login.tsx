@@ -43,16 +43,32 @@ const Login = () => {
     },
   });
 
+  // useEffect(() => {
+  //   fetch("https://66651c7fd122c2868e3fcdef.mockapi.io/Account")
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setUsers(data);
+  //     })
+  //     .catch((error) => console.error("=>Error:", error));
+  // }, []);
+
   useEffect(() => {
-    fetch("https://66651c7fd122c2868e3fcdef.mockapi.io/Account")
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://66651c7fd122c2868e3fcdef.mockapi.io/Account"
+        );
+        const data = await response.json();
         setUsers(data);
-      })
-      .catch((error) => console.error("=>Error:", error));
+      } catch (error) {
+        console.error("=>Error:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  // const useEffectTest = () => {
+  // const useEffectTest = async () => {
   //   useEffect(() => {
   //     fetch("https://66651c7fd122c2868e3fcdef.mockapi.io/Account")
   //       .then((res) => res.json())
