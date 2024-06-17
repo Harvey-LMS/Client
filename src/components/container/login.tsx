@@ -105,7 +105,7 @@ const Login = () => {
         },
         errorMsg: {
           ...errors.errorMsg,
-          username: "Tên đăng nhập không được để trống",
+          username: "Username is required",
         },
       });
       return false;
@@ -140,7 +140,7 @@ const Login = () => {
         },
         errorMsg: {
           ...errors.errorMsg,
-          password: "Mật khẩu không được để trống",
+          password: "Password is required",
         },
       });
       return false;
@@ -165,7 +165,7 @@ const Login = () => {
           },
           errorMsg: {
             ...errors.errorMsg,
-            isLogin: "Tên đăng nhập hoặc mật khẩu không đúng",
+            isLogin: "Please check your username and password",
           },
         });
       }
@@ -197,10 +197,10 @@ const Login = () => {
             <div className="mt-2.5">HarveyOD</div>
           </div>
           <div className="text-xl font-semibold leading-8 text-zinc-700 text-opacity-90">
-            Chào mừng bạn đến <span className="font-extrabold">HarveyOD</span>
+            Welcome to <span className="font-extrabold">HarveyOD</span>
           </div>
           <div className="text-sm tracking-normal text-zinc-700 text-opacity-60">
-            Vui lòng đăng nhập tài khoản của bạn
+            Please login to your account
           </div>
 
           {errors.isError.isLogin && (
@@ -213,7 +213,7 @@ const Login = () => {
               aria-label="username"
               variant="bordered"
               type="email"
-              label="Tên đăng nhập"
+              label="Username"
               onBlur={checkUserName}
               onChange={handleUsername}
               isInvalid={errors.isError.username}
@@ -225,7 +225,7 @@ const Login = () => {
               aria-label="password"
               className="text-black max-md:max-w-full"
               variant="bordered"
-              label="Mật khẩu"
+              label="Password"
               type="password"
               onBlur={checkPassword}
               onChange={handlePassword}
@@ -236,13 +236,13 @@ const Login = () => {
           <div className="flex gap-2 pb-4 text-sm tracking-normal">
             <div className="flex gap-2.5 p-2.5 text-zinc-700 text-opacity-90">
               <input type="checkbox" />
-              <div className="my-auto">Ghi nhớ đăng nhập</div>
+              <div className="my-auto">Remember to log in</div>
             </div>
             <Link
               href={"/login/forgot-password"}
               className="flex-1 self-start mt-3 text-right text-lime-600 hover:underline"
             >
-              Quên mật khẩu?
+              Forgot password ?
             </Link>
           </div>
           <Button
@@ -251,12 +251,12 @@ const Login = () => {
               text-white uppercase rounded-md max-md:px-5"
             onClick={(e) => handleLogin(e)}
           >
-            Đăng nhập
+            Login
           </Button>
           <div className="mt-7 tracking-normal leading-6 text-center text-lime-600">
-            <span className="text-zinc-700">Bạn chưa có tài khoản?</span>{" "}
+            <span className="text-zinc-700">Don't have an account ?</span>{" "}
             <Link href={"/register"} className="text-lime-600 hover:underline">
-              Tạo tài khoản mới
+              Sign up
             </Link>
           </div>
         </div>

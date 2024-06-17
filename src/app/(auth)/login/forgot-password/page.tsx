@@ -62,7 +62,7 @@ const ForgotPasswordPage = () => {
         },
         errorMsg: {
           ...errors.errorMsg,
-          email: "Email không được để trống",
+          email: "Email is required",
         },
       });
       return false;
@@ -75,7 +75,7 @@ const ForgotPasswordPage = () => {
           },
           errorMsg: {
             ...errors.errorMsg,
-            email: "Email phải có dạng example@domainName",
+            email: "Email must be in form example@domainName",
           },
         });
         return false;
@@ -114,11 +114,10 @@ const ForgotPasswordPage = () => {
           <div className="mt-2.5">Harvey</div>
         </div>
         <div className="text-xl font-semibold leading-8 text-zinc-700 text-opacity-90  mb-2">
-          <span className="text-2xl">Quên mật khẩu</span>
+          <span className="text-2xl">Forgot password</span>
           <br />
           <span className="text-sm font-normal !leading-none">
-            Chúng tôi sẽ gửi cho bạn hướng dẫn để đặt lại mật khẩu đến email của
-            bạn
+            We'll send you instructions to reset the password to your email
           </span>
         </div>
         {/* {isShowErr && (
@@ -147,14 +146,14 @@ const ForgotPasswordPage = () => {
           text-base font-medium tracking-wide leading-7 text-white uppercase rounded-md max-md:px-5"
             onClick={(e) => handleForgotPwd(e)}
           >
-            Xác nhận
+            Confirm
           </Button>
           {/* </Link> */}
         </div>
 
         <div className="justify-center text-center items-center">
           <Link className="text-lime-600 hover:underline" href={"/login"}>
-            {"< "}Trở lại trang đăng nhập
+            {"< "}Return to login page
           </Link>
         </div>
       </div>

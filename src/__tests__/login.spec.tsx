@@ -20,6 +20,7 @@ global.fetch = jest.fn(() =>
         {
           username: "username 1",
           password: "password 1",
+          email: "email 1",
         },
       ]),
   })
@@ -36,6 +37,13 @@ const setup = () => {
 test("input empty - 1", async () => {
   const { username, password, button } = setup();
 
+  const api = "https://66651c7fd122c2868e3fcdef.mockapi.io/Account";
+
+  fireEvent.click(button);
+  await waitFor(() => {
+    expect(fetch).toHaveBeenCalledWith(api);
+  });
+
   const usernameElement = username as HTMLInputElement;
   fireEvent.change(usernameElement, { target: { value: "username 1" } });
   expect(usernameElement.value).toBe("username 1");
@@ -44,11 +52,6 @@ test("input empty - 1", async () => {
   fireEvent.change(passwordElement, { target: { value: "password" } });
   expect(passwordElement.value).toBe("password");
 
-  const api = "https://66651c7fd122c2868e3fcdef.mockapi.io/Account";
-  fireEvent.click(button);
-  await waitFor(() => {
-    expect(fetch).toHaveBeenCalledWith(api);
-  });
   const error = await screen.findByText(
     "Tên đăng nhập hoặc mật khẩu không đúng"
   );
