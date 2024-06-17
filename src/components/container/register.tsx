@@ -405,7 +405,7 @@ const Register = () => {
       return
     }
 
-  }, [errors])
+  }, [errors, userName, email, password, confirmPassword])
 
 
   const register = () => {
