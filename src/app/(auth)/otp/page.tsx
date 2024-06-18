@@ -27,6 +27,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
 
 const generateOTP = () => {
   let otp = Math.floor(100000 + Math.random() * 900000);
@@ -52,6 +53,7 @@ const RegisterOTP = () => {
   const [retryTimeLeft, setRetryTimeLeft] = useState(0);
   const [canResend, setCanResend] = useState(false);
   const [resendTimeLeft, setResendTimeLeft] = useState(60);
+  const router = useRouter();
 
   useEffect(() => {
     setEmail(localStorage.getItem("email") || "");
@@ -125,7 +127,7 @@ const RegisterOTP = () => {
       }, 1500);
 
       openModalTimeOut;
-
+      router.push("/welcome");
       return () => {
         clearTimeout(openModalTimeOut);
         // Direct to next page

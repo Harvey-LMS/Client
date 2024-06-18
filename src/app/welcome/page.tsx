@@ -1,9 +1,19 @@
-import { Button } from "@/components/ui/button";
+"use client";
 import Image from "next/image";
 
 import Brand from "@/assets/Brand.svg";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const WelcomePage = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.push("/");
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [router]);
   return (
     <div className="flex flex-col justify-center px-16 py-20 font-semibold tracking-normal  max-md:px-5">
       <div className="flex justify-center items-center px-16 mt-52 max-md:px-5 max-md:mt-10 max-md:mr-1 max-md:max-w-full">
