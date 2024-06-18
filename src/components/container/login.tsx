@@ -8,6 +8,7 @@ import { Button } from "@nextui-org/react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 interface Errors {
   isError: {
@@ -44,39 +45,34 @@ const Login = () => {
   });
 
   // useEffect(() => {
-  //   fetch("https://66651c7fd122c2868e3fcdef.mockapi.io/Account")
-  //     .then((response) => response.json())
-  //     .then((data) => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         "https://66651c7fd122c2868e3fcdef.mockapi.io/Account"
+  //       );
+  //       const data = await response.json();
   //       setUsers(data);
-  //     })
-  //     .catch((error) => console.error("=>Error:", error));
+  //     } catch (error) {
+  //       console.error("=>Error:", error);
+  //     }
+  //   };
+
+  //   fetchData();
   // }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const callAPI = async () => {
       try {
-        const response = await fetch(
+        const response = await axios.get(
           "https://66651c7fd122c2868e3fcdef.mockapi.io/Account"
         );
-        const data = await response.json();
-        setUsers(data);
+        setUsers(response.data);
       } catch (error) {
-        console.error("=>Error:", error);
+        console.log("=>Error: ", error);
       }
     };
-
-    fetchData();
+    callAPI();
   }, []);
-
-  // const useEffectTest = async () => {
-  //   useEffect(() => {
-  //     fetch("https://66651c7fd122c2868e3fcdef.mockapi.io/Account")
-  //       .then((res) => res.json())
-  //       .then((data) => setUsers(data));
-  //   }, []);
-
-  //   return users;
-  // };
 
   const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(e.target.value);
