@@ -20,7 +20,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+
     }
   },
   "include": [
@@ -28,9 +29,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "./frontend/src/**/*",
-    "jest.config.ts",
-    "src/**/*"
-  ],
+    "./frontend/src/**/*"
+, "jest.config.ts",
+"src/**/*", "__tests__/page.test.js"  ],
   "exclude": ["node_modules", "src/**/*.test.ts"]
 }

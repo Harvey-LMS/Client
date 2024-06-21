@@ -11,9 +11,8 @@ const config: Config = {
   coverageProvider: "v8",
   testEnvironment: "jest-environment-jsdom",
   // Add more setup options before each test is run
-  // setupFiles: ["<rootDir>/jest.setup.ts"], // Specify your setup file
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
-  // setupFiles: ["jest-fetch-mock"],
+  preset: "ts-jest",
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
