@@ -12,13 +12,16 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "baseUrl": "./",
+    "types": ["jest"],
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+
     }
   },
   "include": [
@@ -27,6 +30,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "./frontend/src/**/*"
-  ],
-  "exclude": ["node_modules"]
+, "jest.config.ts",
+"src/**/*", "__tests__/page.test.js"  ],
+  "exclude": ["node_modules", "src/**/*.test.ts"]
 }

@@ -7,6 +7,7 @@ import Brand from "@/assets/Brand.svg";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Metadata } from "next";
+import { useRouter } from "next/navigation";
 
 // export const metadata: Metadata = {
 //   title: "Harvey | Forgot Password",
@@ -61,20 +62,36 @@ const ForgotPasswordPage = () => {
         },
         errorMsg: {
           ...errors.errorMsg,
-          email: "Email không được để trống",
+          email: "Email is required",
         },
       });
       return false;
+    } else {
+      if (!email.match(/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/i)) {
+        setErrors({
+          isError: {
+            ...errors.isError,
+            email: true,
+          },
+          errorMsg: {
+            ...errors.errorMsg,
+            email: "Email must be in form example@domainName",
+          },
+        });
+        return false;
+      }
     }
     return true;
   };
+
+  const router = useRouter();
 
   const handleForgotPwd = (e: React.FormEvent) => {
     e.preventDefault();
     if (checkEmail()) {
       console.log("Verify");
-      window.location.href = "/login/forgot-password/confirm";
       localStorage.setItem("email", email);
+      router.push("/otp");
     }
   };
 
@@ -97,11 +114,10 @@ const ForgotPasswordPage = () => {
           <div className="mt-2.5">Harvey</div>
         </div>
         <div className="text-xl font-semibold leading-8 text-zinc-700 text-opacity-90  mb-2">
-          <span className="text-2xl">Quên mật khẩu</span>
+          <span className="text-2xl">Forgot password</span>
           <br />
           <span className="text-sm font-normal !leading-none">
-            Chúng tôi sẽ gửi cho bạn hướng dẫn để đặt lại mật khẩu đến email của
-            bạn
+            We'll send you instructions to reset the password to your email
           </span>
         </div>
         {/* {isShowErr && (
@@ -130,14 +146,14 @@ const ForgotPasswordPage = () => {
           text-base font-medium tracking-wide leading-7 text-white uppercase rounded-md max-md:px-5"
             onClick={(e) => handleForgotPwd(e)}
           >
-            Xác nhận
+            Confirm
           </Button>
           {/* </Link> */}
         </div>
 
         <div className="justify-center text-center items-center">
           <Link className="text-lime-600 hover:underline" href={"/login"}>
-            {"< "}Trở lại trang đăng nhập
+            {"< "}Return to login page
           </Link>
         </div>
       </div>
