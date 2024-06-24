@@ -12,6 +12,8 @@ import { RadioGroup, Radio } from "@nextui-org/radio";
 
 import { GoCheck, GoCheckCircleFill } from "react-icons/go";
 
+import { motion } from "framer-motion"
+
 
 
 const Page = () => {
@@ -31,9 +33,24 @@ const Page = () => {
     }
 
 
+    const variants = {
+        initial: { opacity: 1, scale: 0 }, // Bắt đầu từ mờ và dưới vị trí cuối cùng
+        visible: { opacity: 1, scale: 1 }, // Hiện ra và di chuyển lên vị trí cuối cùng
+        exit: { opacity: 1, y: -900, scale: 0.5 } // Biến mất và di chuyển lên trên
+    }
+
     return (
-        <div className="flex flex-row items-start justify-center gap-10 mt-32">
-            <div className="flex flex-col items-center justify-center p-10 gap-2 rounded-md shadow-lg border-gray-100 border">
+        <motion.div className="flex flex-row items-start justify-center gap-10 mt-32"
+            variants={variants}
+            initial="initial"
+            animate="visible"
+            transition={{
+                duration: 0.8,
+                delay: 0.5,
+                ease: [0, 0.71, 0.2, 1.01]
+            }}
+        >
+            {/* <div className="flex flex-col items-center justify-center p-10 gap-2 rounded-md shadow-lg border-gray-100 border">
                 <div className="">
                     <Image src="" alt="avatar" className="bg-primary rounded-sm shadow-md" width={100} height={100} />
                     <div className=" flex flex-col justify-center items-center 
@@ -108,7 +125,7 @@ const Page = () => {
                     </p>
                 </div>
 
-            </div>
+            </div> */}
 
             <div className="flex flex-col gap-2 rounded-md shadow-lg border-gray-100 border p-10 w-3/12">
                 <div className="flex gap-3 justify-between items-start self-center pb-8 text-2xl font-semibold tracking-wide whitespace-nowrap text-zinc-700">
@@ -178,7 +195,7 @@ const Page = () => {
                     Skip this step
                 </Link>
             </div>
-        </div>
+        </motion.div>
     );
 }
 

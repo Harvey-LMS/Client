@@ -251,9 +251,9 @@ const ChangePasswordPage = () => {
         >
           <Image
             alt="brand"
-            loading="lazy"
             src={Brand}
             className="shrink-0 aspect-[0.98] w-[49px]"
+            priority={true}
           />
           <div className="mt-2.5">Harvey</div>
         </div>
@@ -320,9 +320,9 @@ const ChangePasswordPage = () => {
             <div className="flex flex-row gap-3 justify-center items-center text-2xl font-semibold tracking-wide whitespace-nowrap text-zinc-700">
               <Image
                 alt="Harvey"
-                loading="lazy"
                 src={Brand}
                 className="shrink-0 w-12 aspect-[0.98]"
+                priority={true}
               />
               <div className="">Harvey</div>
             </div>
