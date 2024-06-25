@@ -1,5 +1,11 @@
 import "@testing-library/jest-dom";
-import { screen, render, fireEvent, waitFor } from "@testing-library/react";
+import {
+  screen,
+  render,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import Page from "@/components/container/login";
 
 jest.mock("next/navigation", () => ({
@@ -21,21 +27,21 @@ const setup = () => {
   return { username, password, button, ...utils };
 };
 
-test("input empty - 1", async () => {
-  const { username, password, button } = setup();
-
-  const usernameElement = username as HTMLInputElement;
-  fireEvent.change(usernameElement, { target: { value: "username 1" } });
-  expect(usernameElement.value).toBe("username 1");
-
-  const passwordElement = password as HTMLInputElement;
-  fireEvent.change(passwordElement, { target: { value: "password" } });
-  expect(passwordElement.value).toBe("password");
-
-  fireEvent.click(button);
-  await waitFor(() => {
-    expect(
-      screen.getByText("Please check your username and password")
-    ).toBeInTheDocument();
+describe("Login", () => {
+  it("username is empty", async () => {
+    const { username } = setup();
+    fireEvent.change(username, { target: { value: "" } });
+    fireEvent.blur(username);
+    await waitFor(() => {
+      expect(screen.queryAllByText("Username is required"));
+    });
+  });
+  it("password is empty", async () => {
+    const { password } = setup();
+    fireEvent.change(password, { target: { value: "" } });
+    fireEvent.blur(password);
+    await waitFor(() => {
+      expect(screen.queryAllByText("Password is required"));
+    });
   });
 });
