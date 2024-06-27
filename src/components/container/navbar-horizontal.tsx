@@ -19,6 +19,9 @@ import Brand from "@/assets/Brand.svg";
 import { Button } from "../ui/button";
 import UserDropdown from "./user-dropdown";
 
+import { motion } from "framer-motion";
+import NavbarVerticalComponent from "./navbar-vertical";
+
 const NavbarComponent = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -36,34 +39,22 @@ const NavbarComponent = () => {
   return (
     <div>
       <Navbar position="sticky" className="bg-gray-300">
-        <NavbarBrand className="">
+        <div className="relative right-[45%]">
+          <NavbarVerticalComponent></NavbarVerticalComponent>
+        </div>
+        <NavbarBrand className="flex left-0">
           <Link href={"/"}>
             <Image
               alt="brand"
               loading="lazy"
               src={Brand}
-              className="shrink-0 aspect-[0.98] w-[49px]"
+              className="shrink-0 aspect-[0.98]"
+              width={49}
             />
             <p className="font-bold text-inherit pl-2">HarveyOD</p>
           </Link>
         </NavbarBrand>
-        {/* <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Features
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link href="#" aria-current="page">
-            Customers
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Integrations
-          </Link>
-        </NavbarItem>
-      </NavbarContent> */}
+
         <NavbarContent justify="end">
           <NavbarItem className="hidden lg:flex">
             <Button variant="link" onClick={(e) => handleShowSearch(e)}>
@@ -117,11 +108,15 @@ const NavbarComponent = () => {
               />
             </Button>
             {showDropdown && (
-              <div
-                className={`absolute right-10 top-16 px-2 transition-transform transform translate-y-0`}
+              <motion.div
+                initial={{ opacity: 0.5 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4 }}
+                className={`absolute right-10 top-14 px-2 transition-transform ease-in-out 
+                  transform translate-y-0`}
               >
                 <UserDropdown></UserDropdown>
-              </div>
+              </motion.div>
             )}
           </NavbarItem>
         </NavbarContent>

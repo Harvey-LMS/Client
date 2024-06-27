@@ -1,9 +1,9 @@
 import NavbarComponent from "@/components/container/navbar-horizontal";
-import UserDropdown from "@/components/container/user-dropdown";
+import NavbarVerticalComponent from "@/components/container/navbar-vertical";
 
 const Page = () => {
   return (
-    <div>
+    <div className="">
       <NavbarComponent></NavbarComponent>
     </div>
   );
