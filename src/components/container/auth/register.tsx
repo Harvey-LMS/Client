@@ -5,18 +5,18 @@ import RegisterSVG from "@/assets/Register.svg";
 import Brand from "@/assets/Brand.svg";
 import Link from "next/link";
 import { Input } from "@nextui-org/input";
-import { Button, user } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 
 import { BiSolidHide } from "react-icons/bi";
 import { BiSolidShow } from "react-icons/bi";
 
-import { RadioGroup, Radio } from "@nextui-org/radio";
 import React, { use, useEffect, useRef, useState } from "react";
-import { redirect } from "next/navigation";
-import { NextApiRequest, NextApiResponse } from "next";
-import { NextResponse } from "next/server";
+
 
 import { useRouter } from 'next/navigation';
+
+import { checkEmail, checkUsername, checkPassword, checkConfirmPassword } from "@/app/(auth)/register/handle"
+import { error } from "console";
 
 interface Errors {
   isError: {
@@ -59,11 +59,11 @@ const Register = () => {
 
   const [userName, setUserName] = useState<string>("")
 
-  const handleUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(e.target.value)
 
     if (errors.isError.username) {
-      if (e.target.value.match(/^[a-zA-Z0-9]+$/)) {
+      if (e.target.value.match(/^(?=.{3,20}$)(?![_.-])(?!.*[_.-]{2})[a-zA-Z0-9_-]+([^._-])$/)) {
         setErrors({
           isError: {
             ...errors.isError,
@@ -78,80 +78,40 @@ const Register = () => {
     }
   }
 
-  const checkUserName = () => {
-    if (userName === "") {
-      setErrors({
-        isError: {
-          ...errors.isError,
-          username: true
-        },
-        errorMessage: {
-          ...errors.errorMessage,
-          username: "Tên đăng nhập không được để trống"
-        }
-      })
-      return false
-    }
-
-    if (userName.match(/^(?=.{3,20}$)(?![_.-])(?!.*[_.-]{2})[a-zA-Z0-9_-]+([^._-])$/)) {
-      setErrors({
-        isError: {
-          ...errors.isError,
-          username: false
-        },
-        errorMessage: {
-          ...errors.errorMessage,
-          username: ""
-        }
-      })
-
-      const call = async () => {
-        try {
-          const request = await fetch("https://66656af6d122c2868e409b34.mockapi.io/user")
-          const data = await request.json()
-
-          data.forEach((element: any) => {
-            if (element.username.toLowerCase() === userName.toLowerCase()) {
-              setErrors({
-                isError: {
-                  ...errors.isError,
-                  username: true
-                },
-                errorMessage: {
-                  ...errors.errorMessage,
-                  username: "Tên đăng nhập đã tồn tại"
-                }
-              })
-            }
-          });
-
-        } catch (e) {
-          console.log(e)
-        }
+  const blurUsername = () => {
+    checkUsername(userName).then((result) => {
+      if (result === ""){
+        setErrors({
+          isError: {
+            ...errors.isError,
+            username: false
+          },
+          errorMessage: {
+            ...errors.errorMessage,
+            username: ""
+          }
+        })
       }
-      call()
-
-
-      return true
-    } else {
-      setErrors({
-        isError: {
-          ...errors.isError,
-          username: true
-        },
-        errorMessage: {
-          ...errors.errorMessage,
-          username: "Tên đăng nhập không chứa ký tự đặc biệt"
-        }
-      })
-      return false
+      else {
+        setErrors({
+          isError: {
+            ...errors.isError,
+            username: true
+          },
+          errorMessage: {
+            ...errors.errorMessage,
+            username: result
+          }
+        })
+      
+      }
     }
+  )
   }
 
-  // //  
   const [email, setEmail] = useState<string>("")
 
-  const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
 
     if (errors.isError.email) {
@@ -170,76 +130,40 @@ const Register = () => {
     }
   }
 
-  const checkEmail = () => {
-    if (email === '') {
-      setErrors({
-        isError: {
-          ...errors.isError,
-          email: true
-        },
-        errorMessage: {
-          ...errors.errorMessage,
-          email: "Email không được để trống"
-        }
-      })
-      return false
-    }
-    if (email.match(/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/i)) {
-      setErrors({
-        isError: {
-          ...errors.isError,
-          email: false
-        },
-        errorMessage: {
-          ...errors.errorMessage,
-          email: ""
-        }
-      })
-
-      const call = async () => {
-        try {
-          const request = await fetch("https://66656af6d122c2868e409b34.mockapi.io/user")
-          const data = await request.json()
-
-          data.forEach((element: any) => {
-            if (element.gmail.toLowerCase() === email.toLowerCase()) {
-              setErrors({
-                isError: {
-                  ...errors.isError,
-                  email: true
-                },
-                errorMessage: {
-                  ...errors.errorMessage,
-                  email: "Tên đăng nhập đã tồn tại"
-                }
-              })
-            }
-          });
-
-        } catch (e) {
-          console.log(e)
-        }
+  const blurEmail = () => {
+    checkEmail(email).then((result) => {
+      if (result === ""){
+        setErrors({
+          isError: {
+            ...errors.isError,
+            email: false
+          },
+          errorMessage: {
+            ...errors.errorMessage,
+            email: ""
+          }
+        })
       }
-      call()
-      return true
-    } else {
-      setErrors({
-        isError: {
-          ...errors.isError,
-          email: true
-        },
-        errorMessage: {
-          ...errors.errorMessage,
-          email: "Email không hợp lệ"
-        }
-      })
-      return false
+      else {
+        setErrors({
+          isError: {
+            ...errors.isError,
+            email: true
+          },
+          errorMessage: {
+            ...errors.errorMessage,
+            email: result
+          }
+        })
+      
+      }
     }
+  )
   }
 
   const [password, setPassword] = useState<string>("")
 
-  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value)
 
     if (errors.isError.confirmPassword) {
@@ -261,22 +185,9 @@ const Register = () => {
     }
   }
 
-  const checkPassword = () => {
-    if (password === "") {
-      setErrors({
-        isError: {
-          ...errors.isError,
-          password: true
-        },
-        errorMessage: {
-          ...errors.errorMessage,
-          password: "Mật khẩu không được để trống"
-        }
-      })
-      return false
-    }
-
-    if (password.match((/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/))) {
+  const blurPassword = () => {
+    const result = checkPassword(password)
+    if (result === ""){
       setErrors({
         isError: {
           ...errors.isError,
@@ -287,8 +198,8 @@ const Register = () => {
           password: ""
         }
       })
-      return true
-    } else {
+    }
+    else {
       setErrors({
         isError: {
           ...errors.isError,
@@ -296,11 +207,12 @@ const Register = () => {
         },
         errorMessage: {
           ...errors.errorMessage,
-          password: "Mật khẩu phải có ít nhất 8 ký tự"
+          password: result
         }
       })
-      return false
     }
+
+
   }
 
 
@@ -308,10 +220,12 @@ const Register = () => {
 
   const [confirmPassword, setConfirmPassword] = useState<string>("")
 
-  const handleConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setConfirmPassword(e.target.value)
 
-    if (e.target.value === password) {
+    const result = checkConfirmPassword(password, e.target.value)
+
+    if (result === ""){
       setErrors({
         isError: {
           ...errors.isError,
@@ -323,29 +237,26 @@ const Register = () => {
         }
       })
       setButton(false)
-      return
     }
-    if (errors.isError.username || errors.isError.email || errors.isError.password || errors.isError.confirmPassword) {
+    else {
+      setErrors({
+        isError: {
+          ...errors.isError,
+          confirmPassword: true
+        },
+        errorMessage: {
+          ...errors.errorMessage,
+          confirmPassword: result
+        }
+      })
       setButton(true)
-    }
   }
 
-  const checkConfirmPassword = () => {
-    if (confirmPassword === "") {
-      setErrors({
-        isError: {
-          ...errors.isError,
-          confirmPassword: true
-        },
-        errorMessage: {
-          ...errors.errorMessage,
-          confirmPassword: "Mật khẩu không được để trống"
-        }
-      })
-      return false
-    }
+}
+  const blurConfirmPassword = () => {
+    const result = checkConfirmPassword(password, confirmPassword)
 
-    if (confirmPassword === password) {
+    if (result === ""){
       setErrors({
         isError: {
           ...errors.isError,
@@ -357,8 +268,8 @@ const Register = () => {
         }
       })
       setButton(false)
-      return true
-    } else {
+    }
+    else {
       setErrors({
         isError: {
           ...errors.isError,
@@ -366,11 +277,11 @@ const Register = () => {
         },
         errorMessage: {
           ...errors.errorMessage,
-          confirmPassword: "Mật khẩu không khớp"
+          confirmPassword: result
         }
       })
-      return false
-    }
+      setButton(true)
+  }
   }
 
   const [passwordIsVisible, setPasswordVisible] = useState<boolean>(false)
@@ -385,7 +296,6 @@ const Register = () => {
   }
 
   const [button, setButton] = useState<boolean>(true)
-  const [response, setResponse] = useState<any>(null);
 
   useEffect(() => {
 
@@ -406,46 +316,11 @@ const Register = () => {
   }, [errors, userName, email, password, confirmPassword])
 
 
-  const register = () => {
-    if (checkUserName() && checkEmail() && checkPassword() && checkConfirmPassword()) {
-      const valueTemp: User = {
-        username: userName,
-        gmail: email,
-        password: password
-      }
-
-      const handlerPOST = async () => {
-        try {
-          const res = await fetch('https://66656af6d122c2868e409b34.mockapi.io/user', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(valueTemp),
-          });
-
-          if (!res.ok) {
-            throw new Error('Network response was not ok');
-          } else {
-            const data = await res.json();
-            router.push("/register/otp")
-          }
-
-
-        } catch (error) {
-          console.error('There was a problem with the fetch operation:', error);
-        }
-
-      };
-      handlerPOST();
+  const clickRegister = () => {
+    
 
     }
-
-
-
-
-
-  }
+  
 
 
   return (
@@ -474,7 +349,7 @@ const Register = () => {
               <div className="mt-2.5">HarveyOD</div>
             </div>
             <div className="text-xl font-semibold leading-8 text-zinc-700 text-opacity-90 max-md:max-w-full">
-              Chào mừng bạn đến{" "}
+              Welcome to {" "}
               <span className="font-extrabold">
                 HarveyOD
               </span>
@@ -483,10 +358,10 @@ const Register = () => {
               <Input
                 className="text-black max-md:max-w-full"
                 variant="bordered"
-                label="Tên đăng nhập"
+                label="Username"
                 value={userName}
-                onChange={handleUserName}
-                onBlur={checkUserName}
+                onChange={changeUsername}
+                onBlur={blurUsername}
                 isInvalid={errors.isError.username}
                 errorMessage={errors.errorMessage.username}
               />
@@ -495,15 +370,15 @@ const Register = () => {
                 variant="bordered"
                 label="Email"
                 value={email}
-                onChange={handleEmail}
-                onBlur={checkEmail}
+                onChange={changeEmail}
+                onBlur={blurEmail}
                 isInvalid={errors.isError.email}
                 errorMessage={errors.errorMessage.email}
               />
               <Input
                 className="text-black max-md:max-w-full"
                 variant="bordered"
-                label="Mật khẩu"
+                label="Password"
                 type={passwordIsVisible ? "text" : "password"}
                 value={password}
                 endContent={
@@ -515,15 +390,15 @@ const Register = () => {
                     )}
                   </button>
                 }
-                onChange={handlePassword}
-                onBlur={checkPassword}
+                onChange={changePassword}
+                onBlur={blurPassword}
                 isInvalid={errors.isError.password}
                 errorMessage={errors.errorMessage.password}
               />
               <Input
                 className="text-black max-md:max-w-full"
                 variant="bordered"
-                label="Nhập lại mật khẩu"
+                label="Confirm password"
                 type={confirmPasswordIsVisible ? "text" : "password"}
                 value={confirmPassword}
 
@@ -536,8 +411,8 @@ const Register = () => {
                     )}
                   </button>
                 }
-                onChange={handleConfirmPassword}
-                onBlur={checkConfirmPassword}
+                onChange={changeConfirmPassword}
+                onBlur={blurConfirmPassword}
                 isInvalid={errors.isError.confirmPassword}
                 errorMessage={errors.errorMessage.confirmPassword}
               />
@@ -548,22 +423,22 @@ const Register = () => {
               color="primary" className={`justify-center items-center self-center px-16 py-2   
                         mt-3.5 max-w-full text-base font-medium tracking-wide leading-7  
                         text-white uppercase w-[405px] max-md:px-5 disabled:cursor-not-allowed disabled:opacity-45 `}
-              onClick={register}
+              onClick={clickRegister}
             >
 
               {/* <Link href="/register/otp" className="cursor-not-allowed">  
                                 Đăng Ký  
                             </Link> */}
-              Đăng Ký
+              Register
             </Button>
 
 
             <div className="mt-7 tracking-normal leading-6 text-center text-lime-600 max-md:max-w-full">
               <span className="text-zinc-700">
-                Bạn đã có tài khoản?
+                Have account ?
               </span>{" "}
               <Link href="login" className="text-lime-600 hover:underline">
-                Đăng nhập
+                Login
               </Link>
             </div>
           </div>
