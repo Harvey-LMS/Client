@@ -13,7 +13,6 @@ import { Button } from "@nextui-org/react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 
 interface Errors {
   isError: {
@@ -28,9 +27,16 @@ interface Errors {
   };
 }
 
+interface User {
+  username: string;
+  password: string;
+  email: string;
+  isVerified: boolean;
+}
+
 const Login = () => {
-  const [username, setUserName] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUserName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [users, setUsers] = useState<any[] | null>(null);
   // const [isShowErr, setIsShowErr] = useState(false);
 
@@ -68,10 +74,10 @@ const Login = () => {
   useEffect(() => {
     const callAPI = async () => {
       try {
-        const response = await axios.get(
+        const response = await fetch(
           "https://66651c7fd122c2868e3fcdef.mockapi.io/Account"
         );
-        setUsers(response.data);
+        setUsers( await response.json());
       } catch (error) {
         console.log("=>Error: ", error);
       }
@@ -148,9 +154,8 @@ const Login = () => {
     }
     return true;
   };
-  // useEffectTest();
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
+
+  const handleLogin = () => {
     if (users != null && checkUserName() && checkPassword()) {
       const user = users.find(
         (user: any) => user.username === username && user.password === password
@@ -173,6 +178,7 @@ const Login = () => {
     }
   };
 
+
   return (
     <div className="flex flex-col justify-center text-base leading-6 max-md:flex-col">
       <div
@@ -181,7 +187,7 @@ const Login = () => {
       >
         <Image
           alt="Harvey"
-          loading="lazy"
+          priority={true}
           src={LoginSVG}
           className="flex mr-[610px] mb-[-600px]"
           width={550}
@@ -191,7 +197,7 @@ const Login = () => {
           <div className="flex gap-3 max-md:hidden justify-center items-start self-center pb-8 text-2xl font-semibold tracking-wide whitespace-nowrap text-zinc-700 text-opacity-90">
             <Image
               alt="brand"
-              loading="lazy"
+              priority={true}
               src={Brand}
               className="shrink-0 aspect-[0.98] w-[49px]"
             />
@@ -204,11 +210,9 @@ const Login = () => {
             Please login to your account
           </div>
 
-          {errors.isError.isLogin && (
-            <span className="text-sm text-danger-600 mt-2">
+          <span className="text-sm text-danger-600 mt-2">
               {errors.errorMsg.isLogin}
             </span>
-          )}
           <div className="mt-5 max-md:flex-col">
             <Input
               aria-label="username"
@@ -250,7 +254,7 @@ const Login = () => {
             color="primary"
             className="justify-center text-center max-w-full w-full items-center px-16 py-2 text-base font-medium tracking-wide leading-7 
               text-white uppercase rounded-md max-md:px-5"
-            onClick={(e) => handleLogin(e)}
+            onClick={handleLogin}
           >
             Login
           </Button>
@@ -280,8 +284,8 @@ const Login = () => {
               />
             </Link>
           </div>
-          <div className="mt-3 tracking-normal leading-6 text-center text-lime-600">
-            <span className="text-zinc-700">Don't have an account ?</span>{" "}
+          <div className="mt-7 tracking-normal leading-6 text-center text-lime-600">
+            <span className="text-zinc-700">{`Don't have an account ?`}</span>{" "}
             <Link href={"/register"} className="text-lime-600 hover:underline">
               Sign up
             </Link>
