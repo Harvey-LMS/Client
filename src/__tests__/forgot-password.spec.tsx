@@ -37,6 +37,15 @@ describe("ForgotPassword", () => {
       expect(screen.queryAllByText("Password confirm is required"));
     });
   });
+  it("input is empty", async () => {
+    const { password, passwordConfirm, button } = setup();
+    fireEvent.change(password, { target: { value: "" } });
+    fireEvent.change(passwordConfirm, { target: { value: "" } });
+    fireEvent.click(button)
+    await waitFor(() => {
+      expect(screen.getByText("Please enter complete information"));
+    });
+  });
   it("The confirmed password does not match the new password", async () => {
     const { password, passwordConfirm, button } = setup();
     fireEvent.change(password, { target: { value: "12345@Aa" } });
