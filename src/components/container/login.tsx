@@ -1,7 +1,12 @@
 "use client";
 import Image from "next/image";
+
 import LoginSVG from "@/assets/LoginSVG.svg";
 import Brand from "@/assets/Brand.svg";
+import Google from "@/assets/Google.svg";
+import Facebook from "@/assets/Facebook.svg";
+import Twitter from "@/assets/Twitterx.svg";
+
 import Link from "next/link";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/react";
@@ -253,6 +258,32 @@ const Login = () => {
           >
             Login
           </Button>
+          <div className="m-3 flex justify-center items-center gap-10">
+            <Link href={"/"}>
+              <Image
+                alt="brand"
+                loading="lazy"
+                src={Google}
+                className="shrink-0 aspect-[0.98] w-[35px]"
+              />
+            </Link>
+            <Link href={"/"}>
+              <Image
+                alt="brand"
+                loading="lazy"
+                src={Facebook}
+                className="shrink-0 aspect-[0.98] w-[37px]"
+              />
+            </Link>
+            <Link href={"/"}>
+              <Image
+                alt="brand"
+                loading="lazy"
+                src={Twitter}
+                className="shrink-0 aspect-[0.98] w-[35px]"
+              />
+            </Link>
+          </div>
           <div className="mt-7 tracking-normal leading-6 text-center text-lime-600">
             <span className="text-zinc-700">{`Don't have an account ?`}</span>{" "}
             <Link href={"/register"} className="text-lime-600 hover:underline">
