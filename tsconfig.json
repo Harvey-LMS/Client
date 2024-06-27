@@ -13,24 +13,21 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": "./",
-    "types": ["jest"],
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-
+      "@/*": ["./src/*"]
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "./frontend/src/**/*"
-, "jest.config.ts",
-"src/**/*", "__tests__/page.test.js"  ],
-  "exclude": ["node_modules", "src/**/*.test.ts"]
+    ".next/types/**/*.ts"
+  ],
+
+  "exclude": ["node_modules", "dist"]
 }

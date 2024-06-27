@@ -3,19 +3,40 @@ import Image from "next/image";
 
 import Brand from "@/assets/Brand.svg";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion" 
 
 const WelcomePage = () => {
   const router = useRouter();
 
+  const [animation, setAnimation] = useState("visible");
+
+  const variants = {
+    initial: { opacity: 1, scale: 0 }, // Bắt đầu từ mờ và dưới vị trí cuối cùng
+    visible: { opacity: 1, scale: 1 }, // Hiện ra và di chuyển lên vị trí cuối cùng
+    exit: { opacity: 1, y: -900, scale: 0.5 } // Biến mất và di chuyển lên trên
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push("/");
+      router.push("/welcome/create-profile");
+
+      setAnimation("exit")
     }, 3000);
     return () => clearTimeout(timer);
   }, [router]);
+
   return (
-    <div className="flex flex-col justify-center px-16 py-20 font-semibold tracking-normal  max-md:px-5">
+    <motion.div className="flex flex-col justify-center px-16 py-20 font-semibold tracking-normal  max-md:px-5" 
+      variants={variants}
+      initial="initial"
+      animate={animation}
+      transition={{
+        duration: 0.8,
+        delay: 0.5,
+        ease: [0, 0.71, 0.2, 1.01]
+      }}
+      >
       <div className="flex justify-center items-center px-16 mt-52 max-md:px-5 max-md:mt-10 max-md:mr-1 max-md:max-w-full">
         <div className="flex flex-col items-center max-w-full w-[650px] -translate-y-[10px]">
           <div className="text-3xl font-extrabold leading-7 text-center max-md:max-w-full">
@@ -56,7 +77,7 @@ const WelcomePage = () => {
           </Button> */}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
