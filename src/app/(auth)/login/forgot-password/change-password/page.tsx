@@ -95,7 +95,7 @@ const ChangePasswordPage = () => {
             errorMsg: {
               ...errors.errorMsg,
               password:
-                "Mật khẩu phải có ít nhất 8 ký tự, chữ cái in hoa, kí tự đặc biệt",
+                "Passwords must have at least 8 characters, uppercase letters, special characters",
             },
           });
         }
@@ -112,7 +112,7 @@ const ChangePasswordPage = () => {
         },
         errorMsg: {
           ...errors.errorMsg,
-          password: "Mật khẩu không được để trống",
+          password: "Password is required",
         },
       });
     } else {
@@ -140,7 +140,7 @@ const ChangePasswordPage = () => {
           errorMsg: {
             ...errors.errorMsg,
             password:
-              "Mật khẩu phải có ít nhất 8 ký tự, chữ cái in hoa, kí tự đặc biệt",
+              "Passwords must have at least 8 characters, uppercase letters, special characters",
           },
         });
       }
@@ -174,7 +174,7 @@ const ChangePasswordPage = () => {
         },
         errorMsg: {
           ...errors.errorMsg,
-          passwordConfirm: "Mật khẩu không được để trống",
+          passwordConfirm: "Password confirm is required",
         },
       });
     } else if (password !== passwordConfirm) {
@@ -185,7 +185,8 @@ const ChangePasswordPage = () => {
         },
         errorMsg: {
           ...errors.errorMsg,
-          passwordConfirm: "Mật khẩu xác nhận chưa khớp với mật khẩu mới",
+          passwordConfirm:
+            "The confirmed password does not match the new password",
         },
       });
     } else {
@@ -212,7 +213,7 @@ const ChangePasswordPage = () => {
         },
         errorMsg: {
           ...errors.errorMsg,
-          isChangePwd: "Vui lòng nhập đầy đủ thông tin",
+          isChangePwd: "Please enter complete information",
         },
       });
     } else {
@@ -231,7 +232,8 @@ const ChangePasswordPage = () => {
           },
           errorMsg: {
             ...errors.errorMsg,
-            isChangePwd: "Mật khẩu xác nhận chưa khớp với mật khẩu mới",
+            isChangePwd:
+              "The confirmed password does not match the new password",
             passwordConfirm: "",
           },
         });
@@ -255,13 +257,13 @@ const ChangePasswordPage = () => {
             className="shrink-0 aspect-[0.98] w-[49px]"
             priority={true}
           />
-          <div className="mt-2.5">Harvey</div>
+          <div className="mt-2.5">HarveyOD</div>
         </div>
         <div className="text-xl font-semibold leading-8 text-zinc-700 text-opacity-90  mb-2">
-          <span className="text-2xl">Đổi mật khẩu</span>
+          <span className="text-2xl">Change password</span>
           <br />
           <span className="text-sm font-normal !leading-none">
-            Hãy nhập mật khẩu mới của bạn vào ô bên dưới để lấy lại mật khẩu
+            Enter your new password in the box below to retrieve it
           </span>
         </div>
         {errors.isError.isChangePwd && (
@@ -274,7 +276,7 @@ const ChangePasswordPage = () => {
             aria-label="password"
             size="md"
             type="password"
-            label="Mật khẩu mới"
+            label="New password"
             variant="bordered"
             className="mb-2"
             onBlur={checkPassword}
@@ -286,7 +288,7 @@ const ChangePasswordPage = () => {
             aria-label="passwordConfirm"
             size="md"
             type="password"
-            label="Xác nhận mật khẩu"
+            label="Confirm new password"
             variant="bordered"
             onBlur={checkPasswordConfirm}
             onChange={handlePasswordConfirm}
@@ -303,14 +305,14 @@ const ChangePasswordPage = () => {
           text-base font-medium tracking-wide leading-7 text-white uppercase rounded-md max-md:px-5"
             onClick={(e) => handleChangePwd(e)}
           >
-            Xác nhận
+            Confirm
           </Button>
           {/* </Link> */}
         </div>
 
         <div className="justify-center text-center items-center">
           <Link className="text-lime-600 hover:underline" href={"/login"}>
-            {"< "}Trở lại trang đăng nhập
+            {"< "}Back to login
           </Link>
         </div>
       </div>
@@ -324,11 +326,11 @@ const ChangePasswordPage = () => {
                 className="shrink-0 w-12 aspect-[0.98]"
                 priority={true}
               />
-              <div className="">Harvey</div>
+              <div className="">HarveyOD</div>
             </div>
             <DialogTitle className="flex flex-col justify-center items-center">
               <GoCheckCircleFill className="text-1xl w-16 h-16 rounded-full text-white  bg-primary" />
-              <p className="mt-10">Đổi mật khẩu thành công</p>
+              <p className="mt-10">Password change successfully</p>
             </DialogTitle>
             <DialogDescription></DialogDescription>
           </DialogHeader>

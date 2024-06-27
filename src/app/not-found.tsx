@@ -15,7 +15,7 @@ const NotFound = () => {
         <span className="text-5xl font-bold">PAGE NOT FOUND</span>
         <br />
         <span className="text-md font-semibold">
-          It's looks like you are lost
+          {`It's looks like you are lost`}
         </span>
       </div>
       <div
