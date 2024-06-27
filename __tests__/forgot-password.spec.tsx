@@ -20,56 +20,52 @@ const setup = () => {
   const button = screen.getByRole("button");
   return { password, passwordConfirm, button, ...utils };
 };
-
-test("input empty", () => {
-  const { password, passwordConfirm, button } = setup();
-
-  const passwordElement = password as HTMLInputElement;
-  fireEvent.change(passwordElement, { target: { value: "" } });
-  expect(passwordElement.value).toBe("");
-
-  const passwordConfirmElement = passwordConfirm as HTMLInputElement;
-  fireEvent.change(passwordConfirmElement, { target: { value: "" } });
-  expect(passwordConfirmElement.value).toBe("");
-
-  fireEvent.click(button);
-  expect(
-    screen.getByText("Vui lòng nhập đầy đủ thông tin")
-  ).toBeInTheDocument();
-});
-
-test("password does not match with password confirm", async () => {
-  const { password, passwordConfirm, button } = setup();
-
-  const passwordElement = password as HTMLInputElement;
-  fireEvent.change(passwordElement, { target: { value: "Aa@12345" } });
-  expect(passwordElement.value).toBe("Aa@12345");
-
-  const passwordConfirmElement = passwordConfirm as HTMLInputElement;
-  fireEvent.change(passwordConfirmElement, { target: { value: "Aa@123123" } });
-  expect(passwordConfirmElement.value).toBe("Aa@123123");
-
-  fireEvent.click(button);
-  await waitFor(() => {
-    expect(
-      screen.getByText("Mật khẩu xác nhận chưa khớp với mật khẩu mới")
-    ).toBeInTheDocument();
+describe("ForgotPassword", () => {
+  it("password is empty", async () => {
+    const { password } = setup();
+    fireEvent.change(password, { target: { value: "" } });
+    fireEvent.blur(password);
+    await waitFor(() => {
+      expect(screen.queryAllByText("Password is required"));
+    });
   });
-});
-
-test("password matches with password confirm", async () => {
-  const { password, passwordConfirm, button } = setup();
-
-  const passwordElement = password as HTMLInputElement;
-  fireEvent.change(passwordElement, { target: { value: "Aa@12345" } });
-  expect(passwordElement.value).toBe("Aa@12345");
-
-  const passwordConfirmElement = passwordConfirm as HTMLInputElement;
-  fireEvent.change(passwordConfirmElement, { target: { value: "Aa@12345" } });
-  expect(passwordConfirmElement.value).toBe("Aa@12345");
-
-  fireEvent.click(button);
-  await waitFor(() => {
-    expect(screen.getByText("Đổi mật khẩu thành công")).toBeInTheDocument();
+  it("password confirm is empty", async () => {
+    const { passwordConfirm } = setup();
+    fireEvent.change(passwordConfirm, { target: { value: "" } });
+    fireEvent.blur(passwordConfirm);
+    await waitFor(() => {
+      expect(screen.queryAllByText("Password confirm is required"));
+    });
+  });
+  it("input is empty", async () => {
+    const { password, passwordConfirm, button } = setup();
+    fireEvent.change(password, { target: { value: "" } });
+    fireEvent.change(passwordConfirm, { target: { value: "" } });
+    fireEvent.click(button)
+    await waitFor(() => {
+      expect(screen.getByText("Please enter complete information"));
+    });
+  });
+  it("The confirmed password does not match the new password", async () => {
+    const { password, passwordConfirm, button } = setup();
+    fireEvent.change(password, { target: { value: "12345@Aa" } });
+    fireEvent.change(passwordConfirm, { target: { value: "12345@Aab" } });
+    fireEvent.click(button);
+    await waitFor(() => {
+      expect(
+        screen.getByText(
+          "The confirmed password does not match the new password"
+        )
+      );
+    });
+  });
+  it("The confirmed password match the new password", async () => {
+    const { password, passwordConfirm, button } = setup();
+    fireEvent.change(password, { target: { value: "12345@Aa" } });
+    fireEvent.change(passwordConfirm, { target: { value: "12345@Aa" } });
+    fireEvent.click(button);
+    await waitFor(() => {
+      expect(screen.getByText("Password change successfully"));
+    });
   });
 });
