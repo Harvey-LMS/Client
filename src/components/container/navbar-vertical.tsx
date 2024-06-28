@@ -9,6 +9,7 @@ import Courses from "@/assets/icon/courses-icon.svg";
 import Meeting from "@/assets/icon/meeting-icon.svg";
 import Wallet from "@/assets/icon/wallet-icon.svg";
 import Blog from "@/assets/icon/blog-icon.svg";
+import { Button } from "@nextui-org/react";
 
 const NavbarVerticalComponent = () => {
   return (
@@ -30,7 +31,7 @@ const NavbarVerticalComponent = () => {
 
               <li className="ml-6">
                 <Link href={""}>
-                  <div className="flex gap-2.5 m-4 text-  base tracking-normal leading-6 whitespace-nowrap text-zinc-700 text-opacity-90">
+                  <div className="flex gap-2.5 m-4 text-base tracking-normal leading-6 whitespace-nowrap text-zinc-700 text-opacity-90">
                     <Image
                       alt={"msg"}
                       src={Message}
@@ -44,7 +45,7 @@ const NavbarVerticalComponent = () => {
 
               <li className="ml-6">
                 <Link href={""}>
-                  <div className="flex gap-2.5 m-4 text-  base tracking-normal leading-6 whitespace-nowrap text-zinc-700 text-opacity-90">
+                  <div className="flex gap-2.5 m-4 text-base tracking-normal leading-6 whitespace-nowrap text-zinc-700 text-opacity-90">
                     <Image
                       alt={"schedule"}
                       src={Schedule}
@@ -58,7 +59,7 @@ const NavbarVerticalComponent = () => {
 
               <li className="ml-6">
                 <Link href={""}>
-                  <div className="flex gap-2.5 m-4 text-  base tracking-normal leading-6 whitespace-nowrap text-zinc-700 text-opacity-90">
+                  <div className="flex w-full gap-2.5 m-4 text-base tracking-normal leading-6 whitespace-nowrap text-zinc-700 text-opacity-90">
                     <Image
                       alt={"meeting"}
                       src={Meeting}
@@ -72,7 +73,7 @@ const NavbarVerticalComponent = () => {
 
               <li className="ml-6">
                 <Link href={""}>
-                  <div className="flex gap-2.5 m-4 text-  base tracking-normal leading-6 whitespace-nowrap text-zinc-700 text-opacity-90">
+                  <div className="flex gap-2.5 m-4 text-base tracking-normal leading-6 whitespace-nowrap text-zinc-700 text-opacity-90">
                     <Image
                       alt={"courses"}
                       src={Courses}
@@ -86,7 +87,7 @@ const NavbarVerticalComponent = () => {
 
               <li className="ml-6">
                 <Link href={""}>
-                  <div className="flex gap-2.5 m-4 text-  base tracking-normal leading-6 whitespace-nowrap text-zinc-700 text-opacity-90">
+                  <div className="flex gap-2.5 m-4 text-base tracking-normal leading-6 whitespace-nowrap text-zinc-700 text-opacity-90">
                     <Image
                       alt={"wallet"}
                       src={Wallet}
@@ -100,7 +101,7 @@ const NavbarVerticalComponent = () => {
 
               <li className="ml-6">
                 <Link href={""}>
-                  <div className="flex gap-2.5 m-4 text-  base tracking-normal leading-6 whitespace-nowrap text-zinc-700 text-opacity-90">
+                  <div className="flex gap-2.5 m-4 text-base tracking-normal leading-6 whitespace-nowrap text-zinc-700 text-opacity-90">
                     <Image
                       alt={"blog"}
                       src={Blog}
