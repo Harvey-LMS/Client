@@ -117,7 +117,7 @@ const ForgotPasswordPage = () => {
           <span className="text-2xl">Forgot password</span>
           <br />
           <span className="text-sm font-normal !leading-none">
-            We'll send you instructions to reset the password to your email
+            {`We'll send you instructions to reset the password to your email`}
           </span>
         </div>
         {/* {isShowErr && (

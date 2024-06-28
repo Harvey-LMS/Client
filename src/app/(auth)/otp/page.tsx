@@ -83,7 +83,7 @@ const RegisterOTP = () => {
       retryTimer = setInterval(() => {
         setRetryTimeLeft((prev) => prev - 1);
         setErro(
-          `Bạn đã nhập sai mã OTP quá 3 lần. Vui lòng thử lại sau ${retryTimeLeft} giây nữa.`
+          `You have entered the wrong OTP code more than 3 times. Please try again in ${retryTimeLeft} seconds.`
         );
       }, 10);
     } else if (retryTimeLeft === 0) {
@@ -134,14 +134,14 @@ const RegisterOTP = () => {
       };
     } else {
       setErro(
-        "Mã OTP không chính xác, bạn còn " + (2 - attempts) + " lần thử."
+        "The OTP code is incorrect, you have " + (2 - attempts) + " attempts left."
       );
       setOtp("");
       setAttempts((prev) => prev + 1);
       setCanResend(false);
       if (attempts + 1 >= 3) {
         setErro(
-          `Bạn đã nhập sai mã OTP quá 3 lần. Vui lòng thử lại sau 300 giây nữa.`
+          `You have entered the wrong OTP code more than 3 times. Please try again in 300 seconds.`
         );
         setCanRetry(false);
         setRetryTimeLeft(299); // 5 minutes in seconds
@@ -157,19 +157,19 @@ const RegisterOTP = () => {
             <Image
               alt="Harvey"
               loading="lazy"
-              src={Brand}
+              src={Brand} 
               className="shrink-0 w-12 aspect-[0.98]"
             />
             <div className="mt-2.5">Harvey</div>
           </div>
           <div className="flex flex-col gap-5 justify-center items-center">
             <div className="text-3xl font-bold leading-8 text-black text-opacity-90 max-md:max-w-full">
-              Xác thực Email
+                Email Verification.
               <br />
               <span className="leading text-medium text-slate-400 font-normal">
-                Chúng tôi đã gửi mã xác thực đến ***{email.slice(-13)}
+                We have sent a verification code to ***{email.slice(-13)}
                 <br />
-                Vui lòng nhập mã OTP từ email vào bên dưới
+                Please enter the OTP code from your email below.
               </span>
             </div>
             <InputOTP
@@ -197,27 +197,28 @@ const RegisterOTP = () => {
               color="primary"
               className={
                 `justify-center items-center self-center px-16 py-2  max-w-full text-base 
-                    font-medium tracking-wide leading-7 text-white uppercase w-[405px] max-md:px-5 disabled:opacity-50` +
+                    font-medium tracking-wide leading-7 text-white uppercase w-full max-md:px-5 disabled:opacity-50` +
                 `${disableButton ? " cursor-not-allowed" : " cursor-pointer"}`
               }
               onClick={handleOpen}
               disabled={disableButton}
             >
-              Xác thực
+              Verify
             </Button>
-            <div className="tracking-normal leading-6 text-center text-lime-600 max-md:max-w-full">
-              <span className="text-zinc-700">
-                Chưa nhận được mã xác thực ?
-              </span>{" "}
-              <div onClick={handleResendOTP} className="w-fix">
+            <div className="tracking-normal leading-6 text-center text-lime-600 max-md:max-w-full break-normal text-sm">
+              <p className="text-zinc-700 ">
+                {`Haven't received the verification code yet? `}
+              </p>{" "}
+              <div onClick={handleResendOTP} className="cursor-pointer">
                 <p
-                  className={`text-lime-600 ${
+                  className={`text-lime-600 w-fix${
                     !canResend
                       ? "cursor-auto"
                       : "cursor-pointer hover:underline"
                   }`}
+                  onClick={handleResendOTP}
                 >
-                  {!canResend ? `Gửi lại sau ${resendTimeLeft}s` : "Gửi lại"}
+                  {!canResend ? `Resend after ${resendTimeLeft}s` : "Resend"}
                 </p>
               </div>
             </div>
@@ -232,13 +233,13 @@ const RegisterOTP = () => {
                 alt="Harvey"
                 loading="lazy"
                 src={Brand}
-                className="shrink-0 w-12 aspect-[0.98]"
+                className="shrink-0 aspect-[0.98]"
               />
               <div className="">Harvey</div>
             </div>
             <DialogTitle className="flex flex-col justify-center items-center">
               <GoCheckCircleFill className="text-1xl w-16 h-16 rounded-full text-white  bg-primary" />
-              <p className="mt-10">Đăng ký thành công</p>
+              <p className="mt-10">Registration successful</p>
             </DialogTitle>
             <DialogDescription>
               {/* <Button color="primary" className="justify-center items-center self-center px-16 py-2  max-w-full text-base 
