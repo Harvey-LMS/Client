@@ -9,7 +9,6 @@ import Courses from "@/assets/icon/courses-icon.svg";
 import Meeting from "@/assets/icon/meeting-icon.svg";
 import Wallet from "@/assets/icon/wallet-icon.svg";
 import Blog from "@/assets/icon/blog-icon.svg";
-import Services from "@/assets/icon/list-services-icon.svg";
 
 const NavbarVerticalComponent = () => {
   return (
@@ -24,11 +23,7 @@ const NavbarVerticalComponent = () => {
               <li className="px-5">
                 <div className="flex flex-row items-center h-8">
                   <div className="text-sm font-light tracking-wide text-gray-500">
-                    <span
-                      className="mt-3 w-full border border-solid bg-zinc-700 bg-opacity-10 
-                    border-zinc-700 border-opacity-10 min-h-[1px]"
-                    ></span>
-                    SERVICES
+                    <span>SERVICES</span>
                   </div>
                 </div>
               </li>
@@ -42,7 +37,7 @@ const NavbarVerticalComponent = () => {
                       className="shrink-0 aspect-square mr-2"
                       width={16}
                     />
-                    <span className="flex-1">Message</span>
+                    <span className="flex-1 font-bold">Message</span>
                   </div>
                 </Link>
               </li>
@@ -56,7 +51,7 @@ const NavbarVerticalComponent = () => {
                       className="shrink-0 aspect-square mr-2"
                       width={16}
                     />
-                    <span className="flex-1">Schedule</span>
+                    <span className="flex-1 font-bold">Schedule</span>
                   </div>
                 </Link>
               </li>
@@ -70,7 +65,7 @@ const NavbarVerticalComponent = () => {
                       className="shrink-0 aspect-square mr-2"
                       width={16}
                     />
-                    <span className="flex-1">Meeting</span>
+                    <span className="flex-1 font-bold">Meeting</span>
                   </div>
                 </Link>
               </li>
@@ -84,7 +79,7 @@ const NavbarVerticalComponent = () => {
                       className="shrink-0 aspect-square mr-2"
                       width={16}
                     />
-                    <span className="flex-1">All courses</span>
+                    <span className="flex-1 font-bold">All courses</span>
                   </div>
                 </Link>
               </li>
@@ -98,7 +93,7 @@ const NavbarVerticalComponent = () => {
                       className="shrink-0 aspect-square mr-2"
                       width={16}
                     />
-                    <span className="flex-1">Wallet</span>
+                    <span className="flex-1 font-bold">Wallet</span>
                   </div>
                 </Link>
               </li>
@@ -112,7 +107,7 @@ const NavbarVerticalComponent = () => {
                       className="shrink-0 aspect-square mr-2"
                       width={16}
                     />
-                    <span className="flex-1">Blog</span>
+                    <span className="flex-1 font-bold">Blog</span>
                   </div>
                 </Link>
               </li>

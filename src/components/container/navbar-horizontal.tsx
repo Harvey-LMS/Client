@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactEventHandler, useState } from "react";
+import React, { useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -23,12 +23,13 @@ import { motion } from "framer-motion";
 import NavbarVerticalComponent from "./navbar-vertical";
 
 const NavbarComponent = () => {
-  const [showSearch, setShowSearch] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+
+  const [showInput, setShowInput] = useState(false);
 
   const handleShowSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    setShowSearch(!showSearch);
+    setShowInput(!showInput);
   };
 
   const handleShowDropdown = (e: React.FormEvent) => {
@@ -39,7 +40,7 @@ const NavbarComponent = () => {
   return (
     <div>
       <Navbar position="sticky" className="bg-gray-300">
-        <NavbarBrand className="relative right-[40%]">
+        <NavbarBrand className="relative right-[45%]">
           <Link href={"/"}>
             <Image
               alt="brand"
@@ -54,27 +55,32 @@ const NavbarComponent = () => {
 
         <NavbarContent justify="end" className="relative left-[40%]">
           <NavbarItem className="hidden lg:flex">
-            <Button variant="link" onClick={(e) => handleShowSearch(e)}>
-              <Image
-                alt="brand"
-                loading="lazy"
-                src={Search}
-                className="flex mr-2"
-                width={30}
-                height={40}
-              />
-            </Button>
-
-            <div
-              className={`absolute right-[500px] top-1 px-2 transition-transform ease-in-out transform ${
-                showSearch ? "translate-y-0" : "-translate-y-full"
-              }`}
-            >
-              <Input
-                type="text"
-                placeholder="Type to search"
-                className="w-[400px] p-2 border border-gray-300 rounded-md"
-              />
+            <div className=" flex">
+              <div
+                className={`transition-width duration-300 absolute inset-y-0 right-[300px] ${
+                  showInput ? "w-full opacity-100" : "w-0 opacity-0"
+                }`}
+              >
+                <Input
+                  type="text"
+                  className="mt-3 w-full transition-all duration-500 ease-in-out"
+                  placeholder="Try to search.."
+                />
+              </div>
+              <Button
+                variant="link"
+                onClick={handleShowSearch}
+                className="z-10 ml-auto"
+              >
+                <Image
+                  alt="brand"
+                  loading="lazy"
+                  src={Search}
+                  className="flex mr-2"
+                  width={30}
+                  height={40}
+                />
+              </Button>
             </div>
 
             <Link href={"/"}>
@@ -91,11 +97,7 @@ const NavbarComponent = () => {
             </div>
           </NavbarItem>
           <NavbarItem>
-            <Button
-              variant={"link"}
-              onClick={(e) => handleShowDropdown(e)}
-              // onClick={() => setShowDropdown(false)}
-            >
+            <Button variant={"link"} onClick={(e) => handleShowDropdown(e)}>
               <Image
                 className="mr-1"
                 alt="avatar"
