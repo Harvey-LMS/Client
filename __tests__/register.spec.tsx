@@ -1,8 +1,6 @@
-import {fireEvent, render, screen, waitFor} from "@testing-library/react"
-import Page from "../src/app/(auth)/register/page"
+import { checkEmail, checkUsername } from "@/app/(auth)/register/handle";
 import "@testing-library/jest-dom";
 
-import { act } from '@testing-library/react';
 
 jest.mock("next/navigation", () => ({
   ...jest.requireActual("next/navigation"), // If you need actual implementations from next/navigation
@@ -15,68 +13,73 @@ jest.mock("next/navigation", () => ({
   useSearchParams: () => jest.fn(),
 }));
 
-const setup = () => {
-  const utils = render(<Page />);
-  const username = screen.getByLabelText("Tên đăng nhập");
-  return { username, ...utils };
-};
 
-
-describe("Page", () => {
-  it("renders a heading", async () => {
-    const { username } = setup();
-    fireEvent.click(username);
-    fireEvent.change(username, { target: { value: "" } });
-    fireEvent.blur(username);
-    expect(await screen.findByText("Tên đăng nhập không được để trống")).toBeInTheDocument();
-  })
-
-  it("username available", async () => {
-    const { username } = setup();
-    await act (async () => {
-      fireEvent.change(username, { target: { value: "lon922" } });
-      fireEvent.blur(username);
-      const fe = await fetch("https://66656af6d122c2868e409b34.mockapi.io/user")
-    }
-  )
-    await waitFor (
-      () => {
-      expect(screen.getByText("Tên đăng nhập đã tồn tại")).toBeInTheDocument();
-    }
-  )
+describe("Register Page - Username", () => {
+  it("username input should be empty", async () => {
+    const result = await checkUsername("");
+    expect(result).toEqual("Username cannot be empty");
   }
+  )
 
+  it("username input should be less than 3", async () => {
+    const result = await checkUsername("ab");
+    expect(result).toEqual("Username must be between 3 and 20 characters long and can only contain letters, numbers, underscores, and hyphens");
+  }
+  )
+
+  it("username input should be more than 20", async () => {
+    const result = await checkUsername("abcdefghijklmnopqrstuvwxyz");
+    expect(result).toEqual("Username must be between 3 and 20 characters long and can only contain letters, numbers, underscores, and hyphens");
+  }
+  )
+
+  it("username input should be more have a special character", async () => {
+    const result = await checkUsername("ab@91s**=8");
+    expect(result).toEqual("Username must be between 3 and 20 characters long and can only contain letters, numbers, underscores, and hyphens");
+  }
+  )
+
+  it("username input should be valid", async () => {
+    const result = await checkUsername("abc123");
+    expect(result).toEqual("");
+  }
+  )
+
+  it("username is already taken", async () => {
+    const result = await checkUsername("Dorris55");
+    expect(result).toEqual("Username already exists");
+
+  }
+  )
+}
 )
 
-  it("username Complete", async () => {
-    const { username } = setup();
-    await act(async () => {
-      fireEvent.change(username, { target: { value: "asdasdasdas" } });
-      fireEvent.blur(username);
-    }
-    )
-    await waitFor(
-      () => {
-        expect(screen.queryAllByText("Tên đăng nhập đã tồn tại")).toHaveLength(0);
-        expect(screen.queryAllByText("Tên đăng nhập không được để trống")).toHaveLength(0);
-      }
-    )
-  }
-)
 
-  it("username Complete 2", async () => {
-    const { username } = setup();
-    await act(async () => {
-      fireEvent.change(username, { target: { value: "PhungMinhMinh" } });
-      fireEvent.blur(username);
-    }
-    )
-    await waitFor(
-      () => {
-        expect(screen.queryAllByText("Tên đăng nhập đã tồn tại")).toHaveLength(0);
-        expect(screen.queryAllByText("Tên đăng nhập không được để trống")).toHaveLength(0);
-      }
-    )
+describe("Register Page - Email", () => {
+  it("email input should be empty", async () => {
+    const result = await checkEmail("");
+    expect(result).toEqual("Email cannot be empty");
+  }
+  )
+
+  it("email input should be invalid", async () => {
+    const result = await checkEmail("ab");
+    expect(result).toEqual("Invalid email");
+  }
+  )
+
+
+
+  it("email input should be valid", async () => {
+    const result = await checkEmail("abc123@gmail.com");
+    expect(result).toEqual("");
+  }
+  )
+
+  it("email is already taken", async () => {
+    const result = await checkEmail("Davonte30@gmail.com");
+    expect(result).toEqual("Email already exists");
+
   }
   )
 }

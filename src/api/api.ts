@@ -11,9 +11,6 @@ const api = async (url: string, method: string = 'GET', data?: any, param: Reque
             body,
             ...param // Sử dụng spread operator để tích hợp các tùy chọn từ param
         });
-
-        console.log(response)
-
         if (!response.ok) throw new Error('Network response was not ok');
         return await response.json();
     } catch (error) {
