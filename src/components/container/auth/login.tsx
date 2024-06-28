@@ -77,7 +77,7 @@ const Login = () => {
         const response = await fetch(
           "https://66651c7fd122c2868e3fcdef.mockapi.io/Account"
         );
-        setUsers( await response.json());
+        setUsers(await response.json());
       } catch (error) {
         console.log("=>Error: ", error);
       }
@@ -178,7 +178,6 @@ const Login = () => {
     }
   };
 
-
   return (
     <div className="flex flex-col justify-center text-base leading-6 max-md:flex-col">
       <div
@@ -211,8 +210,8 @@ const Login = () => {
           </div>
 
           <span className="text-sm text-danger-600 mt-2">
-              {errors.errorMsg.isLogin}
-            </span>
+            {errors.errorMsg.isLogin}
+          </span>
           <div className="mt-5 max-md:flex-col">
             <Input
               aria-label="username"

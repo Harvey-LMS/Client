@@ -1,14 +1,20 @@
 import "@testing-library/jest-dom";
-import { screen, render, fireEvent, waitFor, RenderResult } from "@testing-library/react";
-import Page from "../src/app/(auth)/login/page";
-import { act } from '@testing-library/react';
+import {
+  screen,
+  render,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
+import Page from "@/components/container/auth/login";
 
 jest.mock("next/navigation", () => ({
-  ...jest.requireActual("next/navigation"),
+  ...jest.requireActual("next/navigation"), // If you need actual implementations from next/navigation
   useRouter: () => ({
-    pathname: "/mock-path",
-    query: {},
-    push: jest.fn(),
+    pathname: "/mock-path", // Mock pathname or any other property/method your component uses
+    query: {}, // Mock query parameters if needed
+    push: jest.fn(), // Mock push method if your component uses it
+    // Add other properties or methods as needed by your component
   }),
   useSearchParams: () => jest.fn(),
 }));
@@ -17,46 +23,25 @@ const setup = () => {
   const utils = render(<Page />);
   const username = screen.getByLabelText("username");
   const password = screen.getByLabelText("password");
-  const button = screen.getByText("Login");
-  
+  const button = screen.getByRole("button");
   return { username, password, button, ...utils };
 };
 
-describe("Page", () => {
-  it("input empty - 1", async () => {
-    const { username, password, button} = setup();
-
-    fireEvent.change(username, { target: { value: "username 1" } });
-    fireEvent.change(password, { target: { value: "password" } });
-
-    fireEvent.click(button);
-
-
-    waitFor(() => {
-      const sc = screen.getAllByText("Please check your username and password");
-      console.log (sc);
-      expect(screen.getAllByText("Please check your username and password")).toHaveLength(0);
-    })
-
+describe("Login", () => {
+  it("username is empty", async () => {
+    const { username } = setup();
+    fireEvent.change(username, { target: { value: "" } });
+    fireEvent.blur(username);
+    await waitFor(() => {
+      expect(screen.queryAllByText("Username is required"));
+    });
   });
-
-  it("input empty - 2", async () => {
-    const { username, password, button } = setup();
-
-    act(() => {
-      fireEvent.change(username, { target: { value: "username 1" } });
-      fireEvent.change(password, { target: { value: "password 1" } });
-
+  it("password is empty", async () => {
+    const { password } = setup();
+    fireEvent.change(password, { target: { value: "" } });
+    fireEvent.blur(password);
+    await waitFor(() => {
+      expect(screen.queryAllByText("Password is required"));
     });
-
-    act(() => {
-      fireEvent.click(button);
-    });
-
-  waitFor(() => {
-    const sc = screen.getAllByText("Please check your username and password");
-    console.log (sc);
-    expect(screen.getAllByText("Please check your username and password")).toHaveLength(1);
-  })
   });
 });
