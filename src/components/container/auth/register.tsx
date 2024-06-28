@@ -10,13 +10,12 @@ import { Button } from "@nextui-org/react";
 import { BiSolidHide } from "react-icons/bi";
 import { BiSolidShow } from "react-icons/bi";
 
-import React, { use, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 
 import { useRouter } from 'next/navigation';
 
 import { checkEmail, checkUsername, checkPassword, checkConfirmPassword } from "@/app/(auth)/register/handle"
-import { error } from "console";
 
 interface Errors {
   isError: {
@@ -344,12 +343,12 @@ const Register = () => {
                 alt="Harvey"
                 src={Brand}
                 className="shrink-0 w-12 aspect-[0.98]"
-                priority={true}
+                loading="lazy"
               />
               <div className="mt-2.5">HarveyOD</div>
             </div>
-            <div className="text-xl font-semibold leading-8 text-zinc-700 text-opacity-90 max-md:max-w-full">
-              Welcome to {" "}
+            <div className="text-xl font-semibold text-zinc-700 text-opacity-90 w-full flex flex-row gap-1">
+              <p>Welcome to {" "}</p>
               <span className="font-extrabold">
                 HarveyOD
               </span>
@@ -401,9 +400,10 @@ const Register = () => {
                 label="Confirm password"
                 type={confirmPasswordIsVisible ? "text" : "password"}
                 value={confirmPassword}
+                
 
                 endContent={
-                  <button className="focus:outline-none" type="button" onClick={handleConfirmPasswordVisible}>
+                  <button className="focus:outline-none" onClick={handleConfirmPasswordVisible}>
                     {confirmPasswordIsVisible ? (
                       <BiSolidShow className="text-2xl text-default-400 pointer-events-none" />
                     ) : (
@@ -437,7 +437,7 @@ const Register = () => {
               <span className="text-zinc-700">
                 Have account ?
               </span>{" "}
-              <Link href="login" className="text-lime-600 hover:underline">
+              <Link href="login" className="text-lime-700 hover:underline">
                 Login
               </Link>
             </div>

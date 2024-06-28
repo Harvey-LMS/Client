@@ -9,25 +9,19 @@ const api = async (
   const headers = { ...param.headers, "Content-Type": "application/json" };
   const body = data ? JSON.stringify(data) : undefined;
 
-  try {
-    const response = await fetch(
-      `https://66656af6d122c2868e409b34.mockapi.io/${url}`,
-      {
-        method,
-        headers,
-        body,
-        ...param, // Sử dụng spread operator để tích hợp các tùy chọn từ param
-      }
-    );
-
-    console.log(response);
-
-    if (!response.ok) throw new Error("Network response was not ok");
-    return await response.json();
-  } catch (error) {
-    console.error(error);
-    throw error; // Rethrow để có thể xử lý lỗi bên ngoài nếu cần
-  }
+    try {
+        const response = await fetch(`https://66656af6d122c2868e409b34.mockapi.io/${url}`, {
+            method,
+            headers,
+            body,
+            ...param // Sử dụng spread operator để tích hợp các tùy chọn từ param
+        });
+        if (!response.ok) throw new Error('Network response was not ok');
+        return await response.json();
+    } catch (error) {
+        console.error(error);
+        throw error; // Rethrow để có thể xử lý lỗi bên ngoài nếu cần
+    }
 };
 
 // Lấy dữ liệu từ server.

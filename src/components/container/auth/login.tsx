@@ -179,21 +179,18 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center text-base leading-6 max-md:flex-col">
-      <div
-        className="flex flex-col justify-center items-end self-center px-16 py-20
-       max-w-full w-[1195px] max-md:w-full max-md:pr-[220px]"
-      >
+    <div className="flex flex-col justify-center items-center text-base m-auto max-md:flex-col p-0.5 w-full md:px-40 lg:px-5">
+      <div className="flex flex-row justify-center items-center w-full">
         <Image
           alt="Harvey"
           priority={true}
           src={LoginSVG}
-          className="flex mr-[610px] mb-[-600px]"
+          className="hidden lg:flex"
           width={550}
           height={500}
         />
-        <div className="flex flex-col px-8 py-7 mt-5 mb-4 max-w-full bg-white border-gray-300 rounded-3xl shadow-lg border w-[450px] ">
-          <div className="flex gap-3 max-md:hidden justify-center items-start self-center pb-8 text-2xl font-semibold tracking-wide whitespace-nowrap text-zinc-700 text-opacity-90">
+        <div className="flex flex-col px-8 py-7 mt-5 mb-4 max-w-full bg-white border-gray-300 rounded-3xl shadow-lg border w-full lg:w-1/3  ">
+          <div className="flex gap-3 max-md:hidden justify-center items-center  pb-8 text-2xl font-semibold tracking-wide whitespace-nowrap text-zinc-700 text-opacity-90">
             <Image
               alt="brand"
               priority={true}
@@ -237,14 +234,14 @@ const Login = () => {
               errorMessage={errors.errorMsg.password}
             />
           </div>
-          <div className="flex gap-2 pb-4 text-sm tracking-normal">
+          <div className="flex flex-row items-center justify-between gap-2 pb-4 text-xs tracking-normal">
             <div className="flex gap-2.5 p-2.5 text-zinc-700 text-opacity-90">
               <input type="checkbox" />
               <div className="my-auto">Remember to log in</div>
             </div>
             <Link
               href={"/login/forgot-password"}
-              className="flex-1 self-start mt-3 text-right text-lime-600 hover:underline"
+              className="flex text-right text-lime-600 hover:underline"
             >
               Forgot password ?
             </Link>
@@ -257,33 +254,33 @@ const Login = () => {
           >
             Login
           </Button>
-          <div className="m-3 flex justify-center items-center gap-10">
+          <div className="flex flex-row justify-center items-center gap-5 my-3">
             <Link href={"/"}>
               <Image
-                alt="brand"
+                alt="google-sign-in"
                 loading="lazy"
                 src={Google}
-                className="shrink-0 aspect-[0.98] w-[35px]"
+                className="w-12"
               />
             </Link>
             <Link href={"/"}>
               <Image
-                alt="brand"
+                alt="facebook-sign-in"
                 loading="lazy"
                 src={Facebook}
-                className="shrink-0 aspect-[0.98] w-[37px]"
+                className="w-12"
               />
             </Link>
             <Link href={"/"}>
               <Image
-                alt="brand"
+                alt="twitter-sign-in"
                 loading="lazy"
                 src={Twitter}
-                className="shrink-0 aspect-[0.98] w-[35px]"
+                className="w-12"
               />
             </Link>
           </div>
-          <div className="mt-7 tracking-normal leading-6 text-center text-lime-600">
+          <div className="tracking-normal text-center text-lime-600">
             <span className="text-zinc-700">{`Don't have an account ?`}</span>{" "}
             <Link href={"/register"} className="text-lime-600 hover:underline">
               Sign up

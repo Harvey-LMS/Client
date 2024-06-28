@@ -5,7 +5,7 @@ import CreateProfile from "@/components/container/create-profile";
 import { IUser } from "@/types/register";
 import { useState } from "react";
 
-import Test from "@/components/container/test";
+import Test from "@/components/container/test1";
 import { getUser } from "@/api/register/register";
 
 const Page = async () => {

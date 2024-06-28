@@ -14,7 +14,7 @@ const checkUsername = async (username: string):Promise<string> => {
 
     const user:IUser[] = await getUser()
 
-    if (user.some((u) => u.username === username)) {
+    if (user.some((u) => u.username.toLowerCase() === username.toLowerCase())) {
         return "Username already exists"
     }
 
@@ -32,7 +32,7 @@ const checkEmail = async (email: string):Promise<string> => {
 
     const user:IUser[] = await getUser()
 
-    if (user.some((u) => u.email === email)) {
+    if (user.some((u) => u.email.toLowerCase() === email.toLowerCase())) {
         return "Email already exists"
     }
 
