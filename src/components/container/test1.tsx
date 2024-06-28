@@ -36,7 +36,7 @@ const Test:React.FC<TestProps> = ({user}) => {
                 data.map((item: IUser) => (
                     <div key={item.id} className="flex flex-row gap-5">
                         <h1>{item.username}</h1>
-                        <p>{item.gmail}</p>
+                        <p>{item.email}</p>
                         <p>{item.password}</p>
                     </div>
                 ))
