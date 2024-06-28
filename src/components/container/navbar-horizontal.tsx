@@ -21,6 +21,7 @@ import UserDropdown from "./user-dropdown";
 
 import { motion } from "framer-motion";
 import NavbarVerticalComponent from "./navbar-vertical";
+import { headers } from "next/headers";
 
 const NavbarComponent = () => {
   const [showSearch, setShowSearch] = useState(false);
@@ -38,11 +39,11 @@ const NavbarComponent = () => {
 
   return (
     <div>
-      <Navbar position="sticky" className="bg-gray-300">
-        <div className="relative right-[45%]">
+      <Navbar  position="sticky" className="bg-gray-300 w-full" maxWidth="full" >
+        {/* <div className="">
           <NavbarVerticalComponent></NavbarVerticalComponent>
-        </div>
-        <NavbarBrand className="flex left-0">
+        </div> */}
+        <NavbarBrand className="flex">
           <Link href={"/"}>
             <Image
               alt="brand"
@@ -55,7 +56,20 @@ const NavbarComponent = () => {
           </Link>
         </NavbarBrand>
 
-        <NavbarContent justify="end">
+        <NavbarContent justify="end" className="justify-center items-center">
+        <NavbarItem>
+            <div
+              className={`flex flex-row justify-center items-center px-2 transition-transform ease-in-out transform ${showSearch ? "translate-y-0" : "-translate-y-full"
+                }`}
+            >
+              <Input
+                type="text"
+                placeholder="TOEIC Test 1, Listening,..."
+                className="p-2 border border-gray-300 rounded-md"
+              />
+            </div>
+          </NavbarItem>
+
           <NavbarItem className="hidden lg:flex">
             <Button variant="link" onClick={(e) => handleShowSearch(e)}>
               <Image
@@ -67,18 +81,12 @@ const NavbarComponent = () => {
                 height={40}
               />
             </Button>
+          </NavbarItem>
 
-            <div
-              className={`absolute left-[250px] top-1 px-2 transition-transform ease-in-out transform ${
-                showSearch ? "translate-y-0" : "-translate-y-full"
-              }`}
-            >
-              <Input
-                type="text"
-                placeholder="TOEIC Test 1, Listening,..."
-                className="w-[400px] p-2 border border-gray-300 rounded-md"
-              />
-            </div>
+
+
+
+          <NavbarItem>
 
             <Link href={"/"}>
               <Image
@@ -89,15 +97,21 @@ const NavbarComponent = () => {
                 width={40}
               />
             </Link>
+          </NavbarItem>
+          <NavbarItem>
             <div className="-mr-2">
               <ModeToggle></ModeToggle>
             </div>
           </NavbarItem>
+
+
+
+
           <NavbarItem>
             <Button
               variant={"link"}
               onClick={(e) => handleShowDropdown(e)}
-              // onClick={() => setShowDropdown(false)}
+            // onClick={() => setShowDropdown(false)}
             >
               <Image
                 className="mr-1"
@@ -112,7 +126,7 @@ const NavbarComponent = () => {
                 initial={{ opacity: 0.5 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4 }}
-                className={`absolute right-10 top-14 px-2 transition-transform ease-in-out 
+                className={`px-2 transition-transform ease-in-out 
                   transform translate-y-0`}
               >
                 <UserDropdown></UserDropdown>
