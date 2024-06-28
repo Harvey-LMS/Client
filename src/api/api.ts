@@ -1,8 +1,13 @@
 export { apiGet, apiPost, apiPut, apiPatch };
 
-const api = async (url: string, method: string = 'GET', data?: any, param: RequestInit = {}) => {
-    const headers = { ...param.headers, 'Content-Type': 'application/json' };
-    const body = data ? JSON.stringify(data) : undefined;
+const api = async (
+  url: string,
+  method: string = "GET",
+  data?: any,
+  param: RequestInit = {}
+) => {
+  const headers = { ...param.headers, "Content-Type": "application/json" };
+  const body = data ? JSON.stringify(data) : undefined;
 
     try {
         const response = await fetch(`https://66656af6d122c2868e409b34.mockapi.io/${url}`, {
@@ -20,22 +25,20 @@ const api = async (url: string, method: string = 'GET', data?: any, param: Reque
 };
 
 // Lấy dữ liệu từ server.
-const apiGet = async (url: string, param:RequestInit) => {
-    return api(url, 'GET', undefined, param);  
+const apiGet = async (url: string, param: RequestInit) => {
+  return api(url, "GET", undefined, param);
 };
 
 // Thêm dữ liệu mới lên server.
 const apiPost = async (url: string, data: any) => {
-    return api(url, 'POST', data);
+  return api(url, "POST", data);
 };
 
 // Cập nhật toàn bộ dữ liệu hiện có trên server.
 const apiPut = async (url: string, data: any) => {
-    return api(url, 'PUT', data);
+  return api(url, "PUT", data);
 };
 // Cập nhật một phần dữ liệu hiện có trên server.
 const apiPatch = async (url: string, data: any) => {
-    return api(url, 'PATCH', data);
+  return api(url, "PATCH", data);
 };
-
-

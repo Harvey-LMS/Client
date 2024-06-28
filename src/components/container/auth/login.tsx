@@ -178,12 +178,9 @@ const Login = () => {
     }
   };
 
-
   return (
     <div className="flex flex-col justify-center items-center text-base m-auto max-md:flex-col p-0.5 w-full md:px-40 lg:px-5">
-      <div
-        className="flex flex-row justify-center items-center w-full"
-      >
+      <div className="flex flex-row justify-center items-center w-full">
         <Image
           alt="Harvey"
           priority={true}
@@ -237,7 +234,7 @@ const Login = () => {
               errorMessage={errors.errorMsg.password}
             />
           </div>
-          <div className="flex flex-row justify-center items-center gap-2 pb-4 text-xs tracking-normal">
+          <div className="flex flex-row items-center justify-between gap-2 pb-4 text-xs tracking-normal">
             <div className="flex gap-2.5 p-2.5 text-zinc-700 text-opacity-90">
               <input type="checkbox" />
               <div className="my-auto">Remember to log in</div>
