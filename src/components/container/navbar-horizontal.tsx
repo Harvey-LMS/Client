@@ -40,100 +40,97 @@ const NavbarComponent = () => {
 
   return (
     <div>
-      <Navbar position="sticky" className="bg-gray-300" maxWidth="full">
-          {/* <div className="">
+      <Navbar position="sticky" className="" maxWidth="full">
+        {/* <div className="">
           <NavbarVerticalComponent></NavbarVerticalComponent>
         </div> */}
-          <NavbarBrand className="flex">
-            <Link href={"/"}>
+        <NavbarBrand className="flex">
+          <Link href={"/"}>
+            <Image
+              alt="brand"
+              loading="lazy"
+              src={Brand}
+              className="shrink-0 aspect-[0.98]"
+              width={40}
+            />
+            <p className="font-bold text-inherit pl-2 text-2xl">HarveyOD</p>
+          </Link>
+        </NavbarBrand>
+
+        <NavbarContent justify="end" className="justify-center items-center">
+          <NavbarItem className="hidden lg:flex">
+            <div className=" flex">
+              <div
+                className={`transition-width duration-300 absolute inset-y-0 right-[300px] ${
+                  showInput ? "w-1/6 opacity-100" : "w-0 opacity-0"
+                }`}
+              >
+                <Input
+                  type="text"
+                  className="mt-3 w-full transition-all duration-500 ease-in-out"
+                  placeholder="Try to search.."
+                />
+              </div>
+              <Button
+                variant="link"
+                onClick={handleShowSearch}
+                className="z-10 ml-auto"
+              >
+                <Image
+                  alt="search"
+                  loading="lazy"
+                  src={Search}
+                  className="flex"
+                  width={30}
+                  height={40}
+                />
+              </Button>
+            </div>
+          </NavbarItem>
+
+          <NavbarItem>
+            <Link
+              href={"/"}
+              className="flex flex-row justify-center items-center"
+            >
               <Image
-                alt="brand"
+                alt="flag"
                 loading="lazy"
-                src={Brand}
-                className="shrink-0 aspect-[0.98]"
+                src={FlagVN}
+                className=""
                 width={40}
               />
-              <p className="font-bold text-inherit pl-2 text-2xl">HarveyOD</p>
             </Link>
-          </NavbarBrand>
+          </NavbarItem>
+          <NavbarItem>
+            <div className="">
+              <ModeToggle></ModeToggle>
+            </div>
+          </NavbarItem>
 
-          <NavbarContent justify="end" className="justify-center items-center">
-            <NavbarItem className="hidden lg:flex">
-              <div className=" flex">
-                <div
-                  className={`transition-width duration-300 absolute inset-y-0 right-[300px] ${showInput ? "w-1/6 opacity-100" : "w-0 opacity-0"
-                    }`}
-                >
-                  <Input
-                    type="text"
-                    className="mt-3 w-full transition-all duration-500 ease-in-out"
-                    placeholder="Try to search.."
-                  />
-                </div>
-                <Button
-                  variant="link"
-                  onClick={handleShowSearch}
-                  className="z-10 ml-auto"
-                >
-                  <Image
-                    alt="search"
-                    loading="lazy"
-                    src={Search}
-                    className="flex"
-                    width={30}
-                    height={40}
-                  />
-                </Button>
-              </div>
-            </NavbarItem>
+          <NavbarItem>
+            <Image
+              className=""
+              alt="avatar"
+              src={Flag}
+              height={40}
+              width={40}
+              onClick={(e) => handleShowDropdown(e)}
+            />
 
-
-            <NavbarItem>
-
-              <Link href={"/"} className="flex flex-row justify-center items-center">
-                <Image
-                  alt="flag"
-                  loading="lazy"
-                  src={FlagVN}
-                  className=""
-                  width={40}
-                  
-                />
-              </Link>
-            </NavbarItem>
-            <NavbarItem>
-              <div className="">
-                <ModeToggle></ModeToggle>
-              </div>
-            </NavbarItem>
-
-
-
-
-            <NavbarItem >
-                <Image
-                  className=""
-                  alt="avatar"
-                  src={Flag}
-                  height={40}
-                  width={40}
-                  onClick={(e) => handleShowDropdown(e)}
-                />
-
-              {showDropdown && (
-                <motion.div
-                  initial={{ opacity: 0.5 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.4 }}
-                  className={`absolute  right-10 top-14 px-2 transition-transform ease-in-out 
+            {showDropdown && (
+              <motion.div
+                initial={{ opacity: 0.5 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4 }}
+                className={`absolute  right-10 top-14 px-2 transition-transform ease-in-out 
                     transform translate-y-0`}
-                >
-                  <UserDropdown></UserDropdown>
-                </motion.div>
-              )}
-            </NavbarItem>
-          </NavbarContent>
-
+              >
+                <UserDropdown></UserDropdown>
+              </motion.div>
+            )}
+          </NavbarItem>
+        </NavbarContent>
       </Navbar>
       <NavbarVerticalComponent></NavbarVerticalComponent>
     </div>
