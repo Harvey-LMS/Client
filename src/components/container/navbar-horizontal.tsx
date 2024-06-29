@@ -39,7 +39,6 @@ const NavbarComponent = () => {
   };
 
   return (
-    <div>
       <Navbar position="sticky" className="" maxWidth="full">
         {/* <div className="">
           <NavbarVerticalComponent></NavbarVerticalComponent>
@@ -132,8 +131,6 @@ const NavbarComponent = () => {
           </NavbarItem>
         </NavbarContent>
       </Navbar>
-      <NavbarVerticalComponent></NavbarVerticalComponent>
-    </div>
   );
 };
 
