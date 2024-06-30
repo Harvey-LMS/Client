@@ -38,7 +38,7 @@ const NavbarHorizontal = () => {
 
   return (
     <Navbar position="sticky" className="" maxWidth="full">
-      <NavbarBrand className="flex">
+      <NavbarBrand className="flex max-md:hidden">
         <Link href={"/"}>
           <Image
             alt="brand"

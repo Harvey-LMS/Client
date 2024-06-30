@@ -23,9 +23,14 @@ const NavbarVertical = ({ children }: { children: React.ReactNode }) => {
   const toggleMenuBack = () => {
     setIsMenuOpen(false);
   };
+
   return (
     <div className="flex flex-row justify-center items-start">
-      <Button className="md:hidden p-2" onClick={toggleMenu} variant="ghost">
+      <Button
+        className="max-md:block p-2"
+        onClick={toggleMenu}
+        variant="ghost"
+      >
         <Image
           alt={"menu"}
           src={Menu}
