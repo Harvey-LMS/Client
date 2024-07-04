@@ -8,9 +8,11 @@ import { changeDateToDDMMYYYY } from "@/util/changeDateToDDMMYYY";
 import { useState } from "react";
 import { Button, Input, Radio, RadioGroup } from "@nextui-org/react";
 import { FaRegUser } from "react-icons/fa";
+import { IoCheckmarkOutline } from "react-icons/io5";
+
+
 
 import avatarProFileDefault from "@/assets/avatarProfileDefault.jpg";
-import { setDate } from "date-fns";
 
 
 const Page = () => {
@@ -27,9 +29,9 @@ const Page = () => {
 
 
     return (
-        <div className="flex flex-row justify-start items-start gap-10 p-10 max-md:flex-col max-md:items-center">
-            <div className="flex flex-col gap-5 justify-start items-center w-[400px]">
-                <div className="flex flex-col items-center justify-center p-3 gap-2 rounded-md shadow-lg border-gray-100 border-3">
+        <div className="flex flex-row justify-start items-start gap-1 p-2 max-md:flex-col max-md:items-center bg-white w-full">
+            <div className="flex flex-col justify-start items-center w-1/3">
+                <div className="flex flex-col items-center justify-center p-20 gap-2 rounded-lg  w-full ">
                     <div className="">
                         <Image src={avatarProFileDefault} alt="avatar" className="bg-primary rounded-sm shadow-md" width={100} height={100} loading="lazy" />
                     </div>
@@ -41,7 +43,7 @@ const Page = () => {
                     </div>
                     <div className="flex flex-row gap-4 justify-center items-center">
                         <div className="flex flex-row gap-4 p-2 bg-green-200 rounded-md h-12 w-12">
-                            <GoCheck className="w-full h-full"></GoCheck>
+                            <IoCheckmarkOutline className="w-full h-full"></IoCheckmarkOutline>
                         </div>
                         <div>
                             <p className="font-bold text-gray-900">1/30</p>
@@ -56,7 +58,9 @@ const Page = () => {
                             <p className="text-gray-500">Point</p>
                         </div>
                     </div>
-                    <div className="w-full h-0.5 bg-gray-300 my-3"></div>
+
+                    <div className="w-full h-0.5 bg-gray-100 my-3"></div>
+
                     <div className="flex flex-col gap-3 justify-start w-full">
                         <div className="text-md font-medium tracking-normal leading-5 text-left text-zinc-700">
                             Username:{" "}
@@ -104,9 +108,11 @@ const Page = () => {
                 </div>
 
             </div>
-            <div className="flex flex-col w-full">
-                <div className="w-full flex flex-col items-center justify-center p-3 gap-2 rounded-md shadow-lg border-gray-100 border-3">
-                    <div className="flex flex-row items-center justify-center gap-3">
+
+
+            <div className="flex flex-col w-2/3">
+                <div className="w-full flex flex-col items-center justify-center p-3 gap-2">
+                    <div className="flex flex-row items-center justify-center gap-3 h-12">
 
                         <Button className="p-2 px-8 flex flex-row gap-4 justify-center items-center border border-gray-100 rounded-lg">
                             <FaRegUser />
@@ -124,7 +130,7 @@ const Page = () => {
                         </Button>
 
                     </div>
-                    <div className="w-full ml-20 p-6 flex flex-col gap-3 justify-start items-start text-left">
+                    <div className="w-full pl-20 flex flex-col gap-3 justify-start items-start text-left">
                         <p className="font-medium text-3xl font-sans">Profile Information Management</p>
 
                         <div className="flex flex-col gap-5 w-2/5 mt-5">
@@ -134,7 +140,7 @@ const Page = () => {
                             </div>
                             <div className="flex flex-row gap-3 items-center text-right" >
                                 <p className="min-w-32"> Fullname: </p>
-                                <Input type="text" placeholder="Lê Hoàng An" variant="bordered" value={name} onChange={(e)=>setName(e.target.name)}/>
+                                <Input type="text" placeholder="Lê Hoàng An" variant="bordered" value={name} onChange={(e) => setName(e.target.name)} />
                             </div>
                             <RadioGroup
                                 classNames={{ label: ["text-black text-base", "min-w-32", "text-right", "whitespace-nowrap", "max-md:w-full", "max-md:text-left"], base: ["w-full"], wrapper: ["w-full"] }}
@@ -155,7 +161,7 @@ const Page = () => {
                             </div>
                             <div className="flex flex-row gap-3 items-center text-right" >
                                 <p className="min-w-32 whitespace-nowrap">Date of birth: </p>
-                                <Input type="date" value={dateOfBirth} onChange={(e)=> setDateOfBirth(e.target.value)} variant="bordered" />
+                                <Input type="date" value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} variant="bordered" />
                             </div>
                             <div className="flex flex-row gap-3 items-center text-right" >
                                 <p className="min-w-32 whitespace-nowrap">Contact: </p>
@@ -167,7 +173,13 @@ const Page = () => {
                                     placeholder={bio}
                                     className="w-52 h-32 border p-4" value={bio} onChange={(e) => setBio(e.target.value)} />
                             </div>
-
+                        </div>
+                        <div className="w-full flex justify-end items-center pr-36">
+                            <div className="flex flex-row justify-end items-center gap-3 text-right w-full">
+                                <Button className="bg-primary text-white px-16">
+                                    Save
+                                </Button>
+                            </div>
                         </div>
                     </div>
 

@@ -10,4 +10,18 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+    return (
+        <div>
+                <NavbarComponent></NavbarComponent>
+                <div className="w-full flex flex-row justify-start items-start">
+                    <NavbarVerticalComponent/>
+                    <div className="w-full flex">
+                        {children}
+                    </div>
+                </div>
+        </div>
+
+    );
+}
+
 export default DashboardLayout;
