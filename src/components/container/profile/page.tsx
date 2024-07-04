@@ -29,8 +29,8 @@ const Page = () => {
 
 
     return (
-        <div className="flex flex-row justify-start items-start gap-1 p-2 max-md:flex-col max-md:items-center bg-white w-full">
-            <div className="flex flex-col justify-start items-center w-1/3">
+        <div className="flex flex-row justify-start items-start gap-1 px-2 max-md:flex-col max-md:items-center bg-white w-full">
+            <div className="lg:flex flex-col justify-start items-center w-1/3 hidden">
                 <div className="flex flex-col items-center justify-center p-20 gap-2 rounded-lg  w-full ">
                     <div className="">
                         <Image src={avatarProFileDefault} alt="avatar" className="bg-primary rounded-sm shadow-md" width={100} height={100} loading="lazy" />
@@ -69,15 +69,15 @@ const Page = () => {
                             </span>
                         </div>
                         <div className="text-md font-medium tracking-normal leading-5 text-left text-zinc-700">
-                            Gender:{" "}
-                            <span className="tracking-normal font-light leading-5 text-zinc-400">
-                                {gender}
-                            </span>
-                        </div>
-                        <div className="text-md font-medium tracking-normal leading-5 text-left text-zinc-700">
                             Email:{" "}
                             <span className="tracking-normal font-light leading-5 text-zinc-400">
                                 {email}
+                            </span>
+                        </div>
+                        <div className="text-md font-medium tracking-normal leading-5 text-left text-zinc-700">
+                            Gender:{" "}
+                            <span className="tracking-normal font-light leading-5 text-zinc-400">
+                                {gender}
                             </span>
                         </div>
                         <div className="text-md font-medium tracking-normal leading-5 text-left text-zinc-700">
@@ -110,77 +110,92 @@ const Page = () => {
             </div>
 
 
-            <div className="flex flex-col w-2/3">
-                <div className="w-full flex flex-col items-center justify-center p-3 gap-2">
+            <div className="flex flex-col w-full">
+                <div className="w-full flex flex-col items-center justify-center p-3 gap-2 h-auto">
                     <div className="flex flex-row items-center justify-center gap-3 h-12">
-
-                        <Button className="p-2 px-8 flex flex-row gap-4 justify-center items-center border border-gray-100 rounded-lg">
+                        <Button className="px-3  flex flex-row justify-center items-center border border-gray-100 rounded-lg">
                             <FaRegUser />
                             <p className="text-md font-semibold">Overview</p>
                         </Button>
 
-                        <Button className="p-2 px-8 flex flex-row gap-4 justify-center items-center border border-gray-100 rounded-lg">
+                        <Button className="px-3  flex flex-row ustify-center items-center border border-gray-100 rounded-lg">
                             <FaRegUser />
                             <p className="text-md font-semibold">Security</p>
                         </Button>
 
-                        <Button className="bg-primary text-white px-8  flex flex-row gap-4 justify-center items-center border border-gray-100 rounded-lg">
+                        <Button className="px-3  bg-primary text-white flex flex-row gap-4 justify-center items-center border border-gray-100 rounded-lg">
                             <FaRegUser />
                             <p className="text-md font-semibold">Profile</p>
                         </Button>
 
                     </div>
-                    <div className="w-full pl-20 flex flex-col gap-3 justify-start items-start text-left">
+                    <div className="w-full flex flex-col gap-3 justify-start items-start">
                         <p className="font-medium text-3xl font-sans">Profile Information Management</p>
 
-                        <div className="flex flex-col gap-5 w-2/5 mt-5">
-                            <div className="flex flex-row gap-3 text-right">
-                                <p className="w-32">Username:</p>
-                                <p>johnwick1221</p>
+                        <div className="flex flex-col gap-5 w-full mt-5">
+
+                            <div className="flex flex-row gap-3 w-full justify-start items-center md:text-right">
+                                <div className="w-3/12">
+                                    <p className="font-bold text-left w-full">Username:</p>
+                                </div>
+
+                                <p className="w-full text-left">johnwick1221</p>
                             </div>
-                            <div className="flex flex-row gap-3 items-center text-right" >
-                                <p className="min-w-32"> Fullname: </p>
-                                <Input type="text" placeholder="Lê Hoàng An" variant="bordered" value={name} onChange={(e) => setName(e.target.name)} />
+
+                            <div className="flex flex-row gap-3 w-full justify-start items-center md:text-right" >
+                                <div className="w-3/12">
+                                    <p className="font-bold text-left w-full">Email:</p>
+                                </div>
+                                <Input className="w-full" type="text" placeholder="Lê Hoàng An" variant="bordered" value={name} onChange={(e) => setName(e.target.name)} />
                             </div>
-                            <RadioGroup
-                                classNames={{ label: ["text-black text-base", "min-w-32", "text-right", "whitespace-nowrap", "max-md:w-full", "max-md:text-left"], base: ["w-full"], wrapper: ["w-full"] }}
-                                label="Gender:"
-                                className=" flex flex-row gap-3 justify-start items-center"
-                                orientation="horizontal"
-                                value={gender}
-                                onChange={(e) => setGender(e.target.value)}
-                            >
-                                <div className="flex flex-row gap-4 w-full">
+
+                            <div className="flex flex-row gap-3 w-full justify-start items-center">
+                                <RadioGroup
+                                    classNames={{ label: ["font-bold text-black text-base", "w-3/12", "whitespace-nowrap"], wrapper: ["flex flex-row gap-4 w-full"], base: ["w-full"] }}
+                                    label="Gender:"
+                                    className="flex flex-row gap-3 justify-start items-center"
+                                    orientation="horizontal"
+                                    value={gender}
+                                    onChange={(e) => setGender(e.target.value)}
+                                >
                                     <Radio value="Male">Male</Radio>
                                     <Radio value="Female">Female</Radio>
-                                </div>
-                            </RadioGroup>
-                            <div className="flex flex-row text-rihgt gap-3 items-center text-right" >
-                                <p className="min-w-32">Email: </p>
-                                <p>lean09062@gmail.com</p>
+
+                                </RadioGroup>
                             </div>
-                            <div className="flex flex-row gap-3 items-center text-right" >
-                                <p className="min-w-32 whitespace-nowrap">Date of birth: </p>
+
+                            <div className="flex flex-row gap-3 w-full justify-start items-center md:text-right" >
+                                <div className="w-3/12">
+                                    <p className="font-bold text-left w-full">Date of birth:</p>
+                                </div>
                                 <Input type="date" value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} variant="bordered" />
                             </div>
-                            <div className="flex flex-row gap-3 items-center text-right" >
-                                <p className="min-w-32 whitespace-nowrap">Contact: </p>
+
+                            <div className="flex flex-row gap-3 w-full justify-start items-center md:text-right" >
+                                <div className="w-3/12">
+                                    <p className="font-bold text-left w-full">Contact:</p>
+                                </div>
                                 <Input type="text" placeholder="0123456789" variant="bordered" value={contact} onChange={(e) => setContact(e.target.value)} />
                             </div>
-                            <div className="flex flex-row gap-3 text-right" >
-                                <p className="min-w-32 whitespace-nowrap">Bio: </p>
+
+                            <div className="flex flex-row gap-3 w-full justify-start md:text-right" >
+                                <div className="w-3/12">
+                                    <p className="font-bold text-left w-full">Bio:</p>
+                                </div>
                                 <textarea
                                     placeholder={bio}
-                                    className="w-52 h-32 border p-4" value={bio} onChange={(e) => setBio(e.target.value)} />
+                                    className="w-full h-auto border p-4" value={bio} onChange={(e) => setBio(e.target.value)} />
                             </div>
-                        </div>
-                        <div className="w-full flex justify-end items-center pr-36">
-                            <div className="flex flex-row justify-end items-center gap-3 text-right w-full">
+                            <div className="w-full flex justify-center items-center">
+                            <div className="flex flex-row justify-center items-center gap-3 text-right w-full">
                                 <Button className="bg-primary text-white px-16">
                                     Save
                                 </Button>
                             </div>
+                        </div> 
                         </div>
+
+
                     </div>
 
                 </div>
