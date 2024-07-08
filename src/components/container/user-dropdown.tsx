@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import Flag from "@/assets/Flag_Circle.svg";
+import Avatar from "@/assets/avatarProfileDefault.jpg";
 import Account from "@/assets/icon/account-icon.svg";
 import Setting from "@/assets/icon/setting-icon.svg";
 import Support from "@/assets/icon/support-icon.svg";
@@ -12,9 +12,9 @@ const UserDropdown = () => {
     <div className="flex flex-col py-3 bg-white rounded-md shadow-lg w-[200px]">
       <div className="flex ml-3">
         <Image
-          alt={"flag"}
-          src={Flag}
-          className="shrink-0 w-10 aspect-square"
+          alt={"avatar"}
+          src={Avatar}
+          className="shrink-0 w-10 aspect-square rounded-full"
           width={20}
         />
         <div className="flex flex-col flex-1 px-5 my-auto">
