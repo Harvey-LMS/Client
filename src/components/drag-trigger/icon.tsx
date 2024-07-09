@@ -9,8 +9,8 @@ export function ReorderIcon({ dragControls }: Props) {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 39 39"
-      width="39"
-      height="39"
+      width="32"
+      height="32"
       onPointerDown={(event) => dragControls.start(event)}
     >
       <path

@@ -15,6 +15,7 @@ import {
 
 import { useState } from "react";
 import { Item } from "@/components/drag-trigger/item-drag";
+import { MdOutlineSource } from "react-icons/md";
 
 const CreateCoursePage = () => {
   const initialItems = [
@@ -26,7 +27,7 @@ const CreateCoursePage = () => {
   const [items, setItems] = useState(initialItems);
   return (
     <div className="flex flex-col gap-0">
-      <div className="flex flex-col gap-2 m-4 h-1/5">
+      <div className="flex flex-col gap-2 m-6">
         <div>
           <span className="text-2xl font-bold">Create Course</span>
         </div>
@@ -40,7 +41,7 @@ const CreateCoursePage = () => {
       <div className="flex flex-row">
         {/* Left */}
         <div className="w-1/2">
-          <div className="flex flex-col gap-1 border rounded-lg p-4 border-solid m-4">
+          <div className="flex flex-col gap-1 border rounded-lg shadow-lg p-4 border-solid m-4">
             <div className="flex flex-col gap-2">
               <div className="flex flex-row gap-1">
                 <BiCustomize className="w-10 h-10" />
@@ -90,7 +91,7 @@ const CreateCoursePage = () => {
                 </div>
                 <Link
                   href=""
-                  className="h-64 border-2 border-gray-300 p-4 rounded-lg shadow-lg bg-white flex justify-center items-center"
+                  className="h-64 border-2 border-gray-200 p-4 rounded-lg bg-white flex justify-center items-center"
                 >
                   <IoMdAddCircleOutline className="w-10 h-10" />
                 </Link>
@@ -98,7 +99,7 @@ const CreateCoursePage = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-1 border rounded-lg p-4 border-solid m-4">
+          <div className="flex flex-col gap-1 border rounded-lg shadow-lg p-4 border-solid m-4">
             <div className="flex flex-col gap-2">
               <div className="flex flex-row gap-1">
                 <IoIosOptions className="w-10 h-10" />
@@ -215,7 +216,7 @@ const CreateCoursePage = () => {
         </div>
         {/* Right */}
         <div className="w-1/2">
-          <div className="flex flex-col gap-1 border rounded-lg p-4 border-solid m-4">
+          <div className="flex flex-col gap-1 border rounded-lg shadow-lg p-4 border-solid m-4">
             <div className="flex flex-col gap-2">
               <div className="flex flex-row gap-1">
                 <BiCustomize className="w-10 h-10" />
@@ -240,7 +241,7 @@ const CreateCoursePage = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-1 border rounded-lg p-4 border-solid m-4">
+          <div className="flex flex-col gap-1 border rounded-lg shadow-lg p-4 border-solid m-4">
             <div className="flex flex-col gap-2">
               <div className="flex flex-row gap-1">
                 <IoIosPricetags className="w-10 h-10" />
@@ -284,116 +285,43 @@ const CreateCoursePage = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-1 border rounded-lg p-4 border-solid h-1/3 m-4">
+          <div className="flex flex-col gap-1 border rounded-lg shadow-lg p-4 border-solid m-4">
             <div className="flex flex-col gap-2">
               <div className="flex flex-row gap-1">
-                <IoIosOptions className="w-10 h-10" />
+                <MdOutlineSource className="w-10 h-10" />
                 <span className="flex justify-center items-center text-2xl font-semibold">
-                  Option your
+                  Source
                 </span>
               </div>
               <div className="border border-gray-200 bg-white"></div>
             </div>
 
-            <div className="m-2">
+            <div className="m-2 flex flex-col gap-2">
               <div className="flex flex-col gap-1">
                 <div className="flex flex-row justify-between">
-                  <span className="text-md font-semibold">
-                    Courses language
-                  </span>
+                  <span className="text-md font-semibold">Source content</span>
                   <Button className="flex flex-row gap-2" variant={"ghost"}>
                     <div>
                       <FaEdit />
                     </div>
-                    <span>Edit language</span>
+                    <span>Edit source content</span>
                   </Button>
-                </div>
-                <div className="flex flex-row gap-1">
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      English
-                    </span>
-                  </div>
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      Chinese
-                    </span>
-                  </div>
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      Chinese
-                    </span>
-                  </div>
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      ...
-                    </span>
-                  </div>
                 </div>
               </div>
-            </div>
-
-            <div className="m-2">
-              <div className="flex flex-col gap-1">
-                <div className="flex flex-row justify-between">
-                  <span className="text-md font-semibold">
-                    Courses category
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2">
+                  <span className="text-sm font-bold">English</span>
+                  <span className="text-sm opacity-70">
+                    Learning skill to get a job for future, some thing bla bla
+                    bla, I can kill you, You suck, Yo yo what’s happing man
                   </span>
-                  <Button className="flex flex-row gap-2" variant={"ghost"}>
-                    <div>
-                      <FaEdit />
-                    </div>
-                    <span>Edit category</span>
-                  </Button>
                 </div>
-                <div className="flex flex-row gap-1">
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      Skills
-                    </span>
-                  </div>
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      Vocabulary
-                    </span>
-                  </div>
-
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      ...
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="m-2">
-              <div className="flex flex-col gap-1">
-                <div className="flex flex-row justify-between">
-                  <span className="text-md font-semibold">Courses level</span>
-                  <Button className="flex flex-row gap-2" variant={"ghost"}>
-                    <div>
-                      <FaEdit />
-                    </div>
-                    <span>Edit level</span>
-                  </Button>
-                </div>
-                <div className="flex flex-row gap-1">
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      Easy
-                    </span>
-                  </div>
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      Medium
-                    </span>
-                  </div>
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      Hard
-                    </span>
-                  </div>
+                <div className="flex flex-col gap-2">
+                  <span className="text-sm font-bold">English</span>
+                  <span className="text-sm opacity-70">
+                    Learning skill to get a job for future, some thing bla bla
+                    bla, I can kill you, You suck, Yo yo what’s happing man
+                  </span>
                 </div>
               </div>
             </div>
