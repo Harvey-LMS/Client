@@ -13,8 +13,11 @@ import Menu from "@/assets/icon/menu-icon.svg";
 import Back from "@/assets/icon/back-icon.svg";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import Brand from "@/assets/Brand.svg";
 
-const NavbarVertical = ({ children }: { children: React.ReactNode }) => {
+
+
+const NavbarVertical = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -25,7 +28,7 @@ const NavbarVertical = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <div className="flex flex-row justify-center items-start">
+    <div className="flex flex-row justify-center items-start md:h-12">
       <Button
         className="max-md:block p-2"
         onClick={toggleMenu}
@@ -34,19 +37,31 @@ const NavbarVertical = ({ children }: { children: React.ReactNode }) => {
         <Image
           alt={"menu"}
           src={Menu}
-          className="shrink-0 aspect-square mr-2"
+          className="shrink-0 aspect-square"
           width={24}
         />
       </Button>
       <div
-        className={`min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-gray-50 text-gray-800 w-64 ${
-          isMenuOpen ? "block" : "hidden"
-        } md:block`}
+        className={`min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased text-gray-800 w-64 ${isMenuOpen ? "block" : "hidden"
+          } md:block`}
       >
+
         <div className="fixed flex flex-col top-0 left-0 w-64 bg-white h-full border-r">
-          <div className="flex items-center justify-center h-14 border-b"></div>
+          <div className="flex flex-row items-center justify-center h-14 border-b">
+              <Link href={"/asd"} className="flex flex-row justify-center items-center">
+                <Image
+                  alt="brand"
+                  loading="lazy"
+                  src={Brand}
+                  className="shrink-0 aspect-[0.98]"
+                  width={40}
+                />
+                <p className="font-bold text-inherit pl-2 text-2xl">HarveyOD</p>
+              </Link>
+          </div>
           <div className="overflow-y-auto overflow-x-hidden flex-grow">
             <ul className="flex flex-col py-4 space-y-1">
+
               <li className="px-5">
                 <div className="flex flex-row items-center h-8">
                   <div className="text-sm font-light tracking-wide text-gray-500">
@@ -160,9 +175,8 @@ const NavbarVertical = ({ children }: { children: React.ReactNode }) => {
           </div>
         </div>
       </div>
-      <div className="w-full">{children}</div>
     </div>
   );
 };
 
-export default NavbarVertical;
+export default NavbarVertical; 

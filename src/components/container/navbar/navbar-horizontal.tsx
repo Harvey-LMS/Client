@@ -37,8 +37,8 @@ const NavbarHorizontal = () => {
   };
 
   return (
-    <Navbar position="sticky" className="" maxWidth="full">
-      <NavbarBrand className="flex max-md:hidden">
+    <Navbar position="sticky" className="bg-red-500" maxWidth="full">
+      {/* <NavbarBrand className="flex max-md:hidden">
         <Link href={"/"}>
           <Image
             alt="brand"
@@ -49,7 +49,7 @@ const NavbarHorizontal = () => {
           />
           <p className="font-bold text-inherit pl-2 text-2xl">HarveyOD</p>
         </Link>
-      </NavbarBrand>
+      </NavbarBrand> */}
 
       <NavbarContent justify="end" className="justify-center items-center">
         <NavbarItem className="hidden lg:flex">
