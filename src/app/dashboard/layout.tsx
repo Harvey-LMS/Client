@@ -6,8 +6,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="harvey bg-background text-foreground w-full flex flex-row  ">
       <Nav>
-        {children}
+      {children}
       </Nav>
+      
     </div>
   );
 };
