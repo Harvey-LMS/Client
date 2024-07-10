@@ -14,8 +14,9 @@ import {
 } from "react-icons/io";
 
 import { useState } from "react";
-import { Item } from "@/components/drag-trigger/item-drag";
+import { Item } from "@/components/reorder/item-drag";
 import { MdOutlineSource } from "react-icons/md";
+import ModalCourse from "@/components/modal-course";
 
 const CreateCoursePage = () => {
   const initialItems = [
@@ -328,6 +329,7 @@ const CreateCoursePage = () => {
           </div>
         </div>
       </div>
+      
     </div>
   );
 };
