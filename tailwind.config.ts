@@ -96,22 +96,22 @@ const config = {
     require("tailwindcss-animate"),
     nextui({
       themes: {
-        "harvey": {
-          extend: "white", // <- inherit default values from dark theme
+       "harvey": {
+          extend: "light", // <- inherit default values from dark theme
           colors: {
-            background: "#ffffff",
-            foreground: "#0D001A",
+            background: "#0D001A",
+            foreground: "#ffffff",
             primary: {
               50: "#3B096C",
-              100: "#F5F5F5",
-              200: "#EBEBEB",
-              300: "#C5C5C5",
-              400: "#8D8D8D",
-              500: "#414141",
-              600: "#372F30",
-              700: "#2E2023",
-              800: "#251419",
-              900: "#1F0C12",
+              100: "#520F83",
+              200: "#7318A2",
+              300: "#9823C2",
+              400: "#c031e2",
+              500: "#DD62ED",
+              600: "#F182F6",
+              700: "#FCADF9",
+              800: "#FDD5F9",
+              900: "#FEECFE",
               DEFAULT: "#DD62ED",
               foreground: "#ffffff",
             },
@@ -131,6 +131,7 @@ const config = {
             },
           },
         },
+
       },
     }),
   ],
