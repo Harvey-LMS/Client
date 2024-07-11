@@ -6,6 +6,7 @@ export const metadata: Metadata = {
 };
 
 const RegisterPage = () => {
+  // FETCH
   return <Register></Register>;
 };
 

@@ -1,6 +1,6 @@
 import RowData from "@/components/container/dashboard/course/course";
 
-const Page = async () => {
+const Page = async() => {
     return ( 
         <RowData></RowData>
 );

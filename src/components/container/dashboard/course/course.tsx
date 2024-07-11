@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { MdModeEdit } from "react-icons/md";
@@ -109,7 +111,9 @@ const data = [
     
 
 
-const RowData = () => {
+const Course = () => {
+
+
     return ( 
     <div>
         <table className="table-fixed w-full">
@@ -160,9 +164,15 @@ const RowData = () => {
                     </tr>
                 ))}
             </tbody>
+            
         </table>
+        <div className="w-full flex flex-row justify-center items-center gap-3 pb-16">
+                <Button variant={"noSelected"}>1</Button>
+                <Button variant={"selected"} className="drop-shadow-2xl shadow-md shadow-primary-50">2</Button>
+                <Button variant={"noSelected"} className="drop-shadow-2xl">3</Button>
+        </div>
     </div> 
     );
 }
  
-export default RowData;
+export default Course;
