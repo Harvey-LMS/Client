@@ -10,7 +10,7 @@ const api = async (
   const body = data ? JSON.stringify(data) : undefined;
 
     try {
-        const response = await fetch(`${process.env.URL}${url}`, {
+        const response = await fetch(`${process.env.API_URL}${url}`, {
             method,
             headers,
             body,
