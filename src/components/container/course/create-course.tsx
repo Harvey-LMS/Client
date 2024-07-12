@@ -16,7 +16,7 @@ import {
 import { useState } from "react";
 import { Item } from "@/components/reorder/item-drag";
 import { MdOutlineSource } from "react-icons/md";
-import ModalCourse from "@/components/modal-course";
+import { Input } from "@nextui-org/input";
 
 const CreateCoursePage = () => {
   const initialItems = [
@@ -26,8 +26,61 @@ const CreateCoursePage = () => {
     "Writing",
   ];
   const [items, setItems] = useState(initialItems);
+
+  const [isShowTitle, setIsShowTitle] = useState(false);
+  const [isShowDescription, setIsShowDescription] = useState(false);
+  const [ísShowPrice, setIsShowPrice] = useState(false);
+  const [isShowDiscount, setIsShowDiscount] = useState(false);
+
+  const [titleInput, setTitleInput] = useState("");
+  const [title, setTitle] = useState("This is title");
+  const [descriptionInput, setDescriptionInput] = useState("");
+  const [description, setDescription] = useState("This is description");
+  const [priceInput, setPriceInput] = useState("");
+  const [price, setPrice] = useState(32);
+  const [discountInput, setDiscountInput] = useState("");
+  const [discount, setDiscount] = useState(32);
+
+  const handleShowEdit = (
+    stateSetter: (prevState: React.SetStateAction<boolean>) => void
+  ) => {
+    stateSetter((prevState: boolean) => !prevState);
+  };
+
+  const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitleInput(e.target.value);
+  };
+  const handleSaveTitle = () => {
+    setTitle(titleInput);
+    setIsShowTitle(false);
+  };
+
+  const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDescriptionInput(e.target.value);
+  };
+  const handleSaveDescription = () => {
+    setDescription(descriptionInput);
+    setIsShowDescription(false);
+  };
+
+  const handleChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPriceInput(e.target.value);
+  };
+  const handleSavePrice = () => {
+    setPrice(Number.parseInt(priceInput));
+    setIsShowPrice(false);
+  };
+
+  const handleChangeDiscount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDiscountInput(e.target.value);
+  };
+  const handleSaveDiscount = () => {
+    setDiscount(Number.parseInt(discountInput));
+    setIsShowDiscount(false);
+  };
+
   return (
-    <div className="flex flex-col gap-0">
+    <div className="flex flex-col gap-0 w-full">
       <div className="flex flex-col gap-2 m-6">
         <div>
           <span className="text-2xl font-bold">Create Course</span>
@@ -57,14 +110,43 @@ const CreateCoursePage = () => {
               <div className="flex flex-col gap-0">
                 <div className="flex flex-row justify-between">
                   <span className="text-md font-semibold">Courses title</span>
-                  <Button className="flex flex-row gap-2" variant={"ghost"}>
-                    <div>
-                      <FaEdit />
-                    </div>
-                    <span>Edit title</span>
-                  </Button>
+                  {isShowTitle ? (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowTitle)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <span>Cancel</span>
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowTitle)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <div>
+                        <FaEdit />
+                      </div>
+                      <span>Edit title</span>
+                    </Button>
+                  )}
                 </div>
-                <span className="text-sm">Learning TOEIC</span>
+
+                {isShowTitle ? (
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      placeholder={"Enter to course title"}
+                      variant={"bordered"}
+                      className="w-1/2"
+                      onChange={handleChangeTitle}
+                    ></Input>
+                    <Button onClick={handleSaveTitle} className="w-20">
+                      Save
+                    </Button>
+                  </div>
+                ) : (
+                  <span className="text-sm">{title}</span>
+                )}
               </div>
             </div>
 
@@ -74,14 +156,41 @@ const CreateCoursePage = () => {
                   <span className="text-md font-semibold">
                     Courses description
                   </span>
-                  <Button className="flex flex-row gap-2" variant={"ghost"}>
-                    <div>
-                      <FaEdit />
-                    </div>
-                    <span>Edit description</span>
-                  </Button>
+                  {isShowDescription ? (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowDescription)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <span>Cancel</span>
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowDescription)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <div>
+                        <FaEdit />
+                      </div>
+                      <span>Edit description</span>
+                    </Button>
+                  )}
                 </div>
-                <span className="text-sm">Description</span>
+                {isShowDescription ? (
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      variant={"bordered"}
+                      className="w-1/2"
+                      onChange={handleChangeDescription}
+                    ></Input>
+                    <Button onClick={handleSaveDescription} className="w-20">
+                      Save
+                    </Button>
+                  </div>
+                ) : (
+                  <span className="text-sm">{description}</span>
+                )}
               </div>
             </div>
 
@@ -257,14 +366,41 @@ const CreateCoursePage = () => {
               <div className="flex flex-col gap-0">
                 <div className="flex flex-row justify-between">
                   <span className="text-md font-semibold">Courses price</span>
-                  <Button className="flex flex-row gap-2" variant={"ghost"}>
-                    <div>
-                      <FaEdit />
-                    </div>
-                    <span>Edit price</span>
-                  </Button>
+                  {ísShowPrice ? (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowPrice)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <span>Cancel</span>
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowPrice)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <div>
+                        <FaEdit />
+                      </div>
+                      <span>Edit price</span>
+                    </Button>
+                  )}
                 </div>
-                <span className="text-sm opacity-70">32$</span>
+                {ísShowPrice ? (
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      variant={"bordered"}
+                      className="w-1/2"
+                      onChange={handleChangePrice}
+                    ></Input>
+                    <Button onClick={handleSavePrice} className="w-20">
+                      Save
+                    </Button>
+                  </div>
+                ) : (
+                  <span className="text-sm">{price}</span>
+                )}
               </div>
             </div>
 
@@ -274,14 +410,41 @@ const CreateCoursePage = () => {
                   <span className="text-md font-semibold">
                     Courses discount
                   </span>
-                  <Button className="flex flex-row gap-2" variant={"ghost"}>
-                    <div>
-                      <FaEdit />
-                    </div>
-                    <span>Edit discount</span>
-                  </Button>
+                  {isShowDiscount ? (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowDiscount)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <span>Cancel</span>
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowDiscount)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <div>
+                        <FaEdit />
+                      </div>
+                      <span>Edit discount</span>
+                    </Button>
+                  )}
                 </div>
-                <span className="text-sm opacity-70">32$</span>
+                {isShowDiscount ? (
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      variant={"bordered"}
+                      className="w-1/2"
+                      onChange={handleChangeDiscount}
+                    ></Input>
+                    <Button onClick={handleSaveDiscount} className="w-20">
+                      Save
+                    </Button>
+                  </div>
+                ) : (
+                  <span className="text-sm">{discount}</span>
+                )}
               </div>
             </div>
           </div>
@@ -329,7 +492,6 @@ const CreateCoursePage = () => {
           </div>
         </div>
       </div>
-      
     </div>
   );
 };

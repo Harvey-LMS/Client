@@ -11,6 +11,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@nextui-org/checkbox": "^2.1.2",
     "@nextui-org/input": "^2.2.1",
     "@nextui-org/navbar": "^2.0.33",
     "@nextui-org/radio": "^2.1.1",

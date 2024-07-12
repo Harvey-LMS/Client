@@ -1,4 +1,4 @@
-import Profile from '@/components/container/profile/page';
+import Profile from '@/components/container/dashboard/profile/page';
 
 const Page = async () => {
     return ( 

@@ -16,9 +16,11 @@ import { FaEdit } from "react-icons/fa";
 export default function ModalCourse({
   isOpen,
   onOpenChange,
+  title,
 }: {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
+  title: string;
 }) {
   return (
     <div>
@@ -49,7 +51,7 @@ export default function ModalCourse({
                         <span>Edit title</span>
                       </Button>
                     </div>
-                    <span className="text-sm">Lesson</span>
+                    <span className="text-sm">{title}</span>
                   </div>
                 </div>
 

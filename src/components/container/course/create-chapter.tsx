@@ -2,8 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Reorder } from "framer-motion";
-import Image from "next/image";
-import Link from "next/link";
 
 import { BiCustomize } from "react-icons/bi";
 import { FaEdit } from "react-icons/fa";
@@ -11,20 +9,30 @@ import { FaEdit } from "react-icons/fa";
 import { useState } from "react";
 import { Item } from "@/components/reorder/item-drag";
 import { MdPreview } from "react-icons/md";
-import ModalCourse from "@/components/modal-course";
-import { useDisclosure } from "@nextui-org/react";
+import { Input } from "@nextui-org/input";
+import { Checkbox } from "@nextui-org/react";
 
 const CreateChapterPage = () => {
   const initialItems = [
-    "Listening Part 1,2",
-    "Listening Part 3,4",
-    "Practice Test 1",
-    "Writing",
+    "Listening P1",
+    "Listening P2",
+    "Practice 1",
+    "Practice 2",
   ];
   const [items, setItems] = useState(initialItems);
 
+  const [isShowTitle, setIsShowTitle] = useState(false);
+  const [isShowDescription, setIsShowDescription] = useState(false);
+  const [isShowAccessSetting, setIsShowAccessSetting] = useState(false);
+
+  const handleShowEdit = (
+    stateSetter: (prevState: React.SetStateAction<boolean>) => void
+  ) => {
+    stateSetter((prevState: boolean) => !prevState);
+  };
+
   return (
-    <div className="flex flex-col gap-0">
+    <div className="flex flex-col gap-0 w-full">
       <div className="flex flex-col gap-2 m-6">
         <div>
           <span className="text-2xl font-bold">Chapter Details</span>
@@ -54,14 +62,39 @@ const CreateChapterPage = () => {
               <div className="flex flex-col gap-0">
                 <div className="flex flex-row justify-between">
                   <span className="text-md font-semibold">Chapter title</span>
-                  <Button className="flex flex-row gap-2" variant={"ghost"}>
-                    <div>
-                      <FaEdit />
-                    </div>
-                    <span>Edit title</span>
-                  </Button>
+                  {isShowTitle ? (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowTitle)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <span>Cancel</span>
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowTitle)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <div>
+                        <FaEdit />
+                      </div>
+                      <span>Edit title</span>
+                    </Button>
+                  )}
                 </div>
-                <span className="text-sm">Listening Part 1,2</span>
+                {isShowTitle ? (
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      placeholder={"Enter to course title"}
+                      variant={"bordered"}
+                      className="w-1/2"
+                    ></Input>
+                    <Button className="w-20">Save</Button>
+                  </div>
+                ) : (
+                  <span className="text-sm">Listening Part 1,2</span>
+                )}
               </div>
             </div>
 
@@ -71,14 +104,39 @@ const CreateChapterPage = () => {
                   <span className="text-md font-semibold">
                     Chapter description
                   </span>
-                  <Button className="flex flex-row gap-2" variant={"ghost"}>
-                    <div>
-                      <FaEdit />
-                    </div>
-                    <span>Edit description</span>
-                  </Button>
+                  {isShowDescription ? (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowDescription)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <span>Cancel</span>
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowDescription)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <div>
+                        <FaEdit />
+                      </div>
+                      <span>Edit description</span>
+                    </Button>
+                  )}
                 </div>
-                <span className="text-sm">Description</span>
+                {isShowDescription ? (
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      placeholder={"Enter to course title"}
+                      variant={"bordered"}
+                      className="w-1/2"
+                    ></Input>
+                    <Button className="w-20">Save</Button>
+                  </div>
+                ) : (
+                  <span className="text-sm">Description</span>
+                )}
               </div>
             </div>
           </div>
@@ -100,16 +158,43 @@ const CreateChapterPage = () => {
                   <span className="text-md font-semibold">
                     Free Preview Chapter
                   </span>
-                  <Button className="flex flex-row gap-2" variant={"ghost"}>
-                    <div>
-                      <FaEdit />
-                    </div>
-                    <span>Edit access settings</span>
-                  </Button>
+                  {isShowAccessSetting ? (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowAccessSetting)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <span>Cancel</span>
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowAccessSetting)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <div>
+                        <FaEdit />
+                      </div>
+                      <span>Edit access setting</span>
+                    </Button>
+                  )}
                 </div>
-                <span className="text-sm opacity-70 italic">
-                  This is chapter not for free preview
-                </span>
+                {isShowAccessSetting ? (
+                  <div className="flex flex-col gap-2">
+                    <div className="flex flex-row gap-0">
+                      <Checkbox size="sm" />
+                      <span className="text-sm opacity-80 italic">
+                        Check this box if you want to make this chapter free for
+                        preview
+                      </span>
+                    </div>
+                    <Button className="w-20">Save</Button>
+                  </div>
+                ) : (
+                  <span className="text-sm opacity-70 italic">
+                    This chapter is not for free preview
+                  </span>
+                )}
               </div>
             </div>
           </div>

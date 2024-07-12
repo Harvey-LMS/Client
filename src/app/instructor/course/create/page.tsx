@@ -1,11 +1,7 @@
 import CreateCoursePage from "@/components/container/course/create-course";
 
 const Page = () => {
-  return (
-    <div>
-      <CreateCoursePage></CreateCoursePage>
-    </div>
-  );
+  return <CreateCoursePage></CreateCoursePage>;
 };
 
 export default Page;
