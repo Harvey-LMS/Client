@@ -17,6 +17,7 @@ import { useState } from "react";
 import { Item } from "@/components/reorder/item-drag";
 import { MdOutlineSource } from "react-icons/md";
 import { Input, Textarea } from "@nextui-org/input";
+import { Select, SelectItem } from "@nextui-org/react";
 
 const CreateCoursePage = () => {
   const initialItems = [
@@ -31,6 +32,7 @@ const CreateCoursePage = () => {
   const [isShowDescription, setIsShowDescription] = useState(false);
   const [ísShowPrice, setIsShowPrice] = useState(false);
   const [isShowDiscount, setIsShowDiscount] = useState(false);
+  const [isShowLevel, setIsShowLevel] = useState(false);
 
   const [titleInput, setTitleInput] = useState("");
   const [title, setTitle] = useState("This is title");
@@ -40,6 +42,8 @@ const CreateCoursePage = () => {
   const [price, setPrice] = useState(32);
   const [discountInput, setDiscountInput] = useState("");
   const [discount, setDiscount] = useState(32);
+  const [levelInput, setLevelInput] = useState("");
+  const [level, setLevel] = useState("Easy");
 
   const handleShowEdit = (
     stateSetter: (prevState: React.SetStateAction<boolean>) => void
@@ -77,6 +81,14 @@ const CreateCoursePage = () => {
   const handleSaveDiscount = () => {
     setDiscount(Number.parseInt(discountInput));
     setIsShowDiscount(false);
+  };
+
+  const handleChangeLevel = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setLevelInput(e.target.value);
+  };
+  const handleSaveLevel = () => {
+    setLevel(levelInput);
+    setIsShowLevel(false);
   };
 
   return (
@@ -297,30 +309,49 @@ const CreateCoursePage = () => {
               <div className="flex flex-col gap-1">
                 <div className="flex flex-row justify-between">
                   <span className="text-md font-semibold">Courses level</span>
-                  <Button className="flex flex-row gap-2" variant={"ghost"}>
-                    <div>
-                      <FaEdit />
-                    </div>
-                    <span>Edit level</span>
-                  </Button>
+                  {isShowLevel ? (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowLevel)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <span>Cancel</span>
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowLevel)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <div>
+                        <FaEdit />
+                      </div>
+                      <span>Edit level</span>
+                    </Button>
+                  )}
                 </div>
-                <div className="flex flex-row gap-1">
+                {isShowLevel ? (
+                  <div className="flex flex-col gap-2">
+                    <Select
+                      onChange={handleChangeLevel}
+                      label="Select a level"
+                      className="max-w-xs"
+                    >
+                      <SelectItem key={"Easy"}>Easy</SelectItem>
+                      <SelectItem key={"Medium"}>Medium</SelectItem>
+                      <SelectItem key={"Hard"}>Hard</SelectItem>
+                    </Select>
+                    <Button onClick={handleSaveLevel} className="w-20">
+                      Save
+                    </Button>
+                  </div>
+                ) : (
                   <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      Easy
+                    <span className="text-md flex justify-center items-center">
+                      {level}
                     </span>
                   </div>
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      Medium
-                    </span>
-                  </div>
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      Hard
-                    </span>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
