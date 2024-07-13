@@ -32,7 +32,9 @@ const CreateCoursePage = () => {
   const [isShowDescription, setIsShowDescription] = useState(false);
   const [ísShowPrice, setIsShowPrice] = useState(false);
   const [isShowDiscount, setIsShowDiscount] = useState(false);
+  const [isShowLanguage, setIsShowLanguage] = useState(false);
   const [isShowLevel, setIsShowLevel] = useState(false);
+  const [isShowCategory, setIsShowCategory] = useState(false);
 
   const [titleInput, setTitleInput] = useState("");
   const [title, setTitle] = useState("This is title");
@@ -42,8 +44,13 @@ const CreateCoursePage = () => {
   const [price, setPrice] = useState(32);
   const [discountInput, setDiscountInput] = useState("");
   const [discount, setDiscount] = useState(32);
+  const [languageInput, setLanguageInput] = useState("");
+  const [categoryInput, setCategoryInput] = useState("");
   const [levelInput, setLevelInput] = useState("");
   const [level, setLevel] = useState("Easy");
+
+  const [listLanguage, setListLanguage] = useState<string[]>(["English"]);
+  const [listCategory, setListCategory] = useState<string[]>(["TOEIC"]);
 
   const handleShowEdit = (
     stateSetter: (prevState: React.SetStateAction<boolean>) => void
@@ -81,6 +88,24 @@ const CreateCoursePage = () => {
   const handleSaveDiscount = () => {
     setDiscount(Number.parseInt(discountInput));
     setIsShowDiscount(false);
+  };
+
+  const handleChangeLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setLanguageInput(e.target.value);
+  };
+
+  const handleSaveLanguage = () => {
+    setListLanguage((prevList) => [...prevList, languageInput]);
+    setIsShowLanguage(false);
+  };
+
+  const handleChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setCategoryInput(e.target.value);
+  };
+
+  const handleSaveCategory = () => {
+    setListCategory((prevList) => [...prevList, categoryInput]);
+    setIsShowCategory(false);
   };
 
   const handleChangeLevel = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -239,35 +264,56 @@ const CreateCoursePage = () => {
                   <span className="text-md font-semibold">
                     Courses language
                   </span>
-                  <Button className="flex flex-row gap-2" variant={"ghost"}>
-                    <div>
-                      <FaEdit />
-                    </div>
-                    <span>Edit language</span>
-                  </Button>
+                  {isShowLanguage ? (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowLanguage)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <span>Cancel</span>
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowLanguage)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <div>
+                        <FaEdit />
+                      </div>
+                      <span>Edit language</span>
+                    </Button>
+                  )}
                 </div>
-                <div className="flex flex-row gap-1">
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      English
-                    </span>
+                {isShowLanguage ? (
+                  <div className="flex flex-col gap-2">
+                    <Select
+                      onChange={handleChangeLanguage}
+                      label="Select a language"
+                      className="max-w-xs"
+                    >
+                      <SelectItem key={"Vietnamese"}>Vietnamese</SelectItem>
+                      <SelectItem key={"France"}>France</SelectItem>
+                      <SelectItem key={"Chinese"}>Chinese</SelectItem>
+                    </Select>
+                    <Button onClick={handleSaveLanguage} className="w-20">
+                      Save
+                    </Button>
                   </div>
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      Chinese
-                    </span>
+                ) : (
+                  <div className="flex flex-row gap-1">
+                    {listLanguage.map((item: string, index: number) => (
+                      <div
+                        key={index}
+                        className="border border-gray-300 w-1/6 rounded-lg bg-white"
+                      >
+                        <span className="flex justify-center items-center">
+                          {item}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      Chinese
-                    </span>
-                  </div>
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      ...
-                    </span>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
 
@@ -277,31 +323,56 @@ const CreateCoursePage = () => {
                   <span className="text-md font-semibold">
                     Courses category
                   </span>
-                  <Button className="flex flex-row gap-2" variant={"ghost"}>
-                    <div>
-                      <FaEdit />
-                    </div>
-                    <span>Edit category</span>
-                  </Button>
+                  {isShowCategory ? (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowCategory)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <span>Cancel</span>
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowCategory)}
+                      className="flex flex-row gap-2"
+                      variant={"ghost"}
+                    >
+                      <div>
+                        <FaEdit />
+                      </div>
+                      <span>Edit category</span>
+                    </Button>
+                  )}
                 </div>
-                <div className="flex flex-row gap-1">
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      Skills
-                    </span>
+                {isShowCategory ? (
+                  <div className="flex flex-col gap-2">
+                    <Select
+                      onChange={handleChangeCategory}
+                      label="Select a level"
+                      className="max-w-xs"
+                    >
+                      <SelectItem key={"Skills"}>Skills</SelectItem>
+                      <SelectItem key={"Practice"}>Practice</SelectItem>
+                      <SelectItem key={"Others"}>Others</SelectItem>
+                    </Select>
+                    <Button onClick={handleSaveCategory} className="w-20">
+                      Save
+                    </Button>
                   </div>
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      Vocabulary
-                    </span>
+                ) : (
+                  <div className="flex flex-row gap-1">
+                    {listCategory.map((item: string, index: number) => (
+                      <div
+                        key={index}
+                        className="border border-gray-300 w-1/6 rounded-lg bg-white"
+                      >
+                        <span className="flex justify-center items-center">
+                          {item}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="flex justify-center items-center">
-                      ...
-                    </span>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
 
