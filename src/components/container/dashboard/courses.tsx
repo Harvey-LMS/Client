@@ -4,13 +4,16 @@ import { Button } from "@nextui-org/react";
 import { IoIosAdd } from "react-icons/io";
 import RowData from "./course/course";
 import Link from "next/link";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Loading from "@/app/loading";
+import { usePathname, useRouter } from "next/navigation";
+import path from "path";
 
 
 const Courses = () => {
-    const [isCourse, setIsCourse] = useState<boolean>(true);
-
+    const pathName = usePathname();
+    const route = pathName.split("/")[3];
+    
     return (
         <div>
             <div>
@@ -19,20 +22,20 @@ const Courses = () => {
 
             <div className="flex flex-row justify-between items-center w-full border-b-1 border-b-gray-500 py-2">
                 <div className="flex flex-row justify-center items-center gap-5 text-lg">
-                    <Link href={"/dashboard/courses/course"} className={`cursor-pointer ${isCourse ? "font-bold text-primary " : ""}`}>
-                        <div onClick={() => setIsCourse(true)}>
+                    <Link href={"/dashboard/courses/course"} className={`cursor-pointer ${route === "course" ? "font-bold text-primary " : ""}`}>
+                        <div>
                             Course
                         </div>
                     </Link>
-                    <Link href={"/dashboard/courses/draft-course"} className={`cursor-pointer ${isCourse ? " " : "font-bold text-primary"}`}>
-                        <div onClick={() => setIsCourse(false)}>
+                    <Link href={"/dashboard/courses/draft-course"} className={`cursor-pointer ${route === "draft-course" ? "font-bold text-primary " : ""}`}>
+                        <div>
                             Draft Course
                         </div>
                     </Link>
                 </div>
-                <Button variant="bordered" className="flex flex-row justify-center items-center gap-5 text-xl">
+                <Button variant="ghost"  className="flex flex-row justify-center items-center text-xl">
                     <IoIosAdd />
-                    <p>Create</p>
+                    <p className="font-semibold">Create</p>
                 </Button>
             </div>
         </div>

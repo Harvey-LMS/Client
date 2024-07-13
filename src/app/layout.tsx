@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import NavbarComponent from "@/components/container/navbar/navbar-horizontal";
+import { NextUIProvider } from "@nextui-org/system";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,15 +20,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="harvey bg-background text-foreground w-full">
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+        <div className="w-full">
+          <NextUIProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </NextUIProvider>
+
         </div>
       </body>
     </html>
