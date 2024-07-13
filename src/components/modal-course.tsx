@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -7,6 +9,7 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  Input,
 } from "@nextui-org/react";
 import { BiCustomize } from "react-icons/bi";
 import { IoMdAddCircleOutline } from "react-icons/io";
@@ -16,12 +19,42 @@ import { FaEdit } from "react-icons/fa";
 export default function ModalCourse({
   isOpen,
   onOpenChange,
-  title,
-}: {
+}: // title,
+{
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
-  title: string;
+  // title: string;
 }) {
+  const [isShowTitle, setIsShowTitle] = useState(false);
+  const [isShowContent, setIsShowContent] = useState(false);
+
+  const [titleInput, setTitleInput] = useState("");
+  const [title, setTitle] = useState("This is title");
+  const [contentInput, setContentInput] = useState("");
+  const [content, setContent] = useState("This is content");
+
+  const handleShowEdit = (
+    stateSetter: (prevState: React.SetStateAction<boolean>) => void
+  ) => {
+    stateSetter((prevState: boolean) => !prevState);
+  };
+
+  const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitleInput(e.target.value);
+  };
+  const handleSaveTitle = () => {
+    setTitle(titleInput);
+    setIsShowTitle(false);
+  };
+
+  const handleChangeContent = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setContentInput(e.target.value);
+  };
+  const handleSaveContent = () => {
+    setContent(contentInput);
+    setIsShowContent(false);
+  };
+
   return (
     <div>
       <Modal size={"3xl"} isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -44,14 +77,45 @@ export default function ModalCourse({
                       <span className="text-md font-semibold">
                         Lesson title
                       </span>
-                      <Button className="flex flex-row gap-2" variant={"light"}>
-                        <div>
-                          <FaEdit />
-                        </div>
-                        <span>Edit title</span>
-                      </Button>
+                      {isShowTitle ? (
+                        <Button
+                          onClick={() => handleShowEdit(setIsShowTitle)}
+                          className="flex flex-row gap-2"
+                          variant={"ghost"}
+                        >
+                          <span>Cancel</span>
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={() => handleShowEdit(setIsShowTitle)}
+                          className="flex flex-row gap-2"
+                          variant={"ghost"}
+                        >
+                          <div>
+                            <FaEdit />
+                          </div>
+                          <span>Edit title</span>
+                        </Button>
+                      )}
                     </div>
-                    <span className="text-sm">{title}</span>
+                    {isShowTitle ? (
+                      <div className="flex flex-col gap-2">
+                        <Input
+                          variant={"bordered"}
+                          className="w-full"
+                          onChange={handleChangeTitle}
+                        ></Input>
+                        <Button
+                          color="primary"
+                          onClick={handleSaveTitle}
+                          className="w-20"
+                        >
+                          Save
+                        </Button>
+                      </div>
+                    ) : (
+                      <span className="text-sm">{title}</span>
+                    )}
                   </div>
                 </div>
 
@@ -61,14 +125,45 @@ export default function ModalCourse({
                       <span className="text-md font-semibold">
                         Lesson content
                       </span>
-                      <Button className="flex flex-row gap-2" variant={"light"}>
-                        <div>
-                          <FaEdit />
-                        </div>
-                        <span>Edit content</span>
-                      </Button>
+                      {isShowContent ? (
+                        <Button
+                          onClick={() => handleShowEdit(setIsShowContent)}
+                          className="flex flex-row gap-2"
+                          variant={"ghost"}
+                        >
+                          <span>Cancel</span>
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={() => handleShowEdit(setIsShowContent)}
+                          className="flex flex-row gap-2"
+                          variant={"ghost"}
+                        >
+                          <div>
+                            <FaEdit />
+                          </div>
+                          <span>Edit title</span>
+                        </Button>
+                      )}
                     </div>
-                    <span className="text-sm">Content</span>
+                    {isShowContent ? (
+                      <div className="flex flex-col gap-2">
+                        <Input
+                          variant={"bordered"}
+                          className="w-full"
+                          onChange={handleChangeContent}
+                        ></Input>
+                        <Button
+                          color="primary"
+                          onClick={handleSaveContent}
+                          className="w-20"
+                        >
+                          Save
+                        </Button>
+                      </div>
+                    ) : (
+                      <span className="text-sm">{content}</span>
+                    )}
                   </div>
                 </div>
 

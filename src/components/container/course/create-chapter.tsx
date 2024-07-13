@@ -9,7 +9,7 @@ import { FaEdit } from "react-icons/fa";
 import { useState } from "react";
 import { Item } from "@/components/reorder/item-drag";
 import { MdPreview } from "react-icons/md";
-import { Input } from "@nextui-org/input";
+import { Input, Textarea } from "@nextui-org/input";
 import { Checkbox } from "@nextui-org/react";
 
 const CreateChapterPage = () => {
@@ -25,10 +25,31 @@ const CreateChapterPage = () => {
   const [isShowDescription, setIsShowDescription] = useState(false);
   const [isShowAccessSetting, setIsShowAccessSetting] = useState(false);
 
+  const [titleInput, setTitleInput] = useState("");
+  const [title, setTitle] = useState("This is title");
+  const [descriptionInput, setDescriptionInput] = useState("");
+  const [description, setDescription] = useState("This is description");
+
   const handleShowEdit = (
     stateSetter: (prevState: React.SetStateAction<boolean>) => void
   ) => {
     stateSetter((prevState: boolean) => !prevState);
+  };
+
+  const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitleInput(e.target.value);
+  };
+  const handleSaveTitle = () => {
+    setTitle(titleInput);
+    setIsShowTitle(false);
+  };
+
+  const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDescriptionInput(e.target.value);
+  };
+  const handleSaveDescription = () => {
+    setDescription(descriptionInput);
+    setIsShowDescription(false);
   };
 
   return (
@@ -86,14 +107,17 @@ const CreateChapterPage = () => {
                 {isShowTitle ? (
                   <div className="flex flex-col gap-2">
                     <Input
-                      placeholder={"Enter to course title"}
                       variant={"bordered"}
-                      className="w-1/2"
+                      className="w-full"
+                      onChange={handleChangeTitle}
+                      placeholder="Enter to course title"
                     ></Input>
-                    <Button className="w-20">Save</Button>
+                    <Button onClick={handleSaveTitle} className="w-20">
+                      Save
+                    </Button>
                   </div>
                 ) : (
-                  <span className="text-sm">Listening Part 1,2</span>
+                  <span className="text-sm">{title}</span>
                 )}
               </div>
             </div>
@@ -127,15 +151,18 @@ const CreateChapterPage = () => {
                 </div>
                 {isShowDescription ? (
                   <div className="flex flex-col gap-2">
-                    <Input
-                      placeholder={"Enter to course title"}
+                    <Textarea
                       variant={"bordered"}
-                      className="w-1/2"
-                    ></Input>
-                    <Button className="w-20">Save</Button>
+                      className="w-full"
+                      onChange={handleChangeDescription}
+                      placeholder="Enter to course description"
+                    ></Textarea>
+                    <Button onClick={handleSaveDescription} className="w-20">
+                      Save
+                    </Button>
                   </div>
                 ) : (
-                  <span className="text-sm">Description</span>
+                  <span className="text-sm">{description}</span>
                 )}
               </div>
             </div>

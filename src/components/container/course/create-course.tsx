@@ -16,7 +16,7 @@ import {
 import { useState } from "react";
 import { Item } from "@/components/reorder/item-drag";
 import { MdOutlineSource } from "react-icons/md";
-import { Input } from "@nextui-org/input";
+import { Input, Textarea } from "@nextui-org/input";
 
 const CreateCoursePage = () => {
   const initialItems = [
@@ -137,7 +137,7 @@ const CreateCoursePage = () => {
                     <Input
                       placeholder={"Enter to course title"}
                       variant={"bordered"}
-                      className="w-1/2"
+                      className="w-full"
                       onChange={handleChangeTitle}
                     ></Input>
                     <Button onClick={handleSaveTitle} className="w-20">
@@ -179,11 +179,12 @@ const CreateCoursePage = () => {
                 </div>
                 {isShowDescription ? (
                   <div className="flex flex-col gap-2">
-                    <Input
+                    <Textarea
                       variant={"bordered"}
-                      className="w-1/2"
+                      className="w-full"
                       onChange={handleChangeDescription}
-                    ></Input>
+                      placeholder="Enter to course description"
+                    ></Textarea>
                     <Button onClick={handleSaveDescription} className="w-20">
                       Save
                     </Button>
@@ -391,15 +392,16 @@ const CreateCoursePage = () => {
                   <div className="flex flex-col gap-2">
                     <Input
                       variant={"bordered"}
-                      className="w-1/2"
+                      className="w-full"
                       onChange={handleChangePrice}
+                      placeholder="Enter to course price"
                     ></Input>
                     <Button onClick={handleSavePrice} className="w-20">
                       Save
                     </Button>
                   </div>
                 ) : (
-                  <span className="text-sm">{price}</span>
+                  <span className="text-sm">{price}$</span>
                 )}
               </div>
             </div>
@@ -435,15 +437,16 @@ const CreateCoursePage = () => {
                   <div className="flex flex-col gap-2">
                     <Input
                       variant={"bordered"}
-                      className="w-1/2"
+                      className="w-full"
                       onChange={handleChangeDiscount}
+                      placeholder="Enter to course discount"
                     ></Input>
                     <Button onClick={handleSaveDiscount} className="w-20">
                       Save
                     </Button>
                   </div>
                 ) : (
-                  <span className="text-sm">{discount}</span>
+                  <span className="text-sm">{discount}$</span>
                 )}
               </div>
             </div>
