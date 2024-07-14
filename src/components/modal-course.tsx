@@ -142,7 +142,7 @@ export default function ModalCourse({
                           <div>
                             <FaEdit />
                           </div>
-                          <span>Edit title</span>
+                          <span>Edit content</span>
                         </Button>
                       )}
                     </div>

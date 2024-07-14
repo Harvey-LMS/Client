@@ -18,6 +18,7 @@ import { Item } from "@/components/reorder/item-drag";
 import { MdOutlineSource } from "react-icons/md";
 import { Input, Textarea } from "@nextui-org/input";
 import { Select, SelectItem } from "@nextui-org/react";
+import { FiTrash } from "react-icons/fi";
 
 const CreateCoursePage = () => {
   const initialItems = [
@@ -114,6 +115,18 @@ const CreateCoursePage = () => {
   const handleSaveLevel = () => {
     setLevel(levelInput);
     setIsShowLevel(false);
+  };
+
+  const handleDropLanguage = (indexRemove: number) => {
+    setListLanguage((prevList) =>
+      prevList.filter((_, index) => index !== indexRemove)
+    );
+  };
+
+  const handleDropCategory = (indexRemove: number) => {
+    setListCategory((prevList) =>
+      prevList.filter((_, index) => index !== indexRemove)
+    );
   };
 
   return (
@@ -305,11 +318,15 @@ const CreateCoursePage = () => {
                     {listLanguage.map((item: string, index: number) => (
                       <div
                         key={index}
-                        className="border border-gray-300 w-1/6 rounded-lg bg-white"
+                        className="flex flex-row justify-between items-center gap-2 pl-2 border border-gray-300 w-1/5 rounded-lg"
                       >
-                        <span className="flex justify-center items-center">
-                          {item}
-                        </span>
+                        <span className="text-md">{item}</span>
+                        <Button
+                          onClick={() => handleDropLanguage(index)}
+                          variant={"ghost"}
+                        >
+                          <FiTrash />
+                        </Button>
                       </div>
                     ))}
                   </div>
@@ -364,11 +381,15 @@ const CreateCoursePage = () => {
                     {listCategory.map((item: string, index: number) => (
                       <div
                         key={index}
-                        className="border border-gray-300 w-1/6 rounded-lg bg-white"
+                        className="flex flex-row justify-between items-center gap-2 pl-2 border border-gray-300 w-1/6 rounded-lg"
                       >
-                        <span className="flex justify-center items-center">
-                          {item}
-                        </span>
+                        <span className="">{item}</span>
+                        <Button
+                          onClick={() => handleDropCategory(index)}
+                          variant={"ghost"}
+                        >
+                          <FiTrash />
+                        </Button>
                       </div>
                     ))}
                   </div>
@@ -417,10 +438,8 @@ const CreateCoursePage = () => {
                     </Button>
                   </div>
                 ) : (
-                  <div className="border border-gray-300 w-1/6 rounded-lg bg-white">
-                    <span className="text-md flex justify-center items-center">
-                      {level}
-                    </span>
+                  <div className="flex justify-center items-center border border-gray-300 w-1/6 rounded-lg">
+                    <span className="text-md">{level}</span>
                   </div>
                 )}
               </div>
@@ -431,11 +450,16 @@ const CreateCoursePage = () => {
         <div className="w-1/2">
           <div className="flex flex-col gap-1 border rounded-lg shadow-lg p-4 border-solid m-4">
             <div className="flex flex-col gap-2">
-              <div className="flex flex-row gap-1">
-                <BiCustomize className="w-10 h-10" />
-                <span className="flex justify-center items-center text-2xl font-semibold">
-                  Option chapter
-                </span>
+              <div className="flex flex-row justify-between">
+                <div className="flex flex-row gap-1">
+                  <BiCustomize className="w-10 h-10" />
+                  <span className="flex justify-center items-center text-2xl font-semibold">
+                    Option chapter
+                  </span>
+                </div>
+                <div>
+                  <Button>+ Create</Button>
+                </div>
               </div>
               <div className="border border-gray-200 bg-white"></div>
             </div>

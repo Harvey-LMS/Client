@@ -229,11 +229,16 @@ const CreateChapterPage = () => {
         <div className="w-1/2">
           <div className="flex flex-col gap-1 border rounded-lg shadow-lg p-4 border-solid m-4">
             <div className="flex flex-col gap-2">
-              <div className="flex flex-row gap-1">
-                <BiCustomize className="w-10 h-10" />
-                <span className="flex justify-center items-center text-2xl font-semibold">
-                  Option chapter
-                </span>
+              <div className="flex flex-row justify-between">
+                <div className="flex flex-row gap-1">
+                  <BiCustomize className="w-10 h-10" />
+                  <span className="flex justify-center items-center text-2xl font-semibold">
+                    Option lesson
+                  </span>
+                </div>
+                <div>
+                  <Button>+ Create</Button>
+                </div>
               </div>
               <div className="border border-gray-200 bg-white"></div>
             </div>
