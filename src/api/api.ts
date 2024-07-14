@@ -10,7 +10,7 @@ const api = async (
   const body = data ? JSON.stringify(data) : undefined;
 
     try {
-        const response = await fetch(`https://66656af6d122c2868e409b34.mockapi.io/${url}`, {
+        const response = await fetch(`${process.env.API_URL}${url}`, {
             method,
             headers,
             body,
