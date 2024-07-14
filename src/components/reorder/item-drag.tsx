@@ -58,7 +58,7 @@ export const Item = ({ item }: Props) => {
           <ModalCourse
             isOpen={isOpen}
             onOpenChange={onOpenChange}
-            title={currentItem || ""}
+            // title={currentItem || ""}
           />
         </Button>
       </div>
