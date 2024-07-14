@@ -5,6 +5,7 @@ import { Reorder } from "framer-motion";
 
 import { BiCustomize } from "react-icons/bi";
 import { FaEdit } from "react-icons/fa";
+import { CiViewList } from "react-icons/ci";
 
 import { useState } from "react";
 import { Item } from "@/components/reorder/item-drag";
@@ -231,7 +232,7 @@ const CreateChapterPage = () => {
             <div className="flex flex-col gap-2">
               <div className="flex flex-row justify-between">
                 <div className="flex flex-row gap-1">
-                  <BiCustomize className="w-10 h-10" />
+                  <CiViewList className="w-10 h-10" />
                   <span className="flex justify-center items-center text-2xl font-semibold">
                     Option lesson
                   </span>

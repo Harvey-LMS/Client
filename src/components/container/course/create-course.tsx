@@ -7,12 +7,8 @@ import Link from "next/link";
 
 import { BiCustomize } from "react-icons/bi";
 import { FaEdit } from "react-icons/fa";
-import {
-  IoIosOptions,
-  IoIosPricetags,
-  IoMdAddCircleOutline,
-} from "react-icons/io";
-
+import { IoIosPricetags, IoMdAddCircleOutline } from "react-icons/io";
+import { CiViewList } from "react-icons/ci";
 import { useState } from "react";
 import { Item } from "@/components/reorder/item-drag";
 import { MdOutlineSource } from "react-icons/md";
@@ -248,7 +244,9 @@ const CreateCoursePage = () => {
             <div className="m-2">
               <div className="flex flex-col gap-1">
                 <div className="flex flex-col gap-1">
-                  <span className="text-md font-semibold">Courses image</span>
+                  <span className="text-md font-semibold">
+                    Courses thumbnail
+                  </span>
                 </div>
                 <Link
                   href=""
@@ -263,7 +261,7 @@ const CreateCoursePage = () => {
           <div className="flex flex-col gap-1 border rounded-lg shadow-lg p-4 border-solid m-4">
             <div className="flex flex-col gap-2">
               <div className="flex flex-row gap-1">
-                <IoIosOptions className="w-10 h-10" />
+                <BiCustomize className="w-10 h-10" />
                 <span className="flex justify-center items-center text-2xl font-semibold">
                   Option your
                 </span>
@@ -452,7 +450,7 @@ const CreateCoursePage = () => {
             <div className="flex flex-col gap-2">
               <div className="flex flex-row justify-between">
                 <div className="flex flex-row gap-1">
-                  <BiCustomize className="w-10 h-10" />
+                  <CiViewList className="w-10 h-10" />
                   <span className="flex justify-center items-center text-2xl font-semibold">
                     Option chapter
                   </span>
@@ -471,9 +469,7 @@ const CreateCoursePage = () => {
                 onReorder={setItems}
                 values={items}
               >
-                {items.map((item) => (
-                  <Item key={item} item={item} />
-                ))}
+                <Item key={"Listening Part 1,2"} item={"Listening Part 1,2"} />
               </Reorder.Group>
             </div>
           </div>
