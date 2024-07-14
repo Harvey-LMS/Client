@@ -22,6 +22,10 @@ const config = {
     },
     extend: {
       colors: {
+        hover: {
+          DEFAULT: "hsl(var(--hover))",
+          2: "hsl(var(--hover-level-2))",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -96,26 +100,26 @@ const config = {
     require("tailwindcss-animate"),
     nextui({
       themes: {
-       "harvey": {
+        "light": {
           extend: "light", // <- inherit default values from dark theme
           colors: {
             background: "#0D001A",
             foreground: "#ffffff",
             primary: {
-              50: "#3B096C",
-              100: "#520F83",
-              200: "#7318A2",
-              300: "#9823C2",
-              400: "#c031e2",
-              500: "#DD62ED",
-              600: "#F182F6",
-              700: "#FCADF9",
-              800: "#FDD5F9",
-              900: "#FEECFE",
-              DEFAULT: "#DD62ED",
+              50: "#E2FDEA",
+              100: "#DAFBD6",
+              200: "#B0F7AE",
+              300: "#81E888",
+              400: "#5DD171",
+              500: "#2FB352",
+              600: "#22994D",
+              700: "#178047",
+              800: "#0E6740",
+              900: "#09553B",
+              DEFAULT: "#2FB352",
               foreground: "#ffffff",
             },
-            focus: "#F182F6",
+            focus: "#DAFBD6",
           },
           layout: {
             disabledOpacity: "0.3",
@@ -131,7 +135,41 @@ const config = {
             },
           },
         },
-
+        "dark": { // <- Tên theme mới
+          extend: "dark", // <- Kế thừa giá trị mặc định từ theme tối
+          colors: {
+            background: "#121212",
+            foreground: "#E0E0E0",
+            primary: {
+              50: "#5A5A5A",
+              100: "#525252",
+              200: "#4A4A4A",
+              300: "#424242",
+              400: "#3A3A3A",
+              500: "#323232",
+              600: "#2A2A2A",
+              700: "#222222",
+              800: "#1A1A1A",
+              900: "#121212",
+              DEFAULT: "#323232",
+              foreground: "#E0E0E0",
+            },
+            focus: "#525252",
+          },
+          layout: {
+            disabledOpacity: "0.5",
+            radius: {
+              small: "5px",
+              medium: "7px",
+              large: "9px",
+            },
+            borderWidth: {
+              small: "2px",
+              medium: "3px",
+              large: "4px",
+            },
+          },
+        },
       },
     }),
   ],

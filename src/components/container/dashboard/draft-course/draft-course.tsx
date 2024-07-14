@@ -1,4 +1,7 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
+import { Pagination } from "@nextui-org/react";
 import Image from "next/image";
 import { MdModeEdit } from "react-icons/md";
 import { MdOutlineDelete } from "react-icons/md";
@@ -106,63 +109,79 @@ const data = [
         image: "https://miro.medium.com/v2/resize:fit:1000/1*KDMx1YspSrBcFJG-NDZgDg.png",
     }
 ]
-    
+
 
 
 const DraftCourse = () => {
-    return ( 
-    <div>
-        <table className="table-fixed w-full">
-            <thead>
-                <tr>
-                    <th className="w-1 "></th>
-                    <th className="w-7 ">Image</th>
-                    <th className="w-32 ">Name</th>
-                    <th className="w-6 ">Update</th>
-                    <th className="w-6 ">Price</th>
-                    <th className="w-6 ">Level</th>
-                    <th className="w-6 ">Status</th>
-                    <th className="w-6 ">Edit</th>
-                </tr>
-            </thead>
-            <tbody>
-                {data.map((item: Props) => (
-                    <tr key={item.id} className="hover:bg-gray-100">
-                        <td className="py-4 px-3 font-semibold text-center">{item.id}</td>
-                        <td className="py-4 flex justify-center items-center">
-                            <Image src={item.image} alt={item.name} width={100} height={70}/>
-                        </td>
-                        <td className="py-4 font-semibold text-lg truncate">{item.name}</td>
-                        <td className="py-4 text-center text-sm">{item.update}</td>
-                        <td className="py-4 text-center">
-                            <div className=" flex flex-row justify-center items-center gap-1">
-                            <p className="font-bold text-primary">$</p>
-                            <p className="font-semibold">{item.price}</p>
-                            </div>
-                        </td>
-
-                        <td className="py-4 text-center">{item.level}</td>
-                        <td className="py-4 text-center">
-                            <button 
-                            className={`bg-primary rounded-md py-1 px-5 font-bold text-primary-foreground cursor-default
-                            ${item.status === "Active" ? "bg-primary" : "bg-secondary"}`
-                            }
-                            >
-                            {item.status}
-                            </button>
-                        </td>
-                        <td className="py-4 text-center">
-                            <div className="items-center justify-center flex flex-row gap-5 text-3xl">
-                                <MdOutlineDelete />
-                                <MdModeEdit />
-                            </div>
-                        </td>
+    return (
+        <div>
+            <table className="table-fixed w-full">
+                <thead>
+                    <tr>
+                        <th className="w-1 "></th>
+                        <th className="w-7 ">Image</th>
+                        <th className="w-32 ">Name</th>
+                        <th className="w-6 ">Update</th>
+                        <th className="w-6 ">Price</th>
+                        <th className="w-6 ">Level</th>
+                        <th className="w-6 ">Status</th>
+                        <th className="w-6 ">Edit</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
-    </div> 
+                </thead>
+                <tbody>
+                    {data.map((item: Props) => (
+                        <tr key={item.id} className="hover:bg-hover ">
+                            <td className="py-4 px-3 font-semibold text-center">{item.id}</td>
+                            <td className="py-4 flex justify-center items-center">
+                                <Image src={item.image} alt={item.name} width={100} height={70} />
+                            </td>
+                            <td className="py-4 font-semibold text-lg truncate">{item.name}</td>
+                            <td className="py-4 text-center text-sm">{item.update}</td>
+                            <td className="py-4 text-center">
+                                <div className=" flex flex-row justify-center items-center gap-1">
+                                    <p className="font-bold text-primary">$</p>
+                                    <p className="font-semibold">{item.price}</p>
+                                </div>
+                            </td>
+
+                            <td className="py-4 text-center">{item.level}</td>
+
+                            <td className="py-4 text-center">
+                                <button
+                                    className={`rounded-md py-1 px-5 font-bold  cursor-default
+                                    ${item.status === "Active" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"}`
+                                    }
+                                >
+                                    {item.status}
+                                </button>
+                            </td>
+                            <td className="py-4 text-center">
+                                <div className="items-center justify-center flex flex-row gap-5 text-3xl">
+                                    <MdOutlineDelete />
+                                    <MdModeEdit />
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+
+            </table>
+            <div className="w-full flex flex-row justify-center items-center pb-16">
+                <Pagination showControls total={10} initialPage={1}
+                    classNames={{
+                        item: "bg-background text-foreground",
+                        prev: "bg-background text-foreground",
+                        next: "bg-background text-foreground",
+                        cursor: "bg-primary text-primary-foreground",
+                        wrapper: "bg-background",
+
+                    }
+                    }
+                />
+            </div>
+        </div>
     );
+
 }
- 
+
 export default DraftCourse;

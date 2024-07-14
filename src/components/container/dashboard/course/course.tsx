@@ -1,5 +1,8 @@
-import { Button } from "@/components/ui/button";
+"use client"
+
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, useDisclosure } from "@nextui-org/react";
 import Image from "next/image";
+import { useState } from "react";
 import { MdModeEdit } from "react-icons/md";
 import { MdOutlineDelete } from "react-icons/md";
 
@@ -109,9 +112,35 @@ const data = [
     
 
 
-const RowData = () => {
-    return ( 
+const Course = () => {
+    const {isOpen, onOpen, onOpenChange} = useDisclosure();
+    const [nameCourseDelete, setNameCourseDelete] = useState<string>("");
+
+    return (
     <div>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Delete Course</ModalHeader>
+              <ModalBody>
+                <p> 
+                  Are you sure to delete <p className="font-bold text-ellipsis overflow-hidden">{nameCourseDelete}</p> course?
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="primary" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+                <Button color="danger" onPress={onClose}>
+                  Delete
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+
         <table className="table-fixed w-full">
             <thead>
                 <tr>
@@ -127,7 +156,7 @@ const RowData = () => {
             </thead>
             <tbody>
                 {data.map((item: Props) => (
-                    <tr key={item.id} className="hover:bg-gray-100">
+                    <tr key={item.id} className="hover:bg-hover">
                         <td className="py-4 px-3 font-semibold text-center">{item.id}</td>
                         <td className="py-4 flex justify-center items-center">
                             <Image src={item.image} alt={item.name} width={100} height={70}/>
@@ -144,25 +173,40 @@ const RowData = () => {
                         <td className="py-4 text-center">{item.level}</td>
                         <td className="py-4 text-center">
                             <button 
-                            className={`bg-primary rounded-md py-1 px-5 font-bold text-primary-foreground cursor-default
-                            ${item.status === "Active" ? "bg-primary" : "bg-secondary"}`
+                            className={`rounded-md py-1 px-5 font-bold  cursor-default
+                            ${item.status === "Active" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"}`
                             }
                             >
                             {item.status}
                             </button>
                         </td>
                         <td className="py-4 text-center">
-                            <div className="items-center justify-center flex flex-row gap-5 text-3xl">
-                                <MdOutlineDelete />
-                                <MdModeEdit />
+                            <div className="items-center justify-center flex flex-row gap-5">
+                                <MdOutlineDelete className="text-danger rounded-sm hover:bg-hover-2 text-4xl p-1" onClick={() => {onOpen(); setNameCourseDelete(item.name)}} />
+                                <MdModeEdit className="text-secondary rounded-sm hover:bg-hover-2 text-4xl p-1" />
                             </div>
                         </td>
                     </tr>
+                    
                 ))}
             </tbody>
+            
         </table>
+        <div className="w-full flex flex-row justify-center items-center pb-16 font-bold">
+                <Pagination  showControls total={10} initialPage={1}
+                classNames={{
+                    item: "bg-background text-foreground", 
+                    prev: "bg-background text-foreground", 
+                    next: "bg-background text-foreground",
+                    cursor: "bg-primary text-primary-foreground",
+                    wrapper: "bg-background",
+                    
+                }
+            }
+                />
+        </div>
     </div> 
     );
 }
  
-export default RowData;
+export default Course;

@@ -29,6 +29,7 @@ import Back from "@/assets/icon/back-icon.svg";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { headers } from "next/headers";
+import { IoIosSearch } from "react-icons/io";
 
 
 const Nav = ({ children }: { children: React.ReactNode }) => {
@@ -159,7 +160,7 @@ const Nav = ({ children }: { children: React.ReactNode }) => {
                 </div>
             </div>
             <div className="w-full flex flex-col justify-start items-start">
-                <Navbar position="sticky" className="bg-white" maxWidth="full" >
+                <Navbar position="sticky" className=" bg-gradient from-white" maxWidth="full" >
                     <NavbarBrand className="flex md:hidden w-full">
                         <div
                             className={`md:hidden w-10 h-10 flex flex-row items-center justify-center cursor-pointer  rounded-sm ${isMenuOpen ? "hidden" : "block"}`}
@@ -175,38 +176,31 @@ const Nav = ({ children }: { children: React.ReactNode }) => {
                     </NavbarBrand>
 
                     <NavbarContent justify="end" className="justify-center items-center">
-                        <NavbarItem className="hidden lg:flex">
-                            <div className="flex flex-row justify-end items-center gap-5">
+                        <NavbarItem className="hidden lg:flex  lg:flex-row justify-center items-center gap-5">
+                            <div className="flex flex-row justify-end items-center">
 
                                 <motion.div
                                     initial={{ width: showInput ? "0%" : "100%", opacity: showInput ? 1 : 0 }}
                                     animate={{ width: showInput ? "100%" : "0%", opacity: showInput ? 1 : 0 }}
                                     exit={{ width: showInput ? "100%" : "0%", opacity: showInput ? 1 : 0, display: showInput ? "block" : "hidden" }}
                                     transition={{ duration: 0.2 }}
-                                    className=""
+                                    className="w-full"
 
                                 >
                                     <Input
-                                        variant="flat"
+                                        variant="bordered"
                                         type="text"
                                         placeholder="Type to search"
-                                        endContent={<Button variant="flat" size="sm">Search</Button>}
+                                        endContent={<Button variant="faded" size="sm" className={`${showInput ? "block" : "hidden"}`}>Search</Button>}
                                         isDisabled={!showInput}
 
                                     />
                                 </motion.div>
-
-                                <Image
-                                    alt="search"
-                                    loading="lazy"
-                                    src={Search}
-                                    onClick={handleShowSearch}
-                                    className=" w-15 h-15 cursor-pointer"
-                                    height={25}
-                                    width={25}
-                                />
-
                             </div>
+                            <IoIosSearch
+                                onClick={handleShowSearch}
+                                className="h-7 w-7 cursor-pointer"
+                            />
                         </NavbarItem>
 
                         <NavbarItem>

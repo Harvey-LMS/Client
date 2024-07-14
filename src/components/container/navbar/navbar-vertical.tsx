@@ -28,12 +28,8 @@ const NavbarVertical = () => {
   };
 
   return (
-    <div className="flex flex-row justify-center items-start md:h-12">
-      <Button
-        className="max-md:block p-2"
-        onClick={toggleMenu}
-        variant="ghost"
-      >
+    <div className="flex flex-row justify-center items-start">
+      <Button className="max-md:block p-2" onClick={toggleMenu} variant="ghost">
         <Image
           alt={"menu"}
           src={Menu}
@@ -41,8 +37,11 @@ const NavbarVertical = () => {
           width={24}
         />
       </Button>
+      {/* transition-width duration-300 absolute inset-y-0 right-64 ${showInput ? "w-1/6 opacity-100" : "w-0 opacity-0" */}
       <div
-        className={`min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased text-gray-800 w-64 ${isMenuOpen ? "block" : "hidden"
+        className={`min-h-screen flex flex-col flex-auto flex-shrink-0 
+          antialiased bg-gray-50 text-gray-800 w-64 ${
+            isMenuOpen ? "block" : "hidden"
           } md:block`}
       >
 

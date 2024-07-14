@@ -36,7 +36,10 @@ interface User {
   username: string,
   gmail: string,
   password: string
+}
 
+interface BookProps {
+  
 }
 
 const Register = () => {
