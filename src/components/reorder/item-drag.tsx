@@ -10,6 +10,8 @@ import { MdEdit } from "react-icons/md";
 import { useDisclosure } from "@nextui-org/react";
 import ModalCourse from "../modal-course";
 
+import { useState } from "react";
+
 interface Props {
   item: string;
 }
@@ -19,6 +21,12 @@ export const Item = ({ item }: Props) => {
   const boxShadow = useRaisedShadow(y);
   const dragControls = useDragControls();
   const { isOpen, onOpenChange } = useDisclosure();
+
+  const [currentItem, setCurrentItem] = useState<string | null>("");
+  const handleEdit = () => {
+    setCurrentItem(item);
+    onOpenChange();
+  };
   return (
     <div className="flex flex-row justify-between">
       <div className="flex flex-row gap-4">
@@ -40,14 +48,18 @@ export const Item = ({ item }: Props) => {
       </div>
       <div className="flex flex-row gap-4 justify-center items-center">
         <Button color="primary" className="h-2/3">
-          Raw
+          Publish
         </Button>
         <Button variant={"light"} className="h-2/3">
           <FiTrash />
         </Button>
-        <Button variant={"light"} onPress={onOpenChange} className="h-2/3">
+        <Button variant={"light"} onPress={handleEdit} className="h-2/3">
           <MdEdit />
-          <ModalCourse isOpen={isOpen} onOpenChange={onOpenChange} />
+          <ModalCourse
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            title={currentItem || ""}
+          />
         </Button>
       </div>
     </div>

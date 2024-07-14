@@ -9,9 +9,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       {children}
       </Nav>
       
+    <div className="harvey bg-background text-foreground w-full flex flex-row  ">
     </div>
   );
 };
-
 
 export default DashboardLayout;
