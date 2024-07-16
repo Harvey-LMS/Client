@@ -18,16 +18,13 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import Link from "next/link";
 import { FaEdit } from "react-icons/fa";
 
-export default function ModalCourse({
-  isOpen,
-  onOpenChange,
-  text,
-}: // title,
-{
+interface Props {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   text: string;
-}) {
+}
+
+export default function ModalCourse({ isOpen, onOpenChange, text }: Props) {
   const [isShowTitle, setIsShowTitle] = useState(false);
   const [isShowContent, setIsShowContent] = useState(false);
   const [isShowAccessSetting, setIsShowAccessSetting] = useState(false);
@@ -35,7 +32,7 @@ export default function ModalCourse({
   const [isChecked, setIsChecked] = useState(false);
 
   const [titleInput, setTitleInput] = useState("");
-  const [title, setTitle] = useState("This is title");
+  const [title, setTitle] = useState(text);
   const [contentInput, setContentInput] = useState("");
   const [content, setContent] = useState("This is content");
   const [accessSetting, setAccessSetting] = useState(

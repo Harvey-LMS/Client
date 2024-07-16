@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@nextui-org/react";
 import { Reorder } from "framer-motion";
 
 import { BiCustomize } from "react-icons/bi";
@@ -9,27 +9,33 @@ import { CiViewList } from "react-icons/ci";
 
 import { useState } from "react";
 import { Item } from "@/components/reorder/item-drag";
-import { MdPreview } from "react-icons/md";
 import { Input, Textarea } from "@nextui-org/input";
-import { Checkbox } from "@nextui-org/react";
+import { useDisclosure } from "@nextui-org/react";
+import ModalCreate from "@/components/modal-create";
+import { IoIosAdd } from "react-icons/io";
 
 const CreateChapterPage = () => {
-  const initialItems = [
-    "Listening P1",
-    "Listening P2",
-    "Practice 1",
-    "Practice 2",
-  ];
+  // const chapterName = localStorage.getItem("items")
+  //   ? JSON.parse(localStorage.getItem("items") || "[]")
+  //   : "";
+
+  const [initialItems, setInitialItems] = useState<string[]>(["Introduction"]);
   const [items, setItems] = useState(initialItems);
 
   const [isShowTitle, setIsShowTitle] = useState(false);
   const [isShowDescription, setIsShowDescription] = useState(false);
-  const [isShowAccessSetting, setIsShowAccessSetting] = useState(false);
 
   const [titleInput, setTitleInput] = useState("");
-  const [title, setTitle] = useState("This is title");
+  // const [title, setTitle] = useState<string | undefined>(chapterName);
+  const [title, setTitle] = useState<string | undefined>("");
   const [descriptionInput, setDescriptionInput] = useState("");
   const [description, setDescription] = useState("This is description");
+
+  const { isOpen, onOpenChange } = useDisclosure();
+
+  const handleShowModalCreate = () => {
+    onOpenChange();
+  };
 
   const handleShowEdit = (
     stateSetter: (prevState: React.SetStateAction<boolean>) => void
@@ -53,6 +59,13 @@ const CreateChapterPage = () => {
     setIsShowDescription(false);
   };
 
+  const handleSaveLesson = (lessonName: string) => {
+    setItems([...items, lessonName]);
+  };
+  const handleDeleteItem = (item: string) => {
+    setItems((prevItems) => prevItems.filter((i) => i !== item));
+  };
+
   return (
     <div className="flex flex-col gap-0 w-full">
       <div className="flex flex-col gap-2 m-6">
@@ -61,7 +74,7 @@ const CreateChapterPage = () => {
         </div>
         <div className="flex flex-row justify-between">
           <span className="">Complete all fields (0/3)</span>
-          <Button variant={"ghost"} disabled={true}>
+          <Button variant={"light"} disabled={true}>
             Not active
           </Button>
         </div>
@@ -169,7 +182,7 @@ const CreateChapterPage = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-1 border rounded-lg shadow-lg p-4 border-solid m-4">
+          {/* <div className="flex flex-col gap-1 border rounded-lg shadow-lg p-4 border-solid m-4">
             <div className="flex flex-col gap-2">
               <div className="flex flex-row gap-1">
                 <MdPreview className="w-10 h-10" />
@@ -225,7 +238,7 @@ const CreateChapterPage = () => {
                 )}
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="w-1/2">
           <div className="flex flex-col gap-1 border rounded-lg shadow-lg p-4 border-solid m-4">
@@ -238,7 +251,16 @@ const CreateChapterPage = () => {
                   </span>
                 </div>
                 <div>
-                  <Button>+ Create</Button>
+                  <Button color={"primary"} onPress={handleShowModalCreate}>
+                    <IoIosAdd />
+                    <span>Create</span>
+                    <ModalCreate
+                      isOpen={isOpen}
+                      onOpenChange={onOpenChange}
+                      onSaveLesson={handleSaveLesson}
+                      nameCreate={"Lesson"}
+                    ></ModalCreate>
+                  </Button>
                 </div>
               </div>
               <div className="border border-gray-200 bg-white"></div>
@@ -252,7 +274,11 @@ const CreateChapterPage = () => {
                 values={items}
               >
                 {items.map((item) => (
-                  <Item key={item} item={item} />
+                  <Item
+                    key={item}
+                    item={item}
+                    handleDelete={handleDeleteItem}
+                  />
                 ))}
               </Reorder.Group>
             </div>

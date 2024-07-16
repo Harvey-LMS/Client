@@ -1,13 +1,13 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button, useDisclosure } from "@nextui-org/react";
 import { Reorder } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
 import { BiCustomize } from "react-icons/bi";
 import { FaEdit } from "react-icons/fa";
-import { IoIosPricetags, IoMdAddCircleOutline } from "react-icons/io";
+import { IoIosAdd, IoIosPricetags, IoMdAddCircleOutline } from "react-icons/io";
 import { CiViewList } from "react-icons/ci";
 import { useState } from "react";
 import { Item } from "@/components/reorder/item-drag";
@@ -15,14 +15,10 @@ import { MdOutlineSource } from "react-icons/md";
 import { Input, Textarea } from "@nextui-org/input";
 import { Select, SelectItem } from "@nextui-org/react";
 import { FiTrash } from "react-icons/fi";
+import ModalCreate from "@/components/modal-create";
 
 const CreateCoursePage = () => {
-  const initialItems = [
-    "Listening Part 1,2",
-    "Listening Part 3,4",
-    "Practice Test 1",
-    "Writing",
-  ];
+  const [initialItems, setInitialItems] = useState<string[]>(["Chapter 0"]);
   const [items, setItems] = useState(initialItems);
 
   const [isShowTitle, setIsShowTitle] = useState(false);
@@ -48,6 +44,16 @@ const CreateCoursePage = () => {
 
   const [listLanguage, setListLanguage] = useState<string[]>(["English"]);
   const [listCategory, setListCategory] = useState<string[]>(["TOEIC"]);
+
+  const { isOpen, onOpenChange } = useDisclosure();
+
+  const handleShowModalCreate = () => {
+    onOpenChange();
+  };
+  const handleSaveLesson = (lessonName: string) => {
+    setItems([...items, lessonName]);
+    // localStorage.setItem("items", JSON.stringify([...items, lessonName]));
+  };
 
   const handleShowEdit = (
     stateSetter: (prevState: React.SetStateAction<boolean>) => void
@@ -125,6 +131,10 @@ const CreateCoursePage = () => {
     );
   };
 
+  const handleDeleteItem = (item: string) => {
+    setItems((prevItems) => prevItems.filter((i) => i !== item));
+  };
+
   return (
     <div className="flex flex-col gap-0 w-full">
       <div className="flex flex-col gap-2 m-6">
@@ -133,7 +143,7 @@ const CreateCoursePage = () => {
         </div>
         <div className="flex flex-row justify-between">
           <span className="">Complete all fields (0/6)</span>
-          <Button variant={"ghost"} disabled={true}>
+          <Button variant={"light"} disabled={true}>
             Not active
           </Button>
         </div>
@@ -160,7 +170,7 @@ const CreateCoursePage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowTitle)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <span>Cancel</span>
                     </Button>
@@ -168,7 +178,7 @@ const CreateCoursePage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowTitle)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <div>
                         <FaEdit />
@@ -186,7 +196,11 @@ const CreateCoursePage = () => {
                       className="w-full"
                       onChange={handleChangeTitle}
                     ></Input>
-                    <Button onClick={handleSaveTitle} className="w-20">
+                    <Button
+                      color={"primary"}
+                      onClick={handleSaveTitle}
+                      className="w-20"
+                    >
                       Save
                     </Button>
                   </div>
@@ -206,7 +220,7 @@ const CreateCoursePage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowDescription)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <span>Cancel</span>
                     </Button>
@@ -214,7 +228,7 @@ const CreateCoursePage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowDescription)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <div>
                         <FaEdit />
@@ -231,7 +245,11 @@ const CreateCoursePage = () => {
                       onChange={handleChangeDescription}
                       placeholder="Enter to course description"
                     ></Textarea>
-                    <Button onClick={handleSaveDescription} className="w-20">
+                    <Button
+                      color={"primary"}
+                      onClick={handleSaveDescription}
+                      className="w-20"
+                    >
                       Save
                     </Button>
                   </div>
@@ -279,7 +297,7 @@ const CreateCoursePage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowLanguage)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <span>Cancel</span>
                     </Button>
@@ -287,7 +305,7 @@ const CreateCoursePage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowLanguage)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <div>
                         <FaEdit />
@@ -307,7 +325,11 @@ const CreateCoursePage = () => {
                       <SelectItem key={"France"}>France</SelectItem>
                       <SelectItem key={"Chinese"}>Chinese</SelectItem>
                     </Select>
-                    <Button onClick={handleSaveLanguage} className="w-20">
+                    <Button
+                      color={"primary"}
+                      onClick={handleSaveLanguage}
+                      className="w-20"
+                    >
                       Save
                     </Button>
                   </div>
@@ -316,12 +338,12 @@ const CreateCoursePage = () => {
                     {listLanguage.map((item: string, index: number) => (
                       <div
                         key={index}
-                        className="flex flex-row justify-between items-center gap-2 pl-2 border border-gray-300 w-1/5 rounded-lg"
+                        className="flex flex-row justify-between items-center pl-2 border border-gray-300 w-1/5 rounded-lg"
                       >
                         <span className="text-md">{item}</span>
                         <Button
                           onClick={() => handleDropLanguage(index)}
-                          variant={"ghost"}
+                          variant={"light"}
                         >
                           <FiTrash />
                         </Button>
@@ -342,7 +364,7 @@ const CreateCoursePage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowCategory)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <span>Cancel</span>
                     </Button>
@@ -350,7 +372,7 @@ const CreateCoursePage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowCategory)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <div>
                         <FaEdit />
@@ -370,7 +392,11 @@ const CreateCoursePage = () => {
                       <SelectItem key={"Practice"}>Practice</SelectItem>
                       <SelectItem key={"Others"}>Others</SelectItem>
                     </Select>
-                    <Button onClick={handleSaveCategory} className="w-20">
+                    <Button
+                      color={"primary"}
+                      onClick={handleSaveCategory}
+                      className="w-20"
+                    >
                       Save
                     </Button>
                   </div>
@@ -379,12 +405,12 @@ const CreateCoursePage = () => {
                     {listCategory.map((item: string, index: number) => (
                       <div
                         key={index}
-                        className="flex flex-row justify-between items-center gap-2 pl-2 border border-gray-300 w-1/6 rounded-lg"
+                        className="flex flex-row justify-between items-center pl-2 border border-gray-300 w-1/6 rounded-lg"
                       >
                         <span className="">{item}</span>
                         <Button
                           onClick={() => handleDropCategory(index)}
-                          variant={"ghost"}
+                          variant={"light"}
                         >
                           <FiTrash />
                         </Button>
@@ -403,7 +429,7 @@ const CreateCoursePage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowLevel)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <span>Cancel</span>
                     </Button>
@@ -411,7 +437,7 @@ const CreateCoursePage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowLevel)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <div>
                         <FaEdit />
@@ -431,7 +457,11 @@ const CreateCoursePage = () => {
                       <SelectItem key={"Medium"}>Medium</SelectItem>
                       <SelectItem key={"Hard"}>Hard</SelectItem>
                     </Select>
-                    <Button onClick={handleSaveLevel} className="w-20">
+                    <Button
+                      color={"primary"}
+                      onClick={handleSaveLevel}
+                      className="w-20"
+                    >
                       Save
                     </Button>
                   </div>
@@ -456,7 +486,16 @@ const CreateCoursePage = () => {
                   </span>
                 </div>
                 <div>
-                  <Button>+ Create</Button>
+                  <Button color={"primary"} onPress={handleShowModalCreate}>
+                    <IoIosAdd />
+                    <span>Create</span>
+                    <ModalCreate
+                      isOpen={isOpen}
+                      onOpenChange={onOpenChange}
+                      onSaveLesson={handleSaveLesson}
+                      nameCreate={"Chapter"}
+                    ></ModalCreate>
+                  </Button>
                 </div>
               </div>
               <div className="border border-gray-200 bg-white"></div>
@@ -469,7 +508,13 @@ const CreateCoursePage = () => {
                 onReorder={setItems}
                 values={items}
               >
-                <Item key={"Listening Part 1,2"} item={"Listening Part 1,2"} />
+                {items.map((item) => (
+                  <Item
+                    key={item}
+                    item={item}
+                    handleDelete={handleDeleteItem}
+                  />
+                ))}
               </Reorder.Group>
             </div>
           </div>
@@ -493,7 +538,7 @@ const CreateCoursePage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowPrice)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <span>Cancel</span>
                     </Button>
@@ -501,7 +546,7 @@ const CreateCoursePage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowPrice)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <div>
                         <FaEdit />
@@ -518,7 +563,11 @@ const CreateCoursePage = () => {
                       onChange={handleChangePrice}
                       placeholder="Enter to course price"
                     ></Input>
-                    <Button onClick={handleSavePrice} className="w-20">
+                    <Button
+                      color={"primary"}
+                      onClick={handleSavePrice}
+                      className="w-20"
+                    >
                       Save
                     </Button>
                   </div>
@@ -538,7 +587,7 @@ const CreateCoursePage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowDiscount)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <span>Cancel</span>
                     </Button>
@@ -546,7 +595,7 @@ const CreateCoursePage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowDiscount)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <div>
                         <FaEdit />
@@ -563,7 +612,11 @@ const CreateCoursePage = () => {
                       onChange={handleChangeDiscount}
                       placeholder="Enter to course discount"
                     ></Input>
-                    <Button onClick={handleSaveDiscount} className="w-20">
+                    <Button
+                      color={"primary"}
+                      onClick={handleSaveDiscount}
+                      className="w-20"
+                    >
                       Save
                     </Button>
                   </div>
@@ -589,7 +642,7 @@ const CreateCoursePage = () => {
               <div className="flex flex-col gap-1">
                 <div className="flex flex-row justify-between">
                   <span className="text-md font-semibold">Source content</span>
-                  <Button className="flex flex-row gap-2" variant={"ghost"}>
+                  <Button className="flex flex-row gap-2" variant={"light"}>
                     <div>
                       <FaEdit />
                     </div>
