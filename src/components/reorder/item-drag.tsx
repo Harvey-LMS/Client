@@ -1,3 +1,4 @@
+// item-drag.tsx
 "use client";
 
 import * as React from "react";
@@ -17,6 +18,7 @@ import ModalCreate from "../modal-create";
 interface Props {
   item: string;
   handleDelete: (item: string) => void;
+  // handleCheckStatus: () => boolean;
 }
 
 export const Item = ({ item, handleDelete }: Props) => {
@@ -29,13 +31,13 @@ export const Item = ({ item, handleDelete }: Props) => {
     typeof window !== "undefined" ? window.location.pathname : "";
 
   const [currentItem, setCurrentItem] = useState<string | null>("");
+  const [status, setStatus] = useState(false);
 
   const router = useRouter();
   const handleEdit = () => {
     setCurrentItem(item);
     onOpenChange();
   };
-  const handleDrop = () => {};
 
   const directChapter = () => {
     router.push("/instructor/course/chapter");
@@ -62,7 +64,7 @@ export const Item = ({ item, handleDelete }: Props) => {
 
       {!(currentPath === "/instructor/course/create") ? (
         <div className="flex flex-row gap-4 justify-center items-center">
-          <Button className="h-2/3">Yet</Button>
+          <Button className="h-2/3">{status ? "Done" : "Yet"}</Button>{" "}
           <Button
             variant={"light"}
             className="h-2/3"

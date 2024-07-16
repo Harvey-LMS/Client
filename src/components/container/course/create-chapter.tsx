@@ -80,8 +80,8 @@ const CreateChapterPage = () => {
         </div>
       </div>
 
-      <div className="flex flex-row">
-        <div className="w-1/2">
+      <div className="flex flex-col">
+        <div className="w-full">
           <div className="flex flex-col gap-1 border rounded-lg shadow-lg p-4 border-solid m-4">
             <div className="flex flex-col gap-2">
               <div className="flex flex-row gap-1">
@@ -101,7 +101,7 @@ const CreateChapterPage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowTitle)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <span>Cancel</span>
                     </Button>
@@ -109,7 +109,7 @@ const CreateChapterPage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowTitle)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <div>
                         <FaEdit />
@@ -146,7 +146,7 @@ const CreateChapterPage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowDescription)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <span>Cancel</span>
                     </Button>
@@ -154,7 +154,7 @@ const CreateChapterPage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowDescription)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <div>
                         <FaEdit />
@@ -203,7 +203,7 @@ const CreateChapterPage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowAccessSetting)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <span>Cancel</span>
                     </Button>
@@ -211,7 +211,7 @@ const CreateChapterPage = () => {
                     <Button
                       onClick={() => handleShowEdit(setIsShowAccessSetting)}
                       className="flex flex-row gap-2"
-                      variant={"ghost"}
+                      variant={"light"}
                     >
                       <div>
                         <FaEdit />
@@ -240,7 +240,7 @@ const CreateChapterPage = () => {
             </div>
           </div> */}
         </div>
-        <div className="w-1/2">
+        <div className="w-full">
           <div className="flex flex-col gap-1 border rounded-lg shadow-lg p-4 border-solid m-4">
             <div className="flex flex-col gap-2">
               <div className="flex flex-row justify-between">

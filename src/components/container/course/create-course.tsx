@@ -409,6 +409,7 @@ const CreateCoursePage = () => {
                       >
                         <span className="">{item}</span>
                         <Button
+                          className="w-1/5"
                           onClick={() => handleDropCategory(index)}
                           variant={"light"}
                         >

@@ -26,13 +26,6 @@ export default function ModalCreate({
   nameCreate,
 }: Props) {
   const [lessonNameInput, setLessonNameInput] = useState("");
-  const [lessonName, setLessonName] = useState("");
-
-  const handleShowEdit = (
-    stateSetter: (prevState: React.SetStateAction<boolean>) => void
-  ) => {
-    stateSetter((prevState: boolean) => !prevState);
-  };
 
   const handleChangeLessonName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLessonNameInput(e.target.value);

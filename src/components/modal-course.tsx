@@ -8,7 +8,6 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  useDisclosure,
   Input,
   Textarea,
   Checkbox,
@@ -38,6 +37,7 @@ export default function ModalCourse({ isOpen, onOpenChange, text }: Props) {
   const [accessSetting, setAccessSetting] = useState(
     "This lesson is NOT for free preview"
   );
+  const [status, setStatus] = useState(false);
 
   const handleShowEdit = (
     stateSetter: (prevState: React.SetStateAction<boolean>) => void
@@ -65,6 +65,20 @@ export default function ModalCourse({ isOpen, onOpenChange, text }: Props) {
     if (isChecked) setAccessSetting("This lesson is for free preview");
     else setAccessSetting("This lesson is NOT for free preview");
     setIsShowAccessSetting(false);
+  };
+
+  const handleCheckStatus = () => {
+    if (
+      title.length === 0 ||
+      content.length === 0 ||
+      title === "This is title" ||
+      content === "This is content"
+    ) {
+      setStatus(false);
+      return true;
+    }
+    setStatus(true);
+    return false;
   };
 
   return (
@@ -261,7 +275,11 @@ export default function ModalCourse({ isOpen, onOpenChange, text }: Props) {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Cancel
                 </Button>
-                <Button color="primary" onPress={onClose}>
+                <Button
+                  color="primary"
+                  onPress={onClose}
+                  onClick={handleCheckStatus}
+                >
                   Save
                 </Button>
               </ModalFooter>
