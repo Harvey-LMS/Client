@@ -18,7 +18,7 @@ import ModalCreate from "../modal-create";
 interface Props {
   item: string;
   handleDelete: (item: string) => void;
-  // handleCheckStatus: () => boolean;
+  handleCheckStatus: () => boolean;
 }
 
 export const Item = ({ item, handleDelete }: Props) => {

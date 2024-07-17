@@ -13,6 +13,7 @@ import { Input, Textarea } from "@nextui-org/input";
 import { useDisclosure } from "@nextui-org/react";
 import ModalCreate from "@/components/modal-create";
 import { IoIosAdd } from "react-icons/io";
+import { handleCheckStatus } from "@/util/checkStatus";
 
 const CreateChapterPage = () => {
   // const chapterName = localStorage.getItem("items")
@@ -64,6 +65,11 @@ const CreateChapterPage = () => {
   };
   const handleDeleteItem = (item: string) => {
     setItems((prevItems) => prevItems.filter((i) => i !== item));
+  };
+
+  const checkStatus = () => {
+    console.log("Yes");
+    return true;
   };
 
   return (
@@ -126,7 +132,7 @@ const CreateChapterPage = () => {
                       onChange={handleChangeTitle}
                       placeholder="Enter to course title"
                     ></Input>
-                    <Button onClick={handleSaveTitle} className="w-20">
+                    <Button color={"primary"} onClick={handleSaveTitle} className="w-20">
                       Save
                     </Button>
                   </div>
@@ -171,7 +177,7 @@ const CreateChapterPage = () => {
                       onChange={handleChangeDescription}
                       placeholder="Enter to course description"
                     ></Textarea>
-                    <Button onClick={handleSaveDescription} className="w-20">
+                    <Button color={"primary"} onClick={handleSaveDescription} className="w-20">
                       Save
                     </Button>
                   </div>
@@ -278,6 +284,7 @@ const CreateChapterPage = () => {
                     key={item}
                     item={item}
                     handleDelete={handleDeleteItem}
+                    handleCheckStatus={checkStatus}
                   />
                 ))}
               </Reorder.Group>

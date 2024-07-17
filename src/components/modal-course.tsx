@@ -17,6 +17,8 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import Link from "next/link";
 import { FaEdit } from "react-icons/fa";
 
+import { handleCheckStatus } from "@/util/checkStatus";
+
 interface Props {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
@@ -37,7 +39,6 @@ export default function ModalCourse({ isOpen, onOpenChange, text }: Props) {
   const [accessSetting, setAccessSetting] = useState(
     "This lesson is NOT for free preview"
   );
-  const [status, setStatus] = useState(false);
 
   const handleShowEdit = (
     stateSetter: (prevState: React.SetStateAction<boolean>) => void
@@ -65,20 +66,6 @@ export default function ModalCourse({ isOpen, onOpenChange, text }: Props) {
     if (isChecked) setAccessSetting("This lesson is for free preview");
     else setAccessSetting("This lesson is NOT for free preview");
     setIsShowAccessSetting(false);
-  };
-
-  const handleCheckStatus = () => {
-    if (
-      title.length === 0 ||
-      content.length === 0 ||
-      title === "This is title" ||
-      content === "This is content"
-    ) {
-      setStatus(false);
-      return true;
-    }
-    setStatus(true);
-    return false;
   };
 
   return (
@@ -278,7 +265,7 @@ export default function ModalCourse({ isOpen, onOpenChange, text }: Props) {
                 <Button
                   color="primary"
                   onPress={onClose}
-                  onClick={handleCheckStatus}
+                  onClick={() => handleCheckStatus({ title, content })}
                 >
                   Save
                 </Button>

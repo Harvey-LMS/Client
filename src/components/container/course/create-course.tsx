@@ -135,6 +135,11 @@ const CreateCoursePage = () => {
     setItems((prevItems) => prevItems.filter((i) => i !== item));
   };
 
+  const checkStatus = () => {
+    console.log("Yes");
+    return true;
+  };
+
   return (
     <div className="flex flex-col gap-0 w-full">
       <div className="flex flex-col gap-2 m-6">
@@ -285,6 +290,73 @@ const CreateCoursePage = () => {
                 </span>
               </div>
               <div className="border border-gray-200 bg-white"></div>
+            </div>
+
+            <div className="m-2">
+              <div className="flex flex-col gap-1">
+                <div className="flex flex-row justify-between">
+                  <span className="text-md font-semibold">
+                    Courses language
+                  </span>
+                  {isShowLanguage ? (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowLanguage)}
+                      className="flex flex-row gap-2"
+                      variant={"light"}
+                    >
+                      <span>Cancel</span>
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => handleShowEdit(setIsShowLanguage)}
+                      className="flex flex-row gap-2"
+                      variant={"light"}
+                    >
+                      <div>
+                        <FaEdit />
+                      </div>
+                      <span>Edit tags</span>
+                    </Button>
+                  )}
+                </div>
+                {isShowLanguage ? (
+                  <div className="flex flex-col gap-2">
+                    <Select
+                      onChange={handleChangeLanguage}
+                      label="Select a language"
+                      className="max-w-xs"
+                    >
+                      <SelectItem key={"Vietnamese"}>Vietnamese</SelectItem>
+                      <SelectItem key={"France"}>France</SelectItem>
+                      <SelectItem key={"Chinese"}>Chinese</SelectItem>
+                    </Select>
+                    <Button
+                      color={"primary"}
+                      onClick={handleSaveLanguage}
+                      className="w-20"
+                    >
+                      Save
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex flex-row gap-1">
+                    {listLanguage.map((item: string, index: number) => (
+                      <div
+                        key={index}
+                        className="flex flex-row justify-between items-center pl-2 border border-gray-300 w-1/5 rounded-lg"
+                      >
+                        <span className="text-md">{item}</span>
+                        <Button
+                          onClick={() => handleDropLanguage(index)}
+                          variant={"light"}
+                        >
+                          <FiTrash />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="m-2">
@@ -514,6 +586,7 @@ const CreateCoursePage = () => {
                     key={item}
                     item={item}
                     handleDelete={handleDeleteItem}
+                    handleCheckStatus={checkStatus}
                   />
                 ))}
               </Reorder.Group>
