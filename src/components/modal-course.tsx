@@ -22,10 +22,9 @@ import { handleCheckStatus } from "@/util/checkStatus";
 interface Props {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
-  text: string;
 }
 
-export default function ModalCourse({ isOpen, onOpenChange, text }: Props) {
+export default function ModalCourse({ isOpen, onOpenChange }: Props) {
   const [isShowTitle, setIsShowTitle] = useState(false);
   const [isShowContent, setIsShowContent] = useState(false);
   const [isShowAccessSetting, setIsShowAccessSetting] = useState(false);
@@ -33,7 +32,7 @@ export default function ModalCourse({ isOpen, onOpenChange, text }: Props) {
   const [isChecked, setIsChecked] = useState(false);
 
   const [titleInput, setTitleInput] = useState("");
-  const [title, setTitle] = useState(text);
+  const [title, setTitle] = useState("This is title");
   const [contentInput, setContentInput] = useState("");
   const [content, setContent] = useState("This is content");
   const [accessSetting, setAccessSetting] = useState(
@@ -66,6 +65,19 @@ export default function ModalCourse({ isOpen, onOpenChange, text }: Props) {
     if (isChecked) setAccessSetting("This lesson is for free preview");
     else setAccessSetting("This lesson is NOT for free preview");
     setIsShowAccessSetting(false);
+  };
+
+  const handleCheckStatus = () => {
+    if (
+      title.length === 0 ||
+      content.length === 0 ||
+      title === "This is title" ||
+      content === "This is content"
+    ) {
+      return true;
+    }
+
+    return false;
   };
 
   return (
@@ -265,7 +277,7 @@ export default function ModalCourse({ isOpen, onOpenChange, text }: Props) {
                 <Button
                   color="primary"
                   onPress={onClose}
-                  onClick={() => handleCheckStatus({ title, content })}
+                  onClick={handleCheckStatus}
                 >
                   Save
                 </Button>

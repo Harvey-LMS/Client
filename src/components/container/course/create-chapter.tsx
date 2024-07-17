@@ -132,7 +132,11 @@ const CreateChapterPage = () => {
                       onChange={handleChangeTitle}
                       placeholder="Enter to course title"
                     ></Input>
-                    <Button color={"primary"} onClick={handleSaveTitle} className="w-20">
+                    <Button
+                      color={"primary"}
+                      onClick={handleSaveTitle}
+                      className="w-20"
+                    >
                       Save
                     </Button>
                   </div>
@@ -177,7 +181,11 @@ const CreateChapterPage = () => {
                       onChange={handleChangeDescription}
                       placeholder="Enter to course description"
                     ></Textarea>
-                    <Button color={"primary"} onClick={handleSaveDescription} className="w-20">
+                    <Button
+                      color={"primary"}
+                      onClick={handleSaveDescription}
+                      className="w-20"
+                    >
                       Save
                     </Button>
                   </div>
@@ -284,7 +292,6 @@ const CreateChapterPage = () => {
                     key={item}
                     item={item}
                     handleDelete={handleDeleteItem}
-                    handleCheckStatus={checkStatus}
                   />
                 ))}
               </Reorder.Group>

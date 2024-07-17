@@ -13,12 +13,10 @@ import ModalCourse from "../modal-course";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import ModalCreate from "../modal-create";
 
 interface Props {
   item: string;
   handleDelete: (item: string) => void;
-  handleCheckStatus: () => boolean;
 }
 
 export const Item = ({ item, handleDelete }: Props) => {
@@ -31,7 +29,6 @@ export const Item = ({ item, handleDelete }: Props) => {
     typeof window !== "undefined" ? window.location.pathname : "";
 
   const [currentItem, setCurrentItem] = useState<string | null>("");
-  const [status, setStatus] = useState(false);
 
   const router = useRouter();
   const handleEdit = () => {
@@ -74,11 +71,7 @@ export const Item = ({ item, handleDelete }: Props) => {
           </Button>
           <Button variant={"light"} onPress={handleEdit} className="h-2/3">
             <MdEdit />
-            <ModalCourse
-              isOpen={isOpen}
-              onOpenChange={onOpenChange}
-              text={currentItem || ""}
-            />
+            <ModalCourse isOpen={isOpen} onOpenChange={onOpenChange} />
           </Button>
         </div>
       ) : (
@@ -95,11 +88,7 @@ export const Item = ({ item, handleDelete }: Props) => {
           </Button>
           <Button onClick={directChapter} variant={"light"} className="h-2/3">
             <MdEdit />
-            <ModalCourse
-              isOpen={isOpen}
-              onOpenChange={onOpenChange}
-              text={currentItem || ""}
-            />
+            <ModalCourse isOpen={isOpen} onOpenChange={onOpenChange} />
           </Button>
         </div>
       )}
