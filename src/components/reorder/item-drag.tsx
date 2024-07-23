@@ -16,10 +16,11 @@ import { useRouter } from "next/navigation";
 
 interface Props {
   item: string;
+  itemLesson: string;
   handleDelete: (item: string) => void;
 }
 
-export const Item = ({ item, handleDelete }: Props) => {
+export const Item = ({ item, itemLesson, handleDelete }: Props) => {
   const y = useMotionValue(0);
   const boxShadow = useRaisedShadow(y);
   const dragControls = useDragControls();
@@ -29,11 +30,18 @@ export const Item = ({ item, handleDelete }: Props) => {
     typeof window !== "undefined" ? window.location.pathname : "";
 
   const [currentItem, setCurrentItem] = useState<string | null>("");
+  const [currentItemLesson, setCurrentItemLesson] = useState<string | null>("");
+
+  const [isShowLesson, setIsShowLesson] = useState(false);
 
   const router = useRouter();
   const handleEdit = () => {
     setCurrentItem(item);
     onOpenChange();
+  };
+
+  const handleShowEditLesson = () => {
+    setIsShowLesson(!isShowLesson);
   };
 
   const directChapter = () => {
@@ -55,13 +63,29 @@ export const Item = ({ item, handleDelete }: Props) => {
             dragControls={dragControls}
           >
             <span className="text-sm">{item}</span>
+            <div className="flex flex-row gap-4 justify-center items-center">
+              <Button
+                variant={"light"}
+                className="h-2/3"
+                onPress={() => handleDelete(item)}
+              >
+                <FiTrash />
+              </Button>
+              <Button
+                onClick={handleShowEditLesson}
+                variant={"light"}
+                onPress={handleEdit}
+                className="h-2/3"
+              >
+                <MdEdit />
+              </Button>
+            </div>
           </Reorder.Item>
         </div>
       </div>
 
-      {!(currentPath === "/instructor/course/create") ? (
+      {/* {!(currentPath === "/instructor/course/create") ? (
         <div className="flex flex-row gap-4 justify-center items-center">
-          <Button className="h-2/3">{status ? "Done" : "Yet"}</Button>{" "}
           <Button
             variant={"light"}
             className="h-2/3"
@@ -76,9 +100,6 @@ export const Item = ({ item, handleDelete }: Props) => {
         </div>
       ) : (
         <div className="flex flex-row gap-4 justify-center items-center">
-          <Button color="primary" className="h-2/3">
-            Publish
-          </Button>
           <Button
             variant={"light"}
             className="h-2/3"
@@ -91,7 +112,7 @@ export const Item = ({ item, handleDelete }: Props) => {
             <ModalCourse isOpen={isOpen} onOpenChange={onOpenChange} />
           </Button>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

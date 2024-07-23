@@ -25,6 +25,7 @@ const CreateCoursePage = () => {
   const [isShowDescription, setIsShowDescription] = useState(false);
   const [ísShowPrice, setIsShowPrice] = useState(false);
   const [isShowDiscount, setIsShowDiscount] = useState(false);
+  const [isShowTags, setIsShowTags] = useState(false);
   const [isShowLanguage, setIsShowLanguage] = useState(false);
   const [isShowLevel, setIsShowLevel] = useState(false);
   const [isShowCategory, setIsShowCategory] = useState(false);
@@ -38,6 +39,7 @@ const CreateCoursePage = () => {
   const [discountInput, setDiscountInput] = useState("");
   const [discount, setDiscount] = useState(32);
   const [languageInput, setLanguageInput] = useState("");
+  const [tagsInput, setTagsInput] = useState("");
   const [categoryInput, setCategoryInput] = useState("");
   const [levelInput, setLevelInput] = useState("");
   const [level, setLevel] = useState("Easy");
@@ -93,6 +95,12 @@ const CreateCoursePage = () => {
     setIsShowDiscount(false);
   };
 
+  const handleChangeTags = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTagsInput(e.target.value);
+  };
+
+  const handleSaveTags = () => {};
+
   const handleChangeLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLanguageInput(e.target.value);
   };
@@ -133,11 +141,6 @@ const CreateCoursePage = () => {
 
   const handleDeleteItem = (item: string) => {
     setItems((prevItems) => prevItems.filter((i) => i !== item));
-  };
-
-  const checkStatus = () => {
-    console.log("Yes");
-    return true;
   };
 
   return (
@@ -295,12 +298,10 @@ const CreateCoursePage = () => {
             <div className="m-2">
               <div className="flex flex-col gap-1">
                 <div className="flex flex-row justify-between">
-                  <span className="text-md font-semibold">
-                    Courses language
-                  </span>
-                  {isShowLanguage ? (
+                  <span className="text-md font-semibold">Courses tags</span>
+                  {isShowTags ? (
                     <Button
-                      onClick={() => handleShowEdit(setIsShowLanguage)}
+                      onClick={() => handleShowEdit(setIsShowTags)}
                       className="flex flex-row gap-2"
                       variant={"light"}
                     >
@@ -308,7 +309,7 @@ const CreateCoursePage = () => {
                     </Button>
                   ) : (
                     <Button
-                      onClick={() => handleShowEdit(setIsShowLanguage)}
+                      onClick={() => handleShowEdit(setIsShowTags)}
                       className="flex flex-row gap-2"
                       variant={"light"}
                     >
@@ -319,20 +320,17 @@ const CreateCoursePage = () => {
                     </Button>
                   )}
                 </div>
-                {isShowLanguage ? (
+                {isShowTags ? (
                   <div className="flex flex-col gap-2">
-                    <Select
-                      onChange={handleChangeLanguage}
-                      label="Select a language"
-                      className="max-w-xs"
-                    >
-                      <SelectItem key={"Vietnamese"}>Vietnamese</SelectItem>
-                      <SelectItem key={"France"}>France</SelectItem>
-                      <SelectItem key={"Chinese"}>Chinese</SelectItem>
-                    </Select>
+                    <Input
+                      variant={"bordered"}
+                      className="w-full"
+                      onChange={handleChangeTags}
+                      placeholder="Enter to course tags"
+                    ></Input>
                     <Button
                       color={"primary"}
-                      onClick={handleSaveLanguage}
+                      onClick={handleSaveTags}
                       className="w-20"
                     >
                       Save
@@ -340,7 +338,7 @@ const CreateCoursePage = () => {
                   </div>
                 ) : (
                   <div className="flex flex-row gap-1">
-                    {listLanguage.map((item: string, index: number) => (
+                    {/* {listLanguage.map((item: string, index: number) => (
                       <div
                         key={index}
                         className="flex flex-row justify-between items-center pl-2 border border-gray-300 w-1/5 rounded-lg"
@@ -353,7 +351,7 @@ const CreateCoursePage = () => {
                           <FiTrash />
                         </Button>
                       </div>
-                    ))}
+                    ))} */}
                   </div>
                 )}
               </div>
@@ -586,7 +584,6 @@ const CreateCoursePage = () => {
                     key={item}
                     item={item}
                     handleDelete={handleDeleteItem}
-                    handleCheckStatus={checkStatus}
                   />
                 ))}
               </Reorder.Group>

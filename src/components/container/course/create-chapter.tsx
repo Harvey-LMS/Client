@@ -7,13 +7,14 @@ import { BiCustomize } from "react-icons/bi";
 import { FaEdit } from "react-icons/fa";
 import { CiViewList } from "react-icons/ci";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Item } from "@/components/reorder/item-drag";
 import { Input, Textarea } from "@nextui-org/input";
 import { useDisclosure } from "@nextui-org/react";
 import ModalCreate from "@/components/modal-create";
 import { IoIosAdd } from "react-icons/io";
-import { handleCheckStatus } from "@/util/checkStatus";
+
+import axios from "axios";
 
 const CreateChapterPage = () => {
   // const chapterName = localStorage.getItem("items")
@@ -33,6 +34,8 @@ const CreateChapterPage = () => {
   const [description, setDescription] = useState("This is description");
 
   const { isOpen, onOpenChange } = useDisclosure();
+
+  const [data, setData] = useState(null);
 
   const handleShowModalCreate = () => {
     onOpenChange();
@@ -67,10 +70,20 @@ const CreateChapterPage = () => {
     setItems((prevItems) => prevItems.filter((i) => i !== item));
   };
 
-  const checkStatus = () => {
-    console.log("Yes");
-    return true;
-  };
+  useEffect(() => {
+    const apiEndpoint = process.env.API_COURSE_URL || "";
+    const getUser = async () => {
+      try {
+        const response = await axios.get(apiEndpoint);
+        setData(response.data);
+       
+        console.log("data", data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getUser();
+  }, []);
 
   return (
     <div className="flex flex-col gap-0 w-full">
