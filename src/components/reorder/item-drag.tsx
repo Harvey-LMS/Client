@@ -10,6 +10,7 @@ import { Button } from "@nextui-org/react";
 import { FiTrash } from "react-icons/fi";
 import { MdEdit } from "react-icons/md";
 import { RiArrowDropDownLine } from "react-icons/ri";
+import { FaRegFilePdf, FaVideo } from "react-icons/fa6";
 
 interface Props {
   item: string;
@@ -45,9 +46,13 @@ export const Item = ({
             dragControls={dragControls}
           >
             <div className="flex flex-row justify-between">
-              <span className="text-sm font-semibold flex justify-center items-center">
-                {item}
-              </span>
+              <div className="flex flex-row gap-4 items-center">
+                {/* <FaRegFilePdf className="w-8 h-6" /> */}
+                <FaVideo className="w-7 h-5" />
+                <span className="text-sm font-semibold flex justify-center items-center">
+                  {item}
+                </span>
+              </div>
               <div className="flex flex-row gap-4 justify-center items-center">
                 <Button
                   variant={"light"}

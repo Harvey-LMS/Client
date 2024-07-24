@@ -47,6 +47,11 @@ const Lesson = () => {
     setIsShowLesson((prev) => (prev === item ? null : item));
   };
 
+  const handleCancelEdit = () => {
+    setIsShowEdit(null);
+    setIsShowLesson(null);
+  };
+
   return (
     <div className="flex flex-col w-full pl-6">
       <div className="m-2">
@@ -68,7 +73,7 @@ const Lesson = () => {
                 <div className="p-2">
                   <div className="m-2">
                     <div className="flex flex-col gap-0">
-                      <div className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-4 bg-gray-50 border-1 border-solid rounded-md p-2">
                         <span className="text-md font-semibold">Content</span>
                         {isShowEdit === item ? (
                           <Input
@@ -86,7 +91,7 @@ const Lesson = () => {
 
                   <div className="m-2">
                     {isShowEdit === item ? (
-                      <div className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-4 bg-gray-50 border-1 border-solid rounded-md p-2">
                         <span className="text-md font-semibold">Upload</span>
                         <Link
                           href=""
@@ -96,7 +101,7 @@ const Lesson = () => {
                         </Link>
                       </div>
                     ) : (
-                      <div className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-4 bg-gray-50 border-1 border-solid rounded-md p-2">
                         <span className="text-md font-semibold">Upload</span>
                         <Image
                           src={NotFound}
@@ -112,13 +117,17 @@ const Lesson = () => {
                     {isShowEdit === item ? (
                       <div className="flex flex-row gap-6 justify-end">
                         <Button
-                          onClick={() => setIsShowEdit(false)}
+                          onClick={handleCancelEdit}
+                          // onClick={() => handleShowDropdown(item)}
                           variant={"light"}
                           className="text-red-600"
                         >
                           Cancel
                         </Button>
-                        <Button onClick={handleSaveContent} color={"primary"}>
+                        <Button
+                          onClick={() => handleSaveContent(item)}
+                          color={"primary"}
+                        >
                           Save
                         </Button>
                       </div>
