@@ -19,6 +19,7 @@ interface Props {
   handleDropdown: () => void;
   type: string;
   isEditTitle: boolean;
+  handleChangeTitleChapter: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const Item = ({
@@ -28,6 +29,7 @@ export const Item = ({
   handleDropdown,
   type,
   isEditTitle,
+  handleChangeTitleChapter,
 }: Props) => {
   const y = useMotionValue(0);
   const boxShadow = useRaisedShadow(y);
@@ -52,6 +54,7 @@ export const Item = ({
                 {type === "chapter" ? "" : <FaVideo className="w-7 h-5" />}
                 {isEditTitle ? (
                   <Input
+                    onChange={handleChangeTitleChapter}
                     placeholder={"Enter to chapter title"}
                     variant={"faded"}
                     className="w-full"

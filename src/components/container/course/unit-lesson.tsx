@@ -65,6 +65,10 @@ const Lesson = () => {
     setItems([...items, lessonName]);
   };
 
+  const handleChangeTitleChapter = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {};
+
   return (
     <div className="flex flex-col w-full pl-6">
       <div className="m-2">
@@ -83,6 +87,7 @@ const Lesson = () => {
                 handleDropdown={() => handleDropdown(item)}
                 type="lesson"
                 isEditTitle={isEditTitle === item}
+                handleChangeTitleChapter={handleChangeTitleChapter}
               />
               {openLessons.includes(item) && (
                 <div className="p-2">

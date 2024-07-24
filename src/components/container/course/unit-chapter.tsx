@@ -17,6 +17,8 @@ const Chapter = () => {
   const [items, setItems] = useState(initialItemsChapter);
   const [openChapters, setOpenChapters] = useState<string[]>([]);
 
+  const [titleInput, setTitleInput] = useState("");
+  const [title, setTitle] = useState("");
   const [descriptionInput, setDescriptionInput] = useState("");
   const [description, setDescription] = useState("This is description");
 
@@ -30,6 +32,7 @@ const Chapter = () => {
   // };
 
   const handleShowEdit = (item: string) => {
+    setTitleInput(item);
     setIsEditTitle(item);
     setIsShowEdit((prev) =>
       prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
@@ -38,11 +41,6 @@ const Chapter = () => {
 
   const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDescriptionInput(e.target.value);
-  };
-
-  const handleSaveDescription = (item: string) => {
-    setDescription(descriptionInput);
-    handleShowEdit(item);
   };
 
   const handleDeleteItem = (items: string) => {
@@ -56,6 +54,18 @@ const Chapter = () => {
   };
 
   const handleCancelEdit = (item: string) => {
+    handleShowEdit(item);
+  };
+
+  const handleChangeTitleChapter = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitleInput(e.target.value);
+  };
+
+  const handleSaveEditChapter = (item: string) => {
+    setDescription(descriptionInput);
+    setItems((prevItems) =>
+      prevItems.map((i) => (i === item ? titleInput : i))
+    );
     handleShowEdit(item);
   };
 
@@ -86,6 +96,7 @@ const Chapter = () => {
                 handleDropdown={() => handleDropdown(item)}
                 type="chapter"
                 isEditTitle={isEditTitle === item}
+                handleChangeTitleChapter={handleChangeTitleChapter}
               />
 
               {openChapters.includes(item) && (
@@ -119,7 +130,7 @@ const Chapter = () => {
                               Cancel
                             </Button>
                             <Button
-                              onClick={() => handleSaveDescription(item)}
+                              onClick={() => handleSaveEditChapter(item)}
                               color={"primary"}
                             >
                               Save
