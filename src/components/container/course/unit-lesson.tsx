@@ -1,48 +1,50 @@
-"use client";
-
+import React, { useState } from "react";
 import { Item } from "@/components/reorder/item-drag";
 import { Button, Input } from "@nextui-org/react";
 import { Reorder } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { FaEdit } from "react-icons/fa";
 import { IoMdAddCircleOutline } from "react-icons/io";
-
 import NotFound from "@/assets/404_Not_Found.svg";
 
 const Lesson = () => {
-  const initialItemsLesson = ["Getting started"];
+  const initialItemsLesson = [
+    "Lesson 1: Getting started",
+    "Lesson 2: Listening",
+    "Lesson 3: Reading",
+    "Lesson 4: Practice",
+  ];
   const [items, setItems] = useState(initialItemsLesson);
-
-  const [isShowEdit, setIsShowEdit] = useState(false);
-
+  const [isShowEdit, setIsShowEdit] = useState<string | null>(null);
   const [contentInput, setContentInput] = useState("");
-  const [content, setContent] = useState(
-    "Take one of Udemy’s range of Python courses and learn how to code using this incredibly useful language. Its simple syntax and readability makes Python perfect for Flask,  Django, data science, and machine learning. You’ll learn how to build everything from games to sites to apps. Choose from a range of courses that will appeal to"
-  );
+  const [content, setContent] = useState("This is content");
+  const [isShowLesson, setIsShowLesson] = useState<string | null>(null);
 
-  const [isShowEditLesson, setIsShowEditLesson] = useState(false);
+  // const handleShowEdit = (
+  //   stateSetter: (prevState: React.SetStateAction<boolean>) => void
+  // ) => {
+  //   stateSetter((prevState: boolean) => !prevState);
+  // };
 
-  const handleShowEdit = (
-    stateSetter: (prevState: React.SetStateAction<boolean>) => void
-  ) => {
-    stateSetter((prevState: boolean) => !prevState);
+  const handleShowEdit = (item: string) => {
+    setIsShowEdit((prev) => (prev === item ? null : item));
   };
+
   const handleChangeContent = (e: React.ChangeEvent<HTMLInputElement>) => {
     setContentInput(e.target.value);
   };
-  const handleSaveContent = () => {
+
+  const handleSaveContent = (item: string) => {
     setContent(contentInput);
-    setIsShowEdit(false);
+    setIsShowEdit((prev) => (prev === item ? null : item));
   };
 
   const handleDeleteItem = (item: string) => {
     setItems((prevItems) => prevItems.filter((i) => i !== item));
   };
 
-  const handleDropdown = () => {
-    setIsShowEditLesson(!isShowEditLesson);
+  const handleDropdown = (item: string) => {
+    setIsShowLesson((prev) => (prev === item ? null : item));
   };
 
   return (
@@ -55,27 +57,26 @@ const Lesson = () => {
           values={items}
         >
           {items.map((item) => (
-            <div>
+            <div key={item}>
               <Item
-                key={item}
                 item={item}
                 handleDelete={handleDeleteItem}
-                handleEdit={() => handleShowEdit(setIsShowEdit)}
-                handleDropdown={handleDropdown}
+                handleEdit={() => handleShowEdit(item)}
+                handleDropdown={() => handleDropdown(item)}
               />
-              {isShowEditLesson && (
+              {isShowLesson === item && (
                 <div className="p-2">
                   <div className="m-2">
                     <div className="flex flex-col gap-0">
                       <div className="flex flex-col gap-4">
                         <span className="text-md font-semibold">Content</span>
-                        {isShowEdit ? (
+                        {isShowEdit === item ? (
                           <Input
                             onChange={handleChangeContent}
                             placeholder={"Enter to lesson content"}
                             variant={"faded"}
                             className="w-full"
-                          ></Input>
+                          />
                         ) : (
                           <span className="text-sm">{content}</span>
                         )}
@@ -84,7 +85,7 @@ const Lesson = () => {
                   </div>
 
                   <div className="m-2">
-                    {isShowEdit ? (
+                    {isShowEdit === item ? (
                       <div className="flex flex-col gap-4">
                         <span className="text-md font-semibold">Upload</span>
                         <Link
@@ -108,7 +109,7 @@ const Lesson = () => {
                   </div>
 
                   <div className="m-2">
-                    {isShowEdit ? (
+                    {isShowEdit === item ? (
                       <div className="flex flex-row gap-6 justify-end">
                         <Button
                           onClick={() => setIsShowEdit(false)}

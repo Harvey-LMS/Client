@@ -7,7 +7,7 @@ import { Reorder } from "framer-motion";
 import { Input } from "@nextui-org/input";
 
 const Chapter = () => {
-  const initialItemsChapter = ["Getting started chapter"];
+  const initialItemsChapter = ["Chapter 1: Getting started chapter"];
   const [items, setItems] = useState(initialItemsChapter);
 
   const [isShowEdit, setIsShowEdit] = useState(false);

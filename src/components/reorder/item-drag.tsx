@@ -11,11 +11,6 @@ import { FiTrash } from "react-icons/fi";
 import { MdEdit } from "react-icons/md";
 import { RiArrowDropDownLine } from "react-icons/ri";
 
-import { useDisclosure } from "@nextui-org/react";
-
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-
 interface Props {
   item: string;
   handleDelete: (item: string) => void;
