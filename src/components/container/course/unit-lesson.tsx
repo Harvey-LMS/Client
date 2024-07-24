@@ -18,7 +18,7 @@ const Lesson = () => {
   const [isShowEdit, setIsShowEdit] = useState<string | null>(null);
   const [contentInput, setContentInput] = useState("");
   const [content, setContent] = useState("This is content");
-  const [isShowLesson, setIsShowLesson] = useState<string | null>(null);
+  const [openLessons, setOpenLessons] = useState<string[]>([]);
 
   // const handleShowEdit = (
   //   stateSetter: (prevState: React.SetStateAction<boolean>) => void
@@ -44,12 +44,13 @@ const Lesson = () => {
   };
 
   const handleDropdown = (item: string) => {
-    setIsShowLesson((prev) => (prev === item ? null : item));
+    setOpenLessons((prev) =>
+      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
+    );
   };
 
   const handleCancelEdit = () => {
     setIsShowEdit(null);
-    setIsShowLesson(null);
   };
 
   return (
@@ -69,7 +70,7 @@ const Lesson = () => {
                 handleEdit={() => handleShowEdit(item)}
                 handleDropdown={() => handleDropdown(item)}
               />
-              {isShowLesson === item && (
+              {openLessons.includes(item) && (
                 <div className="p-2">
                   <div className="m-2">
                     <div className="flex flex-col gap-0">

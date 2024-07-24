@@ -13,13 +13,9 @@ const Chapter = () => {
     "Chapter 3: Practice",
   ];
   const [items, setItems] = useState(initialItemsChapter);
+  const [openChapters, setOpenChapters] = useState<string[]>([]);
 
   const [isShowEdit, setIsShowEdit] = useState<string | null>(null);
-
-  const [descriptionInput, setDescriptionInput] = useState("");
-  const [description, setDescription] = useState("This is content");
-
-  const [isShowChapter, setIsShowChapter] = useState<string | null>(null);
 
   // const handleShowEdit = (
   //   stateSetter: (prevState: React.SetStateAction<boolean>) => void
@@ -31,20 +27,15 @@ const Chapter = () => {
     setIsShowEdit((prev) => (prev === item ? null : item));
   };
 
-  const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDescriptionInput(e.target.value);
-  };
-  const handleSaveDescription = () => {
-    setDescription(descriptionInput);
-    // setIsShowEdit(false);
-  };
-
   const handleDeleteItem = (items: string) => {
     setItems((prevItems) => prevItems.filter((i) => i !== items));
   };
 
-  const handleDropdown = (items: string) => {
-    setIsShowChapter((prev) => (prev === items ? null : items));
+  const handleDropdown = (item: string) => {
+    setOpenChapters((prev) =>
+      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
+    );
+    console.log(openChapters);
   };
 
   return (
@@ -61,7 +52,7 @@ const Chapter = () => {
               key={item}
               className={`
                 ${
-                  isShowChapter === item
+                  openChapters.includes(item)
                     ? "flex flex-col gap-4"
                     : "flex flex-col gap-4 bg-gray-50 border-1 border-solid rounded-md p-2"
                 }
@@ -74,7 +65,7 @@ const Chapter = () => {
                 handleDropdown={() => handleDropdown(item)}
               />
 
-              {isShowChapter === item && (
+              {openChapters.includes(item) && (
                 <div>
                   <div className="ml-10">
                     <div className="flex flex-col">
