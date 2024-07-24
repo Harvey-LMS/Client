@@ -4,18 +4,24 @@ import { useState } from "react";
 import Lesson from "./unit-lesson";
 import { Item } from "@/components/reorder/item-drag";
 import { Reorder } from "framer-motion";
-import { FaRegFilePdf } from "react-icons/fa";
+import { Input } from "@nextui-org/input";
+import { Button } from "@nextui-org/react";
 
 const Chapter = () => {
   const initialItemsChapter = [
     "Chapter 1: Getting started chapter",
     "Chapter 2: Basic",
     "Chapter 3: Practice",
+    "Chapter 4: Test",
   ];
   const [items, setItems] = useState(initialItemsChapter);
   const [openChapters, setOpenChapters] = useState<string[]>([]);
 
-  const [isShowEdit, setIsShowEdit] = useState<string | null>(null);
+  const [descriptionInput, setDescriptionInput] = useState("");
+  const [description, setDescription] = useState("This is description");
+
+  const [isEditTitle, setIsEditTitle] = useState<string | null>(null);
+  const [isShowEdit, setIsShowEdit] = useState<string[]>([]);
 
   // const handleShowEdit = (
   //   stateSetter: (prevState: React.SetStateAction<boolean>) => void
@@ -24,7 +30,19 @@ const Chapter = () => {
   // };
 
   const handleShowEdit = (item: string) => {
-    setIsShowEdit((prev) => (prev === item ? null : item));
+    setIsEditTitle(item);
+    setIsShowEdit((prev) =>
+      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
+    );
+  };
+
+  const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDescriptionInput(e.target.value);
+  };
+
+  const handleSaveDescription = (item: string) => {
+    setDescription(descriptionInput);
+    handleShowEdit(item);
   };
 
   const handleDeleteItem = (items: string) => {
@@ -35,7 +53,10 @@ const Chapter = () => {
     setOpenChapters((prev) =>
       prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
     );
-    console.log(openChapters);
+  };
+
+  const handleCancelEdit = (item: string) => {
+    handleShowEdit(item);
   };
 
   return (
@@ -50,11 +71,11 @@ const Chapter = () => {
           {items.map((item) => (
             <div
               key={item}
-              className={`
+              className={`flex flex-col gap-4 p-2
                 ${
                   openChapters.includes(item)
-                    ? "flex flex-col gap-4"
-                    : "flex flex-col gap-4 bg-gray-50 border-1 border-solid rounded-md p-2"
+                    ? ""
+                    : "bg-gray-50 border-1 border-solid rounded-md"
                 }
               `}
             >
@@ -63,6 +84,8 @@ const Chapter = () => {
                 handleDelete={handleDeleteItem}
                 handleEdit={() => handleShowEdit(item)}
                 handleDropdown={() => handleDropdown(item)}
+                type="chapter"
+                isEditTitle={isEditTitle === item}
               />
 
               {openChapters.includes(item) && (
@@ -73,7 +96,38 @@ const Chapter = () => {
                         <span className="text-md font-semibold">
                           Description
                         </span>
-                        <span className="text-sm">This is description</span>
+                        {isShowEdit.includes(item) ? (
+                          <Input
+                            onChange={handleChangeDescription}
+                            placeholder={"Enter to chapter description"}
+                            variant={"faded"}
+                            className="w-full"
+                          />
+                        ) : (
+                          <span className="text-sm">{description}</span>
+                        )}
+                      </div>
+                      <div className="m-2">
+                        {isShowEdit.includes(item) ? (
+                          <div className="flex flex-row gap-6 justify-end">
+                            <Button
+                              onClick={() => handleCancelEdit(item)}
+                              // onClick={() => handleShowDropdown(item)}
+                              variant={"light"}
+                              className="text-red-600"
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              onClick={() => handleSaveDescription(item)}
+                              color={"primary"}
+                            >
+                              Save
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="flex flex-row gap-6 justify-end"></div>
+                        )}
                       </div>
                     </div>
                   </div>

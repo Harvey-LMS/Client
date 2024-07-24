@@ -5,7 +5,7 @@ import * as React from "react";
 import { useMotionValue, Reorder, useDragControls } from "framer-motion";
 import { useRaisedShadow } from "@/components/reorder/use-raised-shadow";
 import { ReorderIcon } from "@/components/reorder/icon";
-import { Button } from "@nextui-org/react";
+import { Button, Input } from "@nextui-org/react";
 
 import { FiTrash } from "react-icons/fi";
 import { MdEdit } from "react-icons/md";
@@ -17,6 +17,8 @@ interface Props {
   handleDelete: (item: string) => void;
   handleEdit: () => void;
   handleDropdown: () => void;
+  type: string;
+  isEditTitle: boolean;
 }
 
 export const Item = ({
@@ -24,13 +26,12 @@ export const Item = ({
   handleDelete,
   handleEdit,
   handleDropdown,
+  type,
+  isEditTitle,
 }: Props) => {
   const y = useMotionValue(0);
   const boxShadow = useRaisedShadow(y);
   const dragControls = useDragControls();
-
-  // const currentPath =
-  //   typeof window !== "undefined" ? window.location.pathname : "";
 
   return (
     <div className="flex flex-row">
@@ -48,10 +49,22 @@ export const Item = ({
             <div className="flex flex-row justify-between">
               <div className="flex flex-row gap-4 items-center">
                 {/* <FaRegFilePdf className="w-8 h-6" /> */}
-                <FaVideo className="w-7 h-5" />
-                <span className="text-sm font-semibold flex justify-center items-center">
-                  {item}
-                </span>
+                {type === "chapter" ? "" : <FaVideo className="w-7 h-5" />}
+                {isEditTitle ? (
+                  <Input
+                    placeholder={"Enter to chapter title"}
+                    variant={"faded"}
+                    className="w-full"
+                  />
+                ) : (
+                  <span
+                    className={`flex justify-center items-center ${
+                      type === "chapter" ? "text-md font-semibold " : "text-sm"
+                    }`}
+                  >
+                    {item}
+                  </span>
+                )}
               </div>
               <div className="flex flex-row gap-4 justify-center items-center">
                 <Button

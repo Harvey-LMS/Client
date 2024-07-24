@@ -4,21 +4,24 @@ import { Button, Input } from "@nextui-org/react";
 import { Reorder } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { IoMdAddCircleOutline } from "react-icons/io";
+import { IoIosAdd, IoMdAddCircleOutline } from "react-icons/io";
 import NotFound from "@/assets/404_Not_Found.svg";
 
 const Lesson = () => {
-  const initialItemsLesson = [
-    "Lesson 1: Getting started",
+  const [initialItems, setInitialItems] = useState<string[]>([
+    "Lesson 1: Basic",
     "Lesson 2: Listening",
-    "Lesson 3: Reading",
-    "Lesson 4: Practice",
-  ];
-  const [items, setItems] = useState(initialItemsLesson);
-  const [isShowEdit, setIsShowEdit] = useState<string | null>(null);
+  ]);
+  const [items, setItems] = useState(initialItems);
   const [contentInput, setContentInput] = useState("");
   const [content, setContent] = useState("This is content");
+  const [lessonName, setLessonName] = useState("");
+
+  const [isShowEdit, setIsShowEdit] = useState<string | null>(null);
   const [openLessons, setOpenLessons] = useState<string[]>([]);
+  const [isEditTitle, setIsEditTitle] = useState<string | null>(null);
+
+  const [isShowCreate, setIsShowCreate] = useState(false);
 
   // const handleShowEdit = (
   //   stateSetter: (prevState: React.SetStateAction<boolean>) => void
@@ -27,6 +30,7 @@ const Lesson = () => {
   // };
 
   const handleShowEdit = (item: string) => {
+    setIsEditTitle(item);
     setIsShowEdit((prev) => (prev === item ? null : item));
   };
 
@@ -53,6 +57,14 @@ const Lesson = () => {
     setIsShowEdit(null);
   };
 
+  const handleChangeLesson = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLessonName(e.target.value);
+  };
+
+  const handleCreateLesson = () => {
+    setItems([...items, lessonName]);
+  };
+
   return (
     <div className="flex flex-col w-full pl-6">
       <div className="m-2">
@@ -69,6 +81,8 @@ const Lesson = () => {
                 handleDelete={handleDeleteItem}
                 handleEdit={() => handleShowEdit(item)}
                 handleDropdown={() => handleDropdown(item)}
+                type="lesson"
+                isEditTitle={isEditTitle === item}
               />
               {openLessons.includes(item) && (
                 <div className="p-2">
@@ -141,6 +155,16 @@ const Lesson = () => {
             </div>
           ))}
         </Reorder.Group>
+        <div className="flex items-center justify-center">
+          <Button
+            onClick={() => setIsShowCreate(!isShowCreate)}
+            color="primary"
+            className="flex flex-row items-center justify-center"
+          >
+            <IoIosAdd size={"md"} />
+            <span>Add lesson</span>
+          </Button>
+        </div>
       </div>
     </div>
   );
