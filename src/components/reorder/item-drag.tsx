@@ -52,7 +52,7 @@ export const Item = ({
               <div className="flex flex-row gap-4 items-center">
                 {/* <FaRegFilePdf className="w-8 h-6" /> */}
                 {type === "chapter" ? "" : <FaVideo className="w-7 h-5" />}
-                {isEditTitle ? (
+                {isEditTitle && type === "chapter" ? (
                   <Input
                     onChange={handleChangeTitleChapter}
                     placeholder={"Enter to chapter title"}

@@ -14,7 +14,16 @@ const Chapter = () => {
     "Chapter 3: Practice",
     "Chapter 4: Test",
   ];
+  const initialDescription: { [key: string]: string } = {
+    "Chapter 1: Getting started chapter": "This is the first chapter",
+    "Chapter 2: Basic": "This is the second chapter",
+    "Chapter 3: Practice": "This is the third chapter",
+    "Chapter 4: Test": "This is the fourth chapter",
+  };
+
   const [items, setItems] = useState(initialItemsChapter);
+  const [descriptions, setDescriptions] = useState(initialDescription);
+
   const [openChapters, setOpenChapters] = useState<string[]>([]);
 
   const [titleInput, setTitleInput] = useState("");
@@ -33,6 +42,7 @@ const Chapter = () => {
 
   const handleShowEdit = (item: string) => {
     setTitleInput(item);
+    setDescriptionInput(descriptions[item] || "");
     setIsEditTitle(item);
     setIsShowEdit((prev) =>
       prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
@@ -66,6 +76,10 @@ const Chapter = () => {
     setItems((prevItems) =>
       prevItems.map((i) => (i === item ? titleInput : i))
     );
+    setDescriptions((prevDescriptions) => ({
+      ...prevDescriptions,
+      [titleInput]: descriptionInput,
+    }));
     handleShowEdit(item);
   };
 
@@ -115,7 +129,7 @@ const Chapter = () => {
                             className="w-full"
                           />
                         ) : (
-                          <span className="text-sm">{description}</span>
+                          <span className="text-sm">{descriptions[item]}</span>
                         )}
                       </div>
                       <div className="m-2">
