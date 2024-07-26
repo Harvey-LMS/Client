@@ -14,12 +14,6 @@ const Chapter = () => {
     "Chapter 3: Practice",
     "Chapter 4: Test",
   ];
-  const initialDescription: { [key: string]: string } = {
-    "Chapter 1: Getting started chapter": "This is the first chapter",
-    "Chapter 2: Basic": "This is the second chapter",
-    "Chapter 3: Practice": "This is the third chapter",
-    "Chapter 4: Test": "This is the fourth chapter",
-  };
 
   const initialLessons: { [key: string]: string[] } = {
     "Chapter 1: Getting started chapter": ["Lesson 1: Introduction"],
@@ -33,6 +27,13 @@ const Chapter = () => {
       "Lesson 3: Practice 2",
     ],
     "Chapter 4: Test": ["Lesson 1: Practice Test", "Lesson 2: Final Test"],
+  };
+
+  const initialDescription: { [key: string]: string } = {
+    "Chapter 1: Getting started chapter": "This is the first chapter",
+    "Chapter 2: Basic": "This is the second chapter",
+    "Chapter 3: Practice": "This is the third chapter",
+    "Chapter 4: Test": "This is the fourth chapter",
   };
 
   const [items, setItems] = useState(initialItemsChapter);

@@ -54,6 +54,10 @@ const Lesson = ({ chapter, lessons, setLessons }: Props) => {
 
   const handleDeleteItem = (item: string) => {
     setItems((prevItems) => prevItems.filter((i) => i !== item));
+    setLessons((prev) => ({
+      ...prev,
+      [chapter]: lessons.filter((i) => i !== item),
+    }));
   };
 
   const handleDropdown = (item: string) => {
