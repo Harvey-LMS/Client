@@ -1,4 +1,3 @@
-// item-drag.tsx
 "use client";
 
 import * as React from "react";
@@ -7,10 +6,9 @@ import { useRaisedShadow } from "@/components/reorder/use-raised-shadow";
 import { ReorderIcon } from "@/components/reorder/icon";
 import { Button, Input } from "@nextui-org/react";
 
-import { FiTrash } from "react-icons/fi";
-import { MdEdit } from "react-icons/md";
-import { RiArrowDropDownLine } from "react-icons/ri";
-import { FaRegFilePdf, FaVideo } from "react-icons/fa6";
+import { MdDeleteOutline, MdOutlineEdit } from "react-icons/md";
+import { FaVideo } from "react-icons/fa6";
+import { IoIosArrowDown } from "react-icons/io";
 
 interface Props {
   item: string;
@@ -37,8 +35,20 @@ export const Item = ({
 
   return (
     <div className="flex flex-row">
-      <div className="flex flex-row gap-4 w-full">
-        <ReorderIcon dragControls={dragControls} />
+      <div className="flex flex-row gap-2 w-full h-6">
+        <div className="flex justify-center items-center">
+          {type === "chapter" ? (
+            <Button
+              variant={"light"}
+              onPress={handleDropdown}
+              className="min-w-10 h-2/3 p-0"
+            >
+              <IoIosArrowDown className="text-xl" />
+            </Button>
+          ) : (
+            <ReorderIcon dragControls={dragControls} />
+          )}
+        </div>
         <div className="w-full flex justify-center items-center">
           <Reorder.Item
             className="w-full"
@@ -57,11 +67,11 @@ export const Item = ({
                     onChange={handleChangeTitleChapter}
                     placeholder={"Enter to chapter title"}
                     variant={"faded"}
-                    className="w-full"
+                    className="w-full pt-2"
                   />
                 ) : (
                   <span
-                    className={`flex justify-center items-center ${
+                    className={`flex justify-center items-center select-none ${
                       type === "chapter" ? "text-md font-semibold " : "text-sm"
                     }`}
                   >
@@ -69,29 +79,49 @@ export const Item = ({
                   </span>
                 )}
               </div>
-              <div className="flex flex-row gap-4 justify-center items-center">
-                <Button
-                  variant={"light"}
-                  className="h-2/3"
-                  onPress={() => handleDelete(item)}
-                >
-                  <FiTrash />
-                </Button>
-                <Button
-                  variant={"light"}
-                  onPress={handleEdit}
-                  className="h-2/3"
-                >
-                  <MdEdit />
-                </Button>
-                <Button
-                  variant={"light"}
-                  onPress={handleDropdown}
-                  className="h-2/3"
-                >
-                  <RiArrowDropDownLine className="" size={"lg"} />
-                </Button>
-              </div>
+              {type === "chapter" ? (
+                <div className="flex flex-row gap-1 justify-center items-center">
+                  <Button
+                    variant={"light"}
+                    className="min-w-10 h-2/3 p-0"
+                    onPress={() => handleDelete(item)}
+                  >
+                    <MdDeleteOutline className="text-2xl " />
+                  </Button>
+                  <Button
+                    variant={"light"}
+                    onPress={handleEdit}
+                    className="min-w-10 h-2/3 p-0"
+                  >
+                    <MdOutlineEdit className="text-2xl" size={"sm"} />
+                  </Button>
+                  <ReorderIcon dragControls={dragControls} />
+                </div>
+              ) : (
+                <div className="flex flex-row gap-1 justify-center items-center">
+                  <Button
+                    variant={"light"}
+                    className="min-w-10 h-2/3 p-0"
+                    onPress={() => handleDelete(item)}
+                  >
+                    <MdDeleteOutline className="text-2xl" />
+                  </Button>
+                  <Button
+                    variant={"light"}
+                    onPress={handleEdit}
+                    className="min-w-10 h-2/3 p-0"
+                  >
+                    <MdOutlineEdit className="text-2xl" />
+                  </Button>
+                  <Button
+                    variant={"light"}
+                    onPress={handleDropdown}
+                    className="min-w-10 h-2/3 p-0"
+                  >
+                    <IoIosArrowDown className="" size={"sm"} />
+                  </Button>
+                </div>
+              )}
             </div>
           </Reorder.Item>
         </div>

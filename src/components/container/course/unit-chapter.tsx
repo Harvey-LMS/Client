@@ -24,29 +24,28 @@ const Chapter = () => {
   const [items, setItems] = useState(initialItemsChapter);
   const [descriptions, setDescriptions] = useState(initialDescription);
 
-  const [openChapters, setOpenChapters] = useState<string[]>([]);
+  // const [openChapters, setOpenChapters] = useState<string[]>([]);
+  const [openChapters, setOpenChapters] = useState<string | null>(null);
 
   const [titleInput, setTitleInput] = useState("");
-  const [title, setTitle] = useState("");
+
   const [descriptionInput, setDescriptionInput] = useState("");
   const [description, setDescription] = useState("This is description");
 
   const [isEditTitle, setIsEditTitle] = useState<string | null>(null);
-  const [isShowEdit, setIsShowEdit] = useState<string[]>([]);
-
-  // const handleShowEdit = (
-  //   stateSetter: (prevState: React.SetStateAction<boolean>) => void
-  // ) => {
-  //   stateSetter((prevState: boolean) => !prevState);
-  // };
+  const [isShowEdit, setIsShowEdit] = useState<string | null>(null);
 
   const handleShowEdit = (item: string) => {
     setTitleInput(item);
     setDescriptionInput(descriptions[item] || "");
-    setIsEditTitle(item);
-    setIsShowEdit((prev) =>
-      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
-    );
+    if (isEditTitle === item) {
+      setIsEditTitle(null);
+      setIsShowEdit((prev) => (prev === item ? null : item));
+      // setIsShowEdit(null)
+    } else {
+      setIsEditTitle(item);
+      setIsShowEdit(item);
+    }
   };
 
   const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,9 +57,10 @@ const Chapter = () => {
   };
 
   const handleDropdown = (item: string) => {
-    setOpenChapters((prev) =>
-      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
-    );
+    // setOpenChapters((prev) =>
+    //   prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
+    // );
+    setOpenChapters((prev) => (prev === item ? null : item));
   };
 
   const handleCancelEdit = (item: string) => {
@@ -97,9 +97,9 @@ const Chapter = () => {
               key={item}
               className={`flex flex-col gap-4 p-2
                 ${
-                  openChapters.includes(item)
-                    ? ""
-                    : "bg-gray-50 border-1 border-solid rounded-md"
+                  openChapters === item
+                    ? "border-4 border-solid bg-[#F7F7F7] shadow-sm rounded-md"
+                    : "bg-white border-1 border-solid border-[#DBDBDB] rounded-md"
                 }
               `}
             >
@@ -113,15 +113,17 @@ const Chapter = () => {
                 handleChangeTitleChapter={handleChangeTitleChapter}
               />
 
-              {openChapters.includes(item) && (
-                <div>
-                  <div className="ml-10">
-                    <div className="flex flex-col">
-                      <div className="flex flex-col p-2 gap-4 border-1 border-solid rounded-md bg-gray-50">
+              {openChapters === item && (
+                <div className="">
+                  <div className="border border-gray-300 bg-white mb-2"></div>
+
+                  <div className="flex flex-col mx-4">
+                    <div className="mx-5">
+                      <div className="flex flex-col p-2 gap-4 border-1 border-solid rounded-md bg-[#F3F3F3]">
                         <span className="text-md font-semibold">
                           Description
                         </span>
-                        {isShowEdit.includes(item) ? (
+                        {isShowEdit === item ? (
                           <Input
                             onChange={handleChangeDescription}
                             placeholder={"Enter to chapter description"}
@@ -132,31 +134,33 @@ const Chapter = () => {
                           <span className="text-sm">{descriptions[item]}</span>
                         )}
                       </div>
-                      <div className="m-2">
-                        {isShowEdit.includes(item) ? (
-                          <div className="flex flex-row gap-6 justify-end">
-                            <Button
-                              onClick={() => handleCancelEdit(item)}
-                              // onClick={() => handleShowDropdown(item)}
-                              variant={"light"}
-                              className="text-red-600"
-                            >
-                              Cancel
-                            </Button>
-                            <Button
-                              onClick={() => handleSaveEditChapter(item)}
-                              color={"primary"}
-                            >
-                              Save
-                            </Button>
-                          </div>
-                        ) : (
-                          <div className="flex flex-row gap-6 justify-end"></div>
-                        )}
-                      </div>
+                      <div className="border border-gray-300 bg-white mt-2"></div>
+                    </div>
+
+                    <Lesson></Lesson>
+                    <div className="m-2">
+                      {isShowEdit === item ? (
+                        <div className="flex flex-row gap-6 justify-end">
+                          <Button
+                            onClick={() => handleCancelEdit(item)}
+                            // onClick={() => handleShowDropdown(item)}
+                            variant={"light"}
+                            className="text-red-600"
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            onClick={() => handleSaveEditChapter(item)}
+                            color={"primary"}
+                          >
+                            Save
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="flex flex-row gap-6 justify-end"></div>
+                      )}
                     </div>
                   </div>
-                  <Lesson></Lesson>
                 </div>
               )}
             </div>
