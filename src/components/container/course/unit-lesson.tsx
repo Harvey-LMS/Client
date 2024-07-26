@@ -7,7 +7,13 @@ import Link from "next/link";
 import { IoIosAdd, IoMdAddCircleOutline } from "react-icons/io";
 import NotFound from "@/assets/404_Not_Found.svg";
 
-const Lesson = () => {
+interface Props {
+  chapter: string;
+  lessons: string[];
+  setLessons: React.Dispatch<React.SetStateAction<{ [key: string]: string[] }>>;
+}
+
+const Lesson = ({ chapter, lessons, setLessons }: Props) => {
   const [initialItems, setInitialItems] = useState<string[]>([
     "Lesson 1: Basic",
     "Lesson 2: Listening",
@@ -79,28 +85,34 @@ const Lesson = () => {
         <Reorder.Group
           className="flex flex-col gap-4 p-2"
           axis="y"
-          onReorder={setItems}
-          values={items}
+          onReorder={(newReorder) =>
+            setLessons((prev) => ({
+              ...prev,
+              [chapter]: newReorder,
+            }))
+          }
+          values={lessons}
         >
-          {items.map((item) => (
+          {lessons.map((lesson) => (
             <div
               className={`${
-                openLessons === item
+                openLessons === lesson
                   ? "border-4 border-primary border-solid rounded-md -m-1"
                   : ""
               }`}
-              key={item}
+              key={lesson}
             >
               <Item
-                item={item}
+                item={lesson}
                 handleDelete={handleDeleteItem}
-                handleEdit={() => handleShowEdit(item)}
-                handleDropdown={() => handleDropdown(item)}
+                handleEdit={() => handleShowEdit(lesson)}
+                handleDropdown={() => handleDropdown(lesson)}
                 type="lesson"
-                isEditTitle={isEditTitle === item}
+                isEditTitle={isEditTitle === lesson}
                 handleChangeTitleChapter={handleChangeTitleChapter}
               />
-              {openLessons === item && (
+              {/* {openLessons === item && ( */}
+              {openLessons === lesson && (
                 <div>
                   <div className="border border-gray-300 bg-white m-2"></div>
                   <div className="p-2">
@@ -108,7 +120,7 @@ const Lesson = () => {
                       <div className="flex flex-col gap-0">
                         <div className="flex flex-col gap-4 bg-[#F3F3F3] border-1 border-solid rounded-md p-2">
                           <span className="text-md font-semibold">Content</span>
-                          {isShowEdit === item ? (
+                          {isShowEdit === lesson ? (
                             <Input
                               onChange={handleChangeContent}
                               placeholder={"Enter to lesson content"}
@@ -123,7 +135,7 @@ const Lesson = () => {
                     </div>
 
                     <div className="my-2">
-                      {isShowEdit === item ? (
+                      {isShowEdit === lesson ? (
                         <div className="flex flex-col gap-4 bg-[#F3F3F3] border-1 border-solid rounded-md p-2">
                           <span className="text-md font-semibold">Upload</span>
                           <Link
@@ -147,7 +159,7 @@ const Lesson = () => {
                     </div>
 
                     <div className="my-2">
-                      {isShowEdit === item ? (
+                      {isShowEdit === lesson ? (
                         <div className="flex flex-row gap-6 justify-end">
                           <Button
                             onClick={handleCancelEdit}
@@ -158,7 +170,7 @@ const Lesson = () => {
                             Cancel
                           </Button>
                           <Button
-                            onClick={() => handleSaveContent(item)}
+                            onClick={() => handleSaveContent(lesson)}
                             color={"primary"}
                           >
                             Save

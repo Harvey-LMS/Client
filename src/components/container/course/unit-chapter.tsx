@@ -21,7 +21,22 @@ const Chapter = () => {
     "Chapter 4: Test": "This is the fourth chapter",
   };
 
+  const initialLessons: { [key: string]: string[] } = {
+    "Chapter 1: Getting started chapter": ["Lesson 1: Introduction"],
+    "Chapter 2: Basic": [
+      "Lesson 1: Basics Reading",
+      "Lesson 2: Basics Writing",
+    ],
+    "Chapter 3: Practice": [
+      "Lesson 1: Exercises",
+      "Lesson 2: Practice 1",
+      "Lesson 3: Practice 2",
+    ],
+    "Chapter 4: Test": ["Lesson 1: Practice Test", "Lesson 2: Final Test"],
+  };
+
   const [items, setItems] = useState(initialItemsChapter);
+  const [lessons, setLessons] = useState(initialLessons);
   const [descriptions, setDescriptions] = useState(initialDescription);
 
   // const [openChapters, setOpenChapters] = useState<string[]>([]);
@@ -137,7 +152,11 @@ const Chapter = () => {
                       <div className="border border-gray-300 bg-white mt-2"></div>
                     </div>
 
-                    <Lesson></Lesson>
+                    <Lesson
+                      chapter={item}
+                      lessons={lessons[item]}
+                      setLessons={setLessons}
+                    />
                     <div className="m-2">
                       {isShowEdit === item ? (
                         <div className="flex flex-row gap-6 justify-end">
