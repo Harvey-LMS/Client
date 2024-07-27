@@ -88,7 +88,7 @@ const Chapter = () => {
   };
 
   const handleSaveEditChapter = (item: string) => {
-    setDescription(descriptionInput);
+    // setDescription(descriptionInput);
     setItems((prevItems) =>
       prevItems.map((i) => (i === item ? titleInput : i))
     );

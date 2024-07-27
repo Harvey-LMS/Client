@@ -99,10 +99,10 @@ const Lesson = ({ chapter, lessons, setLessons }: Props) => {
         >
           {lessons.map((lesson) => (
             <div
-              className={`${
+              className={`p-2 ${
                 openLessons === lesson
-                  ? "border-4 border-primary border-solid rounded-md -m-1"
-                  : ""
+                  ? "border-4 border-primary border-solid rounded-md -m-1 "
+                  : "border-1 border-solid border-[#E9E9E9] bg-[#F2F2F2] rounded-md "
               }`}
               key={lesson}
             >
@@ -117,7 +117,7 @@ const Lesson = ({ chapter, lessons, setLessons }: Props) => {
               />
               {/* {openLessons === item && ( */}
               {openLessons === lesson && (
-                <div>
+                <div className="">
                   <div className="border border-gray-300 bg-white m-2"></div>
                   <div className="p-2">
                     <div className="my-2">
@@ -190,6 +190,7 @@ const Lesson = ({ chapter, lessons, setLessons }: Props) => {
             </div>
           ))}
         </Reorder.Group>
+
         <div className="flex items-center justify-center">
           <Button
             onClick={() => setIsShowCreate(!isShowCreate)}

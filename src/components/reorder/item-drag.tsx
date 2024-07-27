@@ -33,6 +33,13 @@ export const Item = ({
   const boxShadow = useRaisedShadow(y);
   const dragControls = useDragControls();
 
+  const [value, setValue] = React.useState<string>(item);
+
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    handleChangeTitleChapter(e);
+  };
+
   return (
     <div className="flex flex-row">
       <div className="flex flex-row gap-2 w-full h-6">
@@ -59,16 +66,19 @@ export const Item = ({
             dragControls={dragControls}
           >
             <div className="flex flex-row justify-between">
-              <div className="flex flex-row gap-4 items-center">
+              <div className="flex flex-row gap-4 items-center w-full">
                 {/* <FaRegFilePdf className="w-8 h-6" /> */}
                 {type === "chapter" ? "" : <FaVideo className="w-7 h-5" />}
                 {isEditTitle && type === "chapter" ? (
-                  <Input
-                    onChange={handleChangeTitleChapter}
-                    placeholder={"Enter to chapter title"}
-                    variant={"faded"}
-                    className="w-full pt-2"
-                  />
+                  <div className="w-full">
+                    <Input
+                      // onChange={(e) => setValue(e.target.value)}
+                      onChange={handleChangeInput}
+                      variant={"bordered"}
+                      className="w-full mt-1"
+                      value={value}
+                    />
+                  </div>
                 ) : (
                   <span
                     className={`flex justify-center items-center select-none ${
@@ -81,21 +91,27 @@ export const Item = ({
               </div>
               {type === "chapter" ? (
                 <div className="flex flex-row gap-1 justify-center items-center">
-                  <Button
-                    variant={"light"}
-                    className="min-w-10 h-2/3 p-0"
-                    onPress={() => handleDelete(item)}
-                  >
-                    <MdDeleteOutline className="text-2xl " />
-                  </Button>
-                  <Button
-                    variant={"light"}
-                    onPress={handleEdit}
-                    className="min-w-10 h-2/3 p-0"
-                  >
-                    <MdOutlineEdit className="text-2xl" size={"sm"} />
-                  </Button>
-                  <ReorderIcon dragControls={dragControls} />
+                  {!isEditTitle ? (
+                    <>
+                      <Button
+                        variant={"light"}
+                        className="min-w-10 h-2/3 p-0"
+                        onPress={() => handleDelete(item)}
+                      >
+                        <MdDeleteOutline size={"sm"} />
+                      </Button>
+                      <Button
+                        variant={"light"}
+                        onPress={handleEdit}
+                        className="min-w-10 h-2/3 p-0"
+                      >
+                        <MdOutlineEdit className="text-2xl" />
+                      </Button>
+                      <ReorderIcon dragControls={dragControls} />
+                    </>
+                  ) : (
+                    <div></div>
+                  )}
                 </div>
               ) : (
                 <div className="flex flex-row gap-1 justify-center items-center">
