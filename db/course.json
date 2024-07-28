@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "title": "Title 1",
+    "description": "Description 1",
+    "language": ["Eng"],
+    "createDate": "01/01/2024",
+    "level": "Medium",
+    "price": 32.0,
+    "discountPrice": 10.0,
+    "category": ["Skills", "Practice"],
+    "thumbnailURL": ""
+  }
+]

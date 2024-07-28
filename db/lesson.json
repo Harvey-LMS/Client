@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1,
+    "chapterId": 1,
+    "title": "Title 1",
+    "content": "Content 1",
+    "videoURL": "",
+    "duration": 25
+  }
+]

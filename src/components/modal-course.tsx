@@ -8,30 +8,36 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  useDisclosure,
   Input,
+  Textarea,
+  Checkbox,
 } from "@nextui-org/react";
 import { BiCustomize } from "react-icons/bi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import Link from "next/link";
 import { FaEdit } from "react-icons/fa";
 
-export default function ModalCourse({
-  isOpen,
-  onOpenChange,
-}: // title,
-{
+import { handleCheckStatus } from "@/util/checkStatus";
+
+interface Props {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
-  // title: string;
-}) {
+}
+
+export default function ModalCourse({ isOpen, onOpenChange }: Props) {
   const [isShowTitle, setIsShowTitle] = useState(false);
   const [isShowContent, setIsShowContent] = useState(false);
+  const [isShowAccessSetting, setIsShowAccessSetting] = useState(false);
+
+  const [isChecked, setIsChecked] = useState(false);
 
   const [titleInput, setTitleInput] = useState("");
   const [title, setTitle] = useState("This is title");
   const [contentInput, setContentInput] = useState("");
   const [content, setContent] = useState("This is content");
+  const [accessSetting, setAccessSetting] = useState(
+    "This lesson is NOT for free preview"
+  );
 
   const handleShowEdit = (
     stateSetter: (prevState: React.SetStateAction<boolean>) => void
@@ -53,6 +59,25 @@ export default function ModalCourse({
   const handleSaveContent = () => {
     setContent(contentInput);
     setIsShowContent(false);
+  };
+
+  const handleSaveAccessSetting = () => {
+    if (isChecked) setAccessSetting("This lesson is for free preview");
+    else setAccessSetting("This lesson is NOT for free preview");
+    setIsShowAccessSetting(false);
+  };
+
+  const handleCheckStatus = () => {
+    if (
+      title.length === 0 ||
+      content.length === 0 ||
+      title === "This is title" ||
+      content === "This is content"
+    ) {
+      return true;
+    }
+
+    return false;
   };
 
   return (
@@ -104,6 +129,7 @@ export default function ModalCourse({
                           variant={"bordered"}
                           className="w-full"
                           onChange={handleChangeTitle}
+                          placeholder="Enter to lesson title"
                         ></Input>
                         <Button
                           color="primary"
@@ -142,17 +168,18 @@ export default function ModalCourse({
                           <div>
                             <FaEdit />
                           </div>
-                          <span>Edit title</span>
+                          <span>Edit content</span>
                         </Button>
                       )}
                     </div>
                     {isShowContent ? (
                       <div className="flex flex-col gap-2">
-                        <Input
+                        <Textarea
                           variant={"bordered"}
                           className="w-full"
                           onChange={handleChangeContent}
-                        ></Input>
+                          placeholder="Enter to lesson content"
+                        />
                         <Button
                           color="primary"
                           onClick={handleSaveContent}
@@ -185,12 +212,73 @@ export default function ModalCourse({
                     </Link>
                   </div>
                 </div>
+
+                <div className="m-2">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex flex-row justify-between">
+                      <span className="text-md font-semibold">
+                        Free preview lesson
+                      </span>
+                      {isShowAccessSetting ? (
+                        <Button
+                          onClick={() => handleShowEdit(setIsShowAccessSetting)}
+                          className="flex flex-row gap-2"
+                          variant={"ghost"}
+                        >
+                          <span>Cancel</span>
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={() => handleShowEdit(setIsShowAccessSetting)}
+                          className="flex flex-row gap-2"
+                          variant={"ghost"}
+                        >
+                          <div>
+                            <FaEdit />
+                          </div>
+                          <span>Edit access setting</span>
+                        </Button>
+                      )}
+                    </div>
+                    {isShowAccessSetting ? (
+                      <div className="flex flex-col gap-2">
+                        <div className="flex flex-row gap-0">
+                          <Checkbox
+                            size="sm"
+                            isSelected={isChecked}
+                            onChange={() => setIsChecked(!isChecked)}
+                          >
+                            <span className="text-sm opacity-80">
+                              Check this box if you want to make this lesson
+                              free for preview
+                            </span>
+                          </Checkbox>
+                        </div>
+                        <Button
+                          color={"primary"}
+                          onClick={handleSaveAccessSetting}
+                          className="w-20"
+                        >
+                          Save
+                        </Button>
+                      </div>
+                    ) : (
+                      <span className="text-sm opacity-80">
+                        {accessSetting}
+                      </span>
+                    )}
+                  </div>
+                </div>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
                   Cancel
                 </Button>
-                <Button color="primary" onPress={onClose}>
+                <Button
+                  color="primary"
+                  onPress={onClose}
+                  onClick={handleCheckStatus}
+                >
                   Save
                 </Button>
               </ModalFooter>

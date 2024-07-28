@@ -1,3 +1,4 @@
+
 import Course from "@/components/container/dashboard/course/course";
 import { ICourse } from "@/types/course";
 import { cache } from "react";
@@ -20,5 +21,4 @@ const Page = async() => {
         <Course input={data} page={page} totalPage={totalPage}></Course>
 );
 }
- 
 export default Page;

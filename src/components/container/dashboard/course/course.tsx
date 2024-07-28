@@ -1,3 +1,4 @@
+
 "use client"
 
 import { ICourse } from "@/types/course";
@@ -180,5 +181,4 @@ const Course = ({ input, page, totalPage }: ICourseProps) => {
     </div>
   );
 }
-
 export default Course;
