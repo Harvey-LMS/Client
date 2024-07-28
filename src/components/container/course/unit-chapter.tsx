@@ -40,14 +40,9 @@ const Chapter = () => {
   const [lessons, setLessons] = useState(initialLessons);
   const [descriptions, setDescriptions] = useState(initialDescription);
 
-  // const [openChapters, setOpenChapters] = useState<string[]>([]);
   const [openChapters, setOpenChapters] = useState<string | null>(null);
-
   const [titleInput, setTitleInput] = useState("");
-
   const [descriptionInput, setDescriptionInput] = useState("");
-  const [description, setDescription] = useState("This is description");
-
   const [isEditTitle, setIsEditTitle] = useState<string | null>(null);
   const [isShowEdit, setIsShowEdit] = useState<string | null>(null);
 
@@ -57,7 +52,6 @@ const Chapter = () => {
     if (isEditTitle === item) {
       setIsEditTitle(null);
       setIsShowEdit((prev) => (prev === item ? null : item));
-      // setIsShowEdit(null)
     } else {
       setIsEditTitle(item);
       setIsShowEdit(item);
@@ -73,9 +67,6 @@ const Chapter = () => {
   };
 
   const handleDropdown = (item: string) => {
-    // setOpenChapters((prev) =>
-    //   prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
-    // );
     setOpenChapters((prev) => (prev === item ? null : item));
   };
 
@@ -88,16 +79,24 @@ const Chapter = () => {
   };
 
   const handleSaveEditChapter = (item: string) => {
-    // setDescription(descriptionInput);
+    const newTitleChapter = titleInput;
     setItems((prevItems) =>
-      prevItems.map((i) => (i === item ? titleInput : i))
+      prevItems.map((i) => (i === item ? newTitleChapter : i))
     );
 
     setDescriptions((prevDescriptions) => ({
       ...prevDescriptions,
-      [titleInput]: descriptionInput,
+      [newTitleChapter]: descriptionInput,
     }));
-    handleShowEdit(item);
+
+    setLessons((prev) => {
+      const { [item]: lessonsForItem, ...restLessons } = prev;
+      return { ...restLessons, [newTitleChapter]: lessonsForItem };
+    });
+
+    setIsEditTitle(null);
+    setIsShowEdit(null);
+    setOpenChapters(newTitleChapter);
   };
 
   return (

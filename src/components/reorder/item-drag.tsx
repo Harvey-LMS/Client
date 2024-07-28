@@ -142,36 +142,6 @@ export const Item = ({
           </Reorder.Item>
         </div>
       </div>
-
-      {/* {!(currentPath === "/instructor/course/create") ? (
-        <div className="flex flex-row gap-4 justify-center items-center">
-          <Button
-            variant={"light"}
-            className="h-2/3"
-            onPress={() => handleDelete(item)}
-          >
-            <FiTrash />
-          </Button>
-          <Button variant={"light"} onPress={handleEdit} className="h-2/3">
-            <MdEdit />
-            <ModalCourse isOpen={isOpen} onOpenChange={onOpenChange} />
-          </Button>
-        </div>
-      ) : (
-        <div className="flex flex-row gap-4 justify-center items-center">
-          <Button
-            variant={"light"}
-            className="h-2/3"
-            onPress={() => handleDelete(item)}
-          >
-            <FiTrash />
-          </Button>
-          <Button onClick={directChapter} variant={"light"} className="h-2/3">
-            <MdEdit />
-            <ModalCourse isOpen={isOpen} onOpenChange={onOpenChange} />
-          </Button>
-        </div>
-      )} */}
     </div>
   );
 };

@@ -14,29 +14,17 @@ interface Props {
 }
 
 const Lesson = ({ chapter, lessons, setLessons }: Props) => {
-  const [initialItems, setInitialItems] = useState<string[]>([
-    "Lesson 1: Basic",
-    "Lesson 2: Listening",
-  ]);
+  const initialItems = ["Lesson 1: Basic", "Lesson 2: Listening"];
   const [items, setItems] = useState(initialItems);
   const [contentInput, setContentInput] = useState("");
   const [content, setContent] = useState(
     "Take one of Udemy’s range of Python courses and learn how to code using this incredibly useful language. Its simple syntax and readability makes Python perfect for Flask,  Django, data science, and machine learning. You’ll learn how to build everything from games to sites to apps. Choose from a range of courses that will appeal to"
   );
   const [lessonName, setLessonName] = useState("");
-
   const [isShowEdit, setIsShowEdit] = useState<string | null>(null);
-  // const [openLessons, setOpenLessons] = useState<string[]>([]);
   const [openLessons, setOpenLessons] = useState<string | null>(null);
   const [isEditTitle, setIsEditTitle] = useState<string | null>(null);
-
   const [isShowCreate, setIsShowCreate] = useState(false);
-
-  // const handleShowEdit = (
-  //   stateSetter: (prevState: React.SetStateAction<boolean>) => void
-  // ) => {
-  //   stateSetter((prevState: boolean) => !prevState);
-  // };
 
   const handleShowEdit = (item: string) => {
     setIsEditTitle(item);
@@ -61,9 +49,6 @@ const Lesson = ({ chapter, lessons, setLessons }: Props) => {
   };
 
   const handleDropdown = (item: string) => {
-    // setOpenLessons((prev) =>
-    //   prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
-    // );
     setOpenLessons((prev) => (prev === item ? null : item));
   };
 
