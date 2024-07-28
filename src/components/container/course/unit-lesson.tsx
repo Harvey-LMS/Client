@@ -130,6 +130,7 @@ const Lesson = ({ chapter, lessons, setLessons }: Props) => {
                               placeholder={"Enter to lesson content"}
                               variant={"faded"}
                               className="w-full"
+                              value={content}
                             />
                           ) : (
                             <span className="text-sm">{content}</span>

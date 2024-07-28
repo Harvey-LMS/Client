@@ -92,6 +92,7 @@ const Chapter = () => {
     setItems((prevItems) =>
       prevItems.map((i) => (i === item ? titleInput : i))
     );
+
     setDescriptions((prevDescriptions) => ({
       ...prevDescriptions,
       [titleInput]: descriptionInput,
