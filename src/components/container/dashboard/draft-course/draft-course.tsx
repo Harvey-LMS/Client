@@ -1,3 +1,4 @@
+
 "use client"
 import { IDraftCourse } from "@/types/course";
 import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Skeleton, useDisclosure } from "@nextui-org/react";

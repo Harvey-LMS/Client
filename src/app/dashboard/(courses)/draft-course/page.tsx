@@ -1,3 +1,4 @@
+
 import DraftCourse from "@/components/container/dashboard/draft-course/draft-course";
 import { IDraftCourse } from "@/types/course";
 
@@ -17,4 +18,5 @@ const Page = async() => {
     return ( <DraftCourse input={data} page={page} totalPage={totalPage}></DraftCourse> );
 }
  
+
 export default Page;

@@ -1,3 +1,4 @@
+
 "use client"
 
 import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
@@ -69,5 +70,4 @@ const Courses = () => {
         </div>
     );
 }
-
 export default Courses;
