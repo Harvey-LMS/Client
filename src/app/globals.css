@@ -26,6 +26,7 @@
     --radius: 0.5rem;
     --hover: 0 0% 90%;
     --hover-level-2: 0 0% 85%;
+    --items: 0 0% 90%;
   }
  
   .dark {
@@ -63,6 +64,28 @@
       @apply bg-background text-foreground;
     }
   }
+
+
+  ::-webkit-scrollbar {
+    width: 10px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #c7c7c7;
+    border-radius: 5px;
+}
+ 
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #a5a5a5;
+}
+
 
 
   

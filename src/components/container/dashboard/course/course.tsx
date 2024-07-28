@@ -3,6 +3,7 @@
 import { ICourse } from "@/types/course";
 import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Skeleton, useDisclosure } from "@nextui-org/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { title } from "process";
 import { use, useEffect, useState } from "react";
 import { MdModeEdit } from "react-icons/md";
@@ -26,6 +27,8 @@ const Course = ({ input, page, totalPage }: ICourseProps) => {
   const data = input;
 
   const [isFetching, setIsFetching] = useState<boolean>(true);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (data)
@@ -117,7 +120,7 @@ const Course = ({ input, page, totalPage }: ICourseProps) => {
               )))
                 :
                 (data && data.map((item: ICourse) => (
-                  <tr key={item.id} className="hover:bg-hover">
+                  <tr key={item.id} className="hover:bg-hover" onClick={()=> {router.push(`view/${item.id}`)}}>
                     <td className="py-4 px-3 font-semibold text-center">{item.id}</td>
                     <td className="py-4 flex justify-center items-center">
                       <Image src={item.thumnailURL} alt={item.title} width={100} height={70} />
