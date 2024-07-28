@@ -30,7 +30,7 @@ interface SidebarSubItemProps {
 }
 
 const Sidebar = () => {
-  const [expanded, setExpanded] = useState<boolean>(true); // false = thu hẹp   true = mở rộng
+  const [expanded, setExpanded] = useState<boolean>(false); // false = thu hẹp   true = mở rộng
 
   return (
     <motion.div
@@ -38,7 +38,7 @@ const Sidebar = () => {
         width: expanded ? 350 : 80
       }}
       transition={{ duration: 0.5, type: "spring" }}
-      className={`border-r h-screen z-50 flex flex-col justify-start m-auto min-w-3`}>
+      className={`border-r h-screen z-50 flex flex-col justify-start sticky top-0 min-w-3`}>
       <div
         className={` p-1`}>
         <div className={`relative h-fit w-full`}>

@@ -65,7 +65,7 @@ const Nav = ({ children }: { children: React.ReactNode }) => {
 
 
     return (
-        <div className="flex flex-row justify-center items-start w-full sticky">
+        <div className="flex flex-row justify-center items-start w-full">
             {/* <Sidebar>
                 <SidebarItem text="asd" icon={<IoIosSearch></IoIosSearch>}></SidebarItem>
             </Sidebar> */}
