@@ -3,10 +3,9 @@ import { Item } from '@/components/reorder/item-drag';
 import { Button, Input } from '@nextui-org/react';
 import { Reorder } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
-import { IoIosAdd, IoMdAddCircleOutline } from 'react-icons/io';
-import NotFound from '@/assets/404_Not_Found.svg';
+import { IoIosAdd } from 'react-icons/io';
 import UploadFile from './upload';
+import { FaEdit } from 'react-icons/fa';
 
 interface Props {
    chapter: string;
@@ -22,43 +21,46 @@ const Lesson = ({ chapter, lessons, setLessons }: Props) => {
       'Take one of Udemy’s range of Python courses and learn how to code using this incredibly useful language. Its simple syntax and readability makes Python perfect for Flask,  Django, data science, and machine learning. You’ll learn how to build everything from games to sites to apps. Choose from a range of courses that will appeal to',
    );
    const [lessonNameInput, setLessonNameInput] = useState('');
-   const [lessonName, setLessonName] = useState('');
-   const [isShowEdit, setIsShowEdit] = useState<string | null>(null);
+   const [isShowEditContent, setIsShowEditContent] = useState<string | null>(null);
+   const [isShowEditUpload, setIsShowEditUpload] = useState<string | null>(null);
    const [openLessons, setOpenLessons] = useState<string | null>(null);
    const [isEditTitle, setIsEditTitle] = useState<string | null>(null);
    const [isShowCreate, setIsShowCreate] = useState(false);
-
-   const [fileUrl, setFileUrl] = useState<string | null>(null);
+   const [fileUrl, setFileUrl] = useState<string>('');
    const [fileType, setFileType] = useState<string | null>(null);
 
-   const handleShowEdit = (item: string) => {
-      setIsEditTitle(item);
-      setIsShowEdit((prev) => (prev === item ? null : item));
+   const handleShowEditContent = (lesson: string) => {
+      setIsShowEditContent((prev) => (prev === lesson ? null : lesson));
+   };
+
+   const handleShowEditUpload = (lesson: string) => {
+      setIsShowEditUpload((prev) => (prev === lesson ? null : lesson));
    };
 
    const handleChangeContent = (e: React.ChangeEvent<HTMLInputElement>) => {
       setContentInput(e.target.value);
    };
 
-   const handleSaveContent = (item: string) => {
+   const handleSaveContent = (lesson: string) => {
       setContent(contentInput);
-      setIsShowEdit((prev) => (prev === item ? null : item));
+      setIsShowEditContent(null);
    };
 
-   const handleDeleteItem = (item: string) => {
-      setItems((prevItems) => prevItems.filter((i) => i !== item));
+   const handleSaveUpload = (lesson: string) => {
+      renderFileContent(fileUrl, fileType);
+      setIsShowEditUpload(null);
+   };
+
+   const handleDeleteItem = (lesson: string) => {
+      setItems((prevItems) => prevItems.filter((i) => i !== lesson));
       setLessons((prev) => ({
          ...prev,
-         [chapter]: lessons.filter((i) => i !== item),
+         [chapter]: prev[chapter].filter((i) => i !== lesson),
       }));
    };
 
-   const handleDropdown = (item: string) => {
-      setOpenLessons((prev) => (prev === item ? null : item));
-   };
-
-   const handleCancelEdit = () => {
-      setIsShowEdit(null);
+   const handleDropdown = (lesson: string) => {
+      setOpenLessons((prev) => (prev === lesson ? null : lesson));
    };
 
    const handleChangeLesson = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,15 +68,13 @@ const Lesson = ({ chapter, lessons, setLessons }: Props) => {
    };
 
    const handleCreateLesson = () => {
-      setLessonName(lessonNameInput);
       setLessons((prev) => ({
          ...prev,
-         [chapter]: [...lessons, lessonNameInput],
+         [chapter]: [...prev[chapter], lessonNameInput],
       }));
-      console.log('item: ', lessons);
+      setLessonNameInput('');
+      setIsShowCreate(false);
    };
-
-   const handleChangeTitleChapter = (e: React.ChangeEvent<HTMLInputElement>) => {};
 
    const renderFileContent = (file: string, type: string | null) => {
       switch (type) {
@@ -113,138 +113,185 @@ const Lesson = ({ chapter, lessons, setLessons }: Props) => {
             <Reorder.Group
                className="flex flex-col gap-4 p-2"
                axis="y"
-               onReorder={(newReorder) =>
-                  setLessons((prev) => ({
-                     ...prev,
-                     [chapter]: newReorder,
-                  }))
-               }
+               onReorder={(newOrder) => setLessons((prev) => ({ ...prev, [chapter]: newOrder }))}
                values={lessons}
             >
                {lessons.map((lesson) => (
-                  <div
+                  <Reorder.Item
+                     key={lesson}
+                     value={lesson}
                      className={`p-2 ${
                         openLessons === lesson
-                           ? 'border-4 border-primary border-solid rounded-md -m-1 '
-                           : 'border-1 border-solid border-[#E9E9E9] bg-[#F2F2F2] rounded-md '
+                           ? 'border-4 border-primary border-solid rounded-md -m-1'
+                           : 'border-1 border-solid border-[#E9E9E9] bg-[#F2F2F2] rounded-md'
                      }`}
-                     key={lesson}
                   >
                      <Item
                         item={lesson}
                         handleDelete={handleDeleteItem}
-                        handleEdit={() => handleShowEdit(lesson)}
+                        handleEdit={() => handleShowEditContent(lesson)}
                         handleDropdown={() => handleDropdown(lesson)}
                         type="lesson"
                         isEditTitle={isEditTitle === lesson}
-                        handleChangeTitleChapter={handleChangeTitleChapter}
+                        handleChangeTitleChapter={() => console.log('')}
                      />
-                     {/* {openLessons === item && ( */}
                      {openLessons === lesson && (
-                        <div className="">
+                        <div>
                            <div className="border border-gray-300 bg-white m-2"></div>
                            <div className="p-2">
                               <div className="my-2">
                                  <div className="flex flex-col gap-0">
                                     <div className="flex flex-col gap-4 bg-[#F3F3F3] border-1 border-solid rounded-md p-2">
-                                       <span className="text-md font-semibold">Content</span>
-                                       {isShowEdit === lesson ? (
+                                       <div className="flex flex-row gap-2 justify-between">
+                                          <span className="text-md font-semibold">Content</span>
+                                          {isShowEditContent === lesson ? (
+                                             <Button
+                                                onClick={() => handleShowEditContent(lesson)}
+                                                className="flex flex-row gap-2"
+                                                variant="light"
+                                             >
+                                                <div>
+                                                   <FaEdit />
+                                                </div>
+                                                <span>Edit content</span>
+                                             </Button>
+                                          ) : (
+                                             <Button
+                                                onClick={() => handleShowEditContent(lesson)}
+                                                className="flex flex-row gap-2"
+                                                variant="light"
+                                             >
+                                                <div>
+                                                   <FaEdit />
+                                                </div>
+                                                <span>Edit content</span>
+                                             </Button>
+                                          )}
+                                       </div>
+                                       {isShowEditContent === lesson ? (
                                           <Input
                                              onChange={handleChangeContent}
-                                             placeholder={'Enter to lesson content'}
-                                             variant={'faded'}
+                                             placeholder="Enter lesson content"
+                                             variant="faded"
                                              className="w-full"
-                                             value={content}
+                                             value={contentInput}
                                           />
                                        ) : (
                                           <span className="text-sm">{content}</span>
                                        )}
                                     </div>
+                                    <div className="my-2">
+                                       {isShowEditContent === lesson ? (
+                                          <div className="flex flex-row gap-6 justify-end">
+                                             <Button
+                                                onClick={() => setIsShowEditContent(null)}
+                                                variant="light"
+                                                className="text-red-600"
+                                             >
+                                                Cancel
+                                             </Button>
+                                             <Button
+                                                onClick={() => handleSaveContent(lesson)}
+                                                color="primary"
+                                             >
+                                                Save
+                                             </Button>
+                                          </div>
+                                       ) : null}
+                                    </div>
                                  </div>
                               </div>
-
                               <div className="my-2">
-                                 {isShowEdit === lesson ? (
-                                    <UploadFile
-                                       isShowEdit={isShowEdit === lesson}
-                                       value={fileUrl}
-                                       onFileUpload={(file, type) => {
-                                          setFileUrl(file);
-                                          setFileType(type);
-                                       }}
-                                    ></UploadFile>
-                                 ) : (
-                                    <div className="flex flex-col gap-4 bg-gray-50 border-1 border-solid rounded-md p-2">
+                                 <div className="flex flex-col gap-4 bg-gray-50 border-1 border-solid rounded-md p-2">
+                                    <div className="flex flex-row justify-between">
                                        <span className="text-md font-semibold">Upload</span>
-                                       {fileUrl ? (
-                                          renderFileContent(fileUrl, fileType)
-                                       ) : (
-                                          <Image
-                                             src={NotFound}
-                                             alt={'img'}
-                                             width={400}
-                                             height={400}
+                                       {isShowEditUpload === lesson ? (
+                                          <UploadFile
+                                             isShowEdit={isShowEditUpload === lesson}
+                                             value={fileUrl}
+                                             onFileUpload={(file, type) => {
+                                                setFileUrl(file);
+                                                setFileType(type);
+                                             }}
                                           />
+                                       ) : (
+                                          <Button
+                                             onClick={() => handleShowEditUpload(lesson)}
+                                             className="flex flex-row gap-2"
+                                             variant="light"
+                                          >
+                                             <div>
+                                                <FaEdit />
+                                             </div>
+                                             <span>Edit upload</span>
+                                          </Button>
                                        )}
                                     </div>
-                                 )}
-                              </div>
-
-                              <div className="my-2">
-                                 {isShowEdit === lesson ? (
-                                    <div className="flex flex-row gap-6 justify-end">
-                                       <Button
-                                          onClick={handleCancelEdit}
-                                          // onClick={() => handleShowDropdown(item)}
-                                          variant={'light'}
-                                          className="text-red-600"
-                                       >
-                                          Cancel
-                                       </Button>
-                                       <Button
-                                          onClick={() => handleSaveContent(lesson)}
-                                          color={'primary'}
-                                       >
-                                          Save
-                                       </Button>
+                                    <div className="flex justify-center items-center">
+                                       {fileUrl &&
+                                          !isShowEditUpload &&
+                                          renderFileContent(fileUrl, fileType)}
                                     </div>
-                                 ) : (
-                                    <div className="flex flex-row gap-6 justify-end"></div>
-                                 )}
+                                 </div>
+                                 <div className="my-2">
+                                    {isShowEditUpload === lesson ? (
+                                       <div className="flex flex-row gap-6 justify-end">
+                                          <Button
+                                             onClick={() => setIsShowEditUpload(null)}
+                                             variant="light"
+                                             className="text-red-600"
+                                          >
+                                             Cancel
+                                          </Button>
+                                          <Button
+                                             onClick={() => handleSaveUpload(lesson)}
+                                             color="primary"
+                                          >
+                                             Save
+                                          </Button>
+                                       </div>
+                                    ) : null}
+                                 </div>
                               </div>
                            </div>
                         </div>
                      )}
-                  </div>
+                  </Reorder.Item>
                ))}
             </Reorder.Group>
-
-            <div className="flex items-center justify-center">
-               <Button
-                  onClick={() => setIsShowCreate(!isShowCreate)}
-                  color="primary"
-                  className="flex flex-row items-center justify-center"
-               >
-                  <IoIosAdd className="text-3xl" />
-                  <span>Add lesson</span>
-               </Button>
-            </div>
-            {isShowCreate && (
-               <div>
-                  <Input
-                     variant={'bordered'}
-                     className="w-full mt-1"
-                     onChange={handleChangeLesson}
-                  ></Input>
+            <div className="flex items-center justify-center mt-4">
+               {isShowCreate ? (
+                  <div className="flex flex-col gap-4">
+                     <Input
+                        placeholder="Enter new lesson name"
+                        variant="faded"
+                        value={lessonNameInput}
+                        onChange={handleChangeLesson}
+                     />
+                     <div className="flex justify-end gap-4">
+                        <Button
+                           onClick={() => setIsShowCreate(false)}
+                           variant="light"
+                           className="text-red-600"
+                        >
+                           Cancel
+                        </Button>
+                        <Button onClick={handleCreateLesson} color="primary">
+                           Create Lesson
+                        </Button>
+                     </div>
+                  </div>
+               ) : (
                   <Button
-                     onClick={handleCreateLesson}
-                     color="primary"
+                     onClick={() => setIsShowCreate(true)}
+                     variant="light"
                      className="flex flex-row items-center justify-center"
                   >
-                     Save
+                     <IoIosAdd className="text-3xl" />
+                     <span className="font-semibold">Add Lesson</span>
                   </Button>
-               </div>
-            )}
+               )}
+            </div>
          </div>
       </div>
    );

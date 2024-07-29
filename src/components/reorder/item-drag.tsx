@@ -4,11 +4,12 @@ import * as React from 'react';
 import { useMotionValue, Reorder, useDragControls } from 'framer-motion';
 import { useRaisedShadow } from '@/components/reorder/use-raised-shadow';
 import { ReorderIcon } from '@/components/reorder/icon';
-import { Button, Input } from '@nextui-org/react';
+import { Button, Input, useDisclosure } from '@nextui-org/react';
 
 import { MdDeleteOutline, MdOutlineEdit } from 'react-icons/md';
 import { FaVideo } from 'react-icons/fa6';
 import { IoIosArrowDown } from 'react-icons/io';
+import ConfirmDeleteModal from '../container/course/modal-confirm';
 
 interface Props {
    item: string;
@@ -35,6 +36,12 @@ export const Item = ({
 
    const [value, setValue] = React.useState<string>(item);
 
+   const { isOpen, onOpenChange } = useDisclosure();
+
+   const handleShowModalConfirm = () => {
+      onOpenChange();
+   };
+
    const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
       setValue(e.target.value);
       handleChangeTitleChapter(e);
@@ -52,7 +59,7 @@ export const Item = ({
                   <ReorderIcon dragControls={dragControls} />
                )}
             </div>
-            <div className="w-full flex justify-center items-center">
+            <div onClick={handleDropdown} className="w-full flex justify-center items-center">
                <Reorder.Item
                   className="w-full"
                   value={item}
@@ -63,9 +70,8 @@ export const Item = ({
                >
                   <div className="flex flex-row justify-between">
                      <div className="flex flex-row gap-4 items-center w-full">
-                        {/* <FaRegFilePdf className="w-8 h-6" /> */}
                         {type === 'chapter' ? '' : <FaVideo className="w-7 h-5" />}
-                        {isEditTitle && type === 'chapter' ? (
+                        {/* {isEditTitle && type === 'chapter' ? (
                            <div className="w-full">
                               <Input
                                  onChange={handleChangeInput}
@@ -82,7 +88,14 @@ export const Item = ({
                            >
                               {item}
                            </span>
-                        )}
+                        )} */}
+                        <span
+                           className={`flex justify-center items-center select-none ${
+                              type === 'chapter' ? 'text-md font-semibold ' : 'text-sm'
+                           }`}
+                        >
+                           {item}
+                        </span>
                      </div>
                      {type === 'chapter' ? (
                         <div className="flex flex-row gap-1 justify-center items-center">
@@ -94,14 +107,19 @@ export const Item = ({
                                     onPress={() => handleDelete(item)}
                                  >
                                     <MdDeleteOutline size={'sm'} />
+                                    <ConfirmDeleteModal
+                                       isOpen={isOpen}
+                                       onOpenChange={onOpenChange}
+                                       onConfirmDelete={() => handleDelete}
+                                    ></ConfirmDeleteModal>
                                  </Button>
-                                 <Button
+                                 {/* <Button
                                     variant={'light'}
                                     onPress={handleEdit}
                                     className="min-w-10 h-2/3 p-0"
                                  >
                                     <MdOutlineEdit className="text-2xl" />
-                                 </Button>
+                                 </Button> */}
                                  <ReorderIcon dragControls={dragControls} />
                               </>
                            ) : (
@@ -113,17 +131,23 @@ export const Item = ({
                            <Button
                               variant={'light'}
                               className="min-w-10 h-2/3 p-0"
-                              onPress={() => handleDelete(item)}
+                              onPress={handleShowModalConfirm}
+                              // onClick={() => handleDelete(item)}
                            >
                               <MdDeleteOutline className="text-2xl" />
+                              <ConfirmDeleteModal
+                                 isOpen={isOpen}
+                                 onOpenChange={onOpenChange}
+                                 onConfirmDelete={() => handleDelete}
+                              ></ConfirmDeleteModal>
                            </Button>
-                           <Button
+                           {/* <Button
                               variant={'light'}
                               onPress={handleEdit}
                               className="min-w-10 h-2/3 p-0"
                            >
                               <MdOutlineEdit className="text-2xl" />
-                           </Button>
+                           </Button> */}
                            <Button
                               variant={'light'}
                               onPress={handleDropdown}

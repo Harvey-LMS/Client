@@ -8,6 +8,8 @@ import { Input } from '@nextui-org/input';
 import { Button } from '@nextui-org/react';
 import { IoIosAdd } from 'react-icons/io';
 import UploadFile from './upload';
+import { FiEdit } from 'react-icons/fi';
+import { FaEdit } from 'react-icons/fa';
 
 const Chapter = () => {
    const initialItemsChapter = [
@@ -132,8 +134,35 @@ const Chapter = () => {
 
                            <div className="flex flex-col mx-4">
                               <div className="mx-5">
-                                 <div className="flex flex-col p-2 gap-4 border-1 border-solid rounded-md bg-[#F3F3F3]">
-                                    <span className="text-md font-semibold">Description</span>
+                                 <div
+                                    className={`flex flex-col p-2 ${
+                                       isShowEdit === item ? 'gap-2' : 'gap-0'
+                                    } border-1 border-solid rounded-md bg-[#F3F3F3]`}
+                                 >
+                                    <div className="flex flex-row gap-2 justify-between">
+                                       <span className="text-md font-semibold">Description</span>
+                                       {isShowEdit === item ? (
+                                          // <Button
+                                          //    onClick={() => handleCancelEdit(item)}
+                                          //    className="flex flex-row gap-2 text-red-600"
+                                          //    variant={'light'}
+                                          // >
+                                          //    <span>Cancel</span>
+                                          // </Button>
+                                          <></>
+                                       ) : (
+                                          <Button
+                                             onClick={() => handleShowEdit(item)}
+                                             className="flex flex-row gap-2 "
+                                             variant={'light'}
+                                          >
+                                             <div>
+                                                <FaEdit />
+                                             </div>
+                                             <span>Edit description</span>
+                                          </Button>
+                                       )}
+                                    </div>
                                     {isShowEdit === item ? (
                                        <Input
                                           onChange={handleChangeDescription}
