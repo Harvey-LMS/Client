@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from 'react';
 import { Item } from '@/components/reorder/item-drag';
 import { Button, Input, useDisclosure } from '@nextui-org/react';
@@ -210,11 +212,10 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                   <Reorder.Item
                      key={lesson.id}
                      value={lesson}
-                     className={`p-2 ${
-                        openLessons === lesson.title
+                     className={`p-2 ${openLessons === lesson.title
                            ? 'border-4 border-primary border-solid rounded-md -m-1'
                            : 'border-1 border-solid border-[#E9E9E9] bg-[#F2F2F2] rounded-md'
-                     }`}
+                        }`}
                   >
                      <Item
                         item={lesson}
@@ -231,9 +232,8 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                               <div className="my-2">
                                  <div className="flex flex-col gap-0">
                                     <div
-                                       className={`flex flex-col ${
-                                          isShowEditContent === lesson.title ? 'gap-0' : 'gap-2'
-                                       }bg-[#F3F3F3] border-1 border-solid rounded-md p-2`}
+                                       className={`flex flex-col ${isShowEditContent === lesson.title ? 'gap-0' : 'gap-2'
+                                          }bg-[#F3F3F3] border-1 border-solid rounded-md p-2`}
                                     >
                                        <div className="flex flex-row gap-2 justify-between">
                                           <span className="text-md font-semibold">Content</span>

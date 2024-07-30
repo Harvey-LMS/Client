@@ -1,24 +1,5 @@
-'use client';
 
-import { ICourse } from '@/types/course';
-import {
-   Button,
-   Input,
-   Modal,
-   ModalBody,
-   ModalContent,
-   ModalFooter,
-   ModalHeader,
-   Pagination,
-   Skeleton,
-   useDisclosure,
-} from '@nextui-org/react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { title } from 'process';
-import { use, useEffect, useState } from 'react';
-import { MdModeEdit } from 'react-icons/md';
-import { MdOutlineDelete } from 'react-icons/md';
+"use client"
 
 import { ICourse } from "@/types/course";
 import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Skeleton, useDisclosure } from "@nextui-org/react";
@@ -35,35 +16,24 @@ import { MdOutlineChromeReaderMode } from "react-icons/md";
 import { deleteCourse } from "@/app/dashboard/(courses)/course/handle";
 
 interface ICourseProps {
-   input: ICourse[] | [];
-   page: number;
-   totalPage: number;
+  input: ICourse[] | [];
+  page: number;
+  totalPage: number;
 }
 
 const Course = ({ input, page, totalPage }: ICourseProps) => {
-   const {
-      isOpen: isOpenDelete,
-      onOpen: onOpenDelete,
-      onOpenChange: onOpenChangeDelete,
-   } = useDisclosure();
-   const {
-      isOpen: isOpenCreate,
-      onOpen: onOpenCreate,
-      onOpenChange: onOpenChangeCreate,
-   } = useDisclosure();
+  const { isOpen: isOpenDelete, onOpen: onOpenDelete, onOpenChange: onOpenChangeDelete } = useDisclosure();
+  const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeCreate } = useDisclosure();
 
-   const [nameCourseDelete, setNameCourseDelete] = useState<string>('');
 
   const [nameCourseDelete, setNameCourseDelete] = useState<string>("");
   const [id, setId] = useState<number>(1);
 
   const data: ICourse[] = input;
 
-   const router = useRouter();
+  const [isFetching, setIsFetching] = useState<boolean>(true);
 
-   useEffect(() => {
-      if (data) setIsFetching(false);
-   }, [data]);
+  const router = useRouter();
 
   const [search, setSearch] = useState<string>("");
 
@@ -72,39 +42,6 @@ const Course = ({ input, page, totalPage }: ICourseProps) => {
       setIsFetching(false);
   }, [data]);
 
-         <Modal size="3xl" isOpen={isOpenCreate} onOpenChange={onOpenChangeCreate}>
-            <ModalContent>
-               {(onClose) => (
-                  <>
-                     <ModalHeader className="flex flex-col gap-1 text-3xl font-bold">
-                        Create Course
-                     </ModalHeader>
-                     <ModalBody>
-                        <div>
-                           <p className="font-semibold text-xl">Name your course</p>
-                           <p>{`What would you like to name your course? Don't worry, you can always change later`}</p>
-                        </div>
-                        <div>
-                           <p className="font-medium">Course title</p>
-                           <Input
-                              variant="bordered"
-                              placeholder={`e.g. "Toeic"`}
-                              classNames={{ input: 'px-3' }}
-                           />
-                        </div>
-                     </ModalBody>
-                     <ModalFooter className="justify-center">
-                        <Button color="primary" variant="light" onPress={onClose}>
-                           Cancel
-                        </Button>
-                        <Button color="primary" onPress={onClose}>
-                           Create
-                        </Button>
-                     </ModalFooter>
-                  </>
-               )}
-            </ModalContent>
-         </Modal>
 
   return (
     <div>
@@ -122,7 +59,7 @@ const Course = ({ input, page, totalPage }: ICourseProps) => {
                 <Button color="primary" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="danger" onPress={() => {  deleteCourse(id); onClose() }}>
+                <Button color="danger" onPress={() => { deleteCourse(id); onClose() }}>
                   Delete
                 </Button>
               </ModalFooter>
@@ -257,3 +194,9 @@ const Course = ({ input, page, totalPage }: ICourseProps) => {
           <Button variant="ghost" className="font-semibold hover:bg-primary" onClick={onOpenCreate}>Create a new course</Button>
         </div>
       )}
+
+
+    </div>
+  );
+}
+export default Course;
