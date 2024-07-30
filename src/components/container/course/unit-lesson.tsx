@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Item } from '@/components/reorder/item-drag';
-import { Button, Input } from '@nextui-org/react';
+import { Button, Input, useDisclosure } from '@nextui-org/react';
 import { Reorder } from 'framer-motion';
 import Image from 'next/image';
 import { IoIosAdd } from 'react-icons/io';
 import UploadFile from './upload';
 import { FaEdit } from 'react-icons/fa';
+import ModalCreate from './modal-create';
 
 interface Props {
    chapter: string;
@@ -28,6 +29,19 @@ const Lesson = ({ chapter, lessons, setLessons }: Props) => {
    const [isShowCreate, setIsShowCreate] = useState(false);
    const [fileUrl, setFileUrl] = useState<string>('');
    const [fileType, setFileType] = useState<string | null>(null);
+
+   const { isOpen, onOpenChange } = useDisclosure();
+
+   const handleShowModalCreate = () => {
+      onOpenChange();
+   };
+
+   const handleSaveLesson = (lessonName: string) => {
+      setLessons((prev) => ({
+         ...prev,
+         [chapter]: [...prev[chapter], lessonName],
+      }));
+   };
 
    const handleShowEditContent = (lesson: string) => {
       setIsShowEditContent((prev) => (prev === lesson ? null : lesson));
@@ -67,14 +81,14 @@ const Lesson = ({ chapter, lessons, setLessons }: Props) => {
       setLessonNameInput(e.target.value);
    };
 
-   const handleCreateLesson = () => {
-      setLessons((prev) => ({
-         ...prev,
-         [chapter]: [...prev[chapter], lessonNameInput],
-      }));
-      setLessonNameInput('');
-      setIsShowCreate(false);
-   };
+   // const handleCreateLesson = () => {
+   //    setLessons((prev) => ({
+   //       ...prev,
+   //       [chapter]: [...prev[chapter], lessonNameInput],
+   //    }));
+   //    setLessonNameInput('');
+   //    setIsShowCreate(false);
+   // };
 
    const renderFileContent = (file: string, type: string | null) => {
       switch (type) {
@@ -260,37 +274,21 @@ const Lesson = ({ chapter, lessons, setLessons }: Props) => {
                ))}
             </Reorder.Group>
             <div className="flex items-center justify-center mt-4">
-               {isShowCreate ? (
-                  <div className="flex flex-col gap-4">
-                     <Input
-                        placeholder="Enter new lesson name"
-                        variant="faded"
-                        value={lessonNameInput}
-                        onChange={handleChangeLesson}
-                     />
-                     <div className="flex justify-end gap-4">
-                        <Button
-                           onClick={() => setIsShowCreate(false)}
-                           variant="light"
-                           className="text-red-600"
-                        >
-                           Cancel
-                        </Button>
-                        <Button onClick={handleCreateLesson} color="primary">
-                           Create Lesson
-                        </Button>
-                     </div>
-                  </div>
-               ) : (
-                  <Button
-                     onClick={() => setIsShowCreate(true)}
-                     variant="light"
-                     className="flex flex-row items-center justify-center"
-                  >
-                     <IoIosAdd className="text-3xl" />
-                     <span className="font-semibold">Add Lesson</span>
-                  </Button>
-               )}
+               <Button
+                  onClick={() => setIsShowCreate(true)}
+                  onPress={handleShowModalCreate}
+                  color={'primary'}
+                  className="flex flex-row items-center justify-center"
+               >
+                  <IoIosAdd className="text-3xl" />
+                  <span className="font-semibold">Add Lesson</span>
+                  <ModalCreate
+                     isOpen={isOpen}
+                     onOpenChange={onOpenChange}
+                     onSave={handleSaveLesson}
+                     name="lesson"
+                  ></ModalCreate>
+               </Button>
             </div>
          </div>
       </div>

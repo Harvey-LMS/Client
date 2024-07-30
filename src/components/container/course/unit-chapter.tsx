@@ -1,15 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Lesson from './unit-lesson';
 import { Item } from '@/components/reorder/item-drag';
 import { Reorder } from 'framer-motion';
 import { Input } from '@nextui-org/input';
-import { Button } from '@nextui-org/react';
+import { Button, useDisclosure } from '@nextui-org/react';
 import { IoIosAdd } from 'react-icons/io';
-import UploadFile from './upload';
-import { FiEdit } from 'react-icons/fi';
 import { FaEdit } from 'react-icons/fa';
+import ModalCreate from './modal-create';
+
+import axios from 'axios';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const Chapter = () => {
    const initialItemsChapter = [
@@ -37,42 +40,51 @@ const Chapter = () => {
       'Chapter 4: Test': 'This is the fourth chapter',
    };
 
-   const [items, setItems] = useState(initialItemsChapter);
-   const [lessons, setLessons] = useState(initialLessons);
-   const [descriptions, setDescriptions] = useState(initialDescription);
+   const [items, setItems] = useState<string[]>(initialItemsChapter);
+   const [lessons, setLessons] = useState<{ [key: string]: string[] }>(initialLessons);
+   const [descriptions, setDescriptions] = useState<{ [key: string]: string }>(initialDescription);
 
    const [openChapters, setOpenChapters] = useState<string | null>(null);
    const [titleInput, setTitleInput] = useState('');
    const [descriptionInput, setDescriptionInput] = useState('');
    const [isEditTitle, setIsEditTitle] = useState<string | null>(null);
    const [isShowEdit, setIsShowEdit] = useState<string | null>(null);
+   const [data, setData] = useState(null);
+
+   const { isOpen, onOpenChange } = useDisclosure();
+
+   const handleShowModalCreate = () => {
+      onOpenChange();
+   };
+
+   const handleSaveChapter = (chapterName: string) => {
+      setItems((prev) => [...prev, chapterName]);
+      // setDescriptions((prev) => ({ ...prev, [chapterName]: description }));
+      setLessons((prev) => ({ ...prev, [chapterName]: [] }));
+   };
 
    const handleShowEdit = (item: string) => {
       setTitleInput(item);
       setDescriptionInput(descriptions[item] || '');
-      if (isEditTitle === item) {
-         setIsEditTitle(null);
-         setIsShowEdit((prev) => (prev === item ? null : item));
-      } else {
-         setIsEditTitle(item);
-         setIsShowEdit(item);
-      }
+      setIsEditTitle((prev) => (prev === item ? null : item));
+      setIsShowEdit((prev) => (prev === item ? null : item));
    };
 
    const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
       setDescriptionInput(e.target.value);
    };
 
-   const handleDeleteItem = (items: string) => {
-      setItems((prevItems) => prevItems.filter((i) => i !== items));
+   const handleDeleteItem = (item: string) => {
+      setItems((prevItems) => prevItems.filter((i) => i !== item));
    };
 
    const handleDropdown = (item: string) => {
       setOpenChapters((prev) => (prev === item ? null : item));
    };
 
-   const handleCancelEdit = (item: string) => {
-      handleShowEdit(item);
+   const handleCancelEdit = () => {
+      setIsEditTitle(null);
+      setIsShowEdit(null);
    };
 
    const handleChangeTitleChapter = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,15 +120,17 @@ const Chapter = () => {
                values={items}
             >
                {items.map((item) => (
-                  <div
+                  <Reorder.Item
+                     as="div"
+                     id={item}
+                     value={item}
                      key={item}
                      className={`flex flex-col gap-4 p-2
-                ${
-                   openChapters === item
-                      ? 'border-4 border-solid bg-[#F7F7F7] shadow-sm rounded-md'
-                      : 'bg-white border-1 border-solid border-[#DBDBDB] rounded-md'
-                }
-              `}
+                        ${
+                           openChapters === item
+                              ? 'border-4 border-solid bg-[#F7F7F7] shadow-sm rounded-md'
+                              : 'bg-white border-1 border-solid border-[#DBDBDB] rounded-md'
+                        }`}
                   >
                      <Item
                         item={item}
@@ -126,8 +140,7 @@ const Chapter = () => {
                         type="chapter"
                         isEditTitle={isEditTitle === item}
                         handleChangeTitleChapter={handleChangeTitleChapter}
-                     />
-
+                     ></Item>
                      {openChapters === item && (
                         <div className="">
                            <div className="border border-gray-300 bg-white mb-2"></div>
@@ -142,13 +155,6 @@ const Chapter = () => {
                                     <div className="flex flex-row gap-2 justify-between">
                                        <span className="text-md font-semibold">Description</span>
                                        {isShowEdit === item ? (
-                                          // <Button
-                                          //    onClick={() => handleCancelEdit(item)}
-                                          //    className="flex flex-row gap-2 text-red-600"
-                                          //    variant={'light'}
-                                          // >
-                                          //    <span>Cancel</span>
-                                          // </Button>
                                           <></>
                                        ) : (
                                           <Button
@@ -166,7 +172,7 @@ const Chapter = () => {
                                     {isShowEdit === item ? (
                                        <Input
                                           onChange={handleChangeDescription}
-                                          placeholder={'Enter to chapter description'}
+                                          placeholder={'Enter chapter description'}
                                           variant={'faded'}
                                           className="w-full"
                                           value={descriptionInput}
@@ -187,8 +193,7 @@ const Chapter = () => {
                                  {isShowEdit === item ? (
                                     <div className="flex flex-row gap-6 justify-end">
                                        <Button
-                                          onClick={() => handleCancelEdit(item)}
-                                          // onClick={() => handleShowDropdown(item)}
+                                          onClick={handleCancelEdit}
                                           variant={'light'}
                                           className="text-red-600"
                                        >
@@ -208,13 +213,23 @@ const Chapter = () => {
                            </div>
                         </div>
                      )}
-                  </div>
+                  </Reorder.Item>
                ))}
             </Reorder.Group>
             <div className="flex items-center justify-center">
-               <Button variant={'light'} className="flex flex-row items-center justify-center">
+               <Button
+                  onPress={handleShowModalCreate}
+                  variant={'light'}
+                  className="flex flex-row items-center justify-center"
+               >
                   <IoIosAdd className="text-3xl" />
                   <span className="font-semibold">Add </span>
+                  <ModalCreate
+                     isOpen={isOpen}
+                     onOpenChange={onOpenChange}
+                     onSave={handleSaveChapter}
+                     name="chapter"
+                  ></ModalCreate>
                </Button>
             </div>
          </div>

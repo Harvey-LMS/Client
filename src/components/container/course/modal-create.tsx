@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
    Modal,
    ModalContent,
@@ -8,46 +8,60 @@ import {
    ModalBody,
    ModalFooter,
    Button,
+   Input,
 } from '@nextui-org/react';
-import { TiDelete } from 'react-icons/ti';
 
 interface Props {
    isOpen: boolean;
    onOpenChange: (isOpen: boolean) => void;
-   onConfirmDelete: () => void;
+   onSave: (name: string) => void;
+   name: string;
 }
 
-export default function ConfirmDeleteModal({ isOpen, onOpenChange, onConfirmDelete }: Props) {
+export default function ModalCreate({ isOpen, onOpenChange, onSave, name }: Props) {
+   const [input, setInput] = useState('');
+
+   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInput(e.target.value);
+   };
+
+   const handleCreate = () => {
+      onSave(input);
+   };
+
    return (
       <div>
-         <Modal size={'md'}  isOpen={isOpen} onOpenChange={onOpenChange}>
+         <Modal size={'md'} isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent>
                {(onClose) => (
                   <div className="flex flex-col gap-1">
                      <ModalHeader className="flex justify-center items-center">
-                        <TiDelete className="text-9xl" color="red" />
+                        <span className="text-3xl font-semibold">Create new {name}</span>
                      </ModalHeader>
                      <ModalBody>
-                        <div className="m-2 text-center">
-                           <span className="text-3xl font-semibold">Are you sure?</span>
-                           <span className="text-sm opacity-70 block mt-2">
-                              This action cannot be undone.
-                           </span>
+                        <div className="m-2 text-center w-full">
+                           <Input
+                              clearable
+                              fullWidth
+                              size="lg"
+                              placeholder={`Enter to ${name} name`}
+                              onChange={handleChange}
+                           />
                         </div>
                      </ModalBody>
-                     <ModalFooter className="flex justify-center">
+                     <ModalFooter className="flex justify-end">
                         <div className="flex flex-row gap-8">
                            <Button variant="light" onPress={onClose}>
                               Cancel
                            </Button>
                            <Button
-                              className="bg-red-600 text-white"
+                              onClick={handleCreate}
+                              color={'primary'}
                               onPress={() => {
-                                 onConfirmDelete();
                                  onClose();
                               }}
                            >
-                              Delete
+                              Create
                            </Button>
                         </div>
                      </ModalFooter>

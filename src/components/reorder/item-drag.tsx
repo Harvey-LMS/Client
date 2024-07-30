@@ -71,24 +71,6 @@ export const Item = ({
                   <div className="flex flex-row justify-between">
                      <div className="flex flex-row gap-4 items-center w-full">
                         {type === 'chapter' ? '' : <FaVideo className="w-7 h-5" />}
-                        {/* {isEditTitle && type === 'chapter' ? (
-                           <div className="w-full">
-                              <Input
-                                 onChange={handleChangeInput}
-                                 variant={'bordered'}
-                                 className="w-full mt-1"
-                                 value={value}
-                              />
-                           </div>
-                        ) : (
-                           <span
-                              className={`flex justify-center items-center select-none ${
-                                 type === 'chapter' ? 'text-md font-semibold ' : 'text-sm'
-                              }`}
-                           >
-                              {item}
-                           </span>
-                        )} */}
                         <span
                            className={`flex justify-center items-center select-none ${
                               type === 'chapter' ? 'text-md font-semibold ' : 'text-sm'
@@ -104,22 +86,16 @@ export const Item = ({
                                  <Button
                                     variant={'light'}
                                     className="min-w-10 h-2/3 p-0"
-                                    onPress={() => handleDelete(item)}
+                                    onPress={handleShowModalConfirm}
                                  >
                                     <MdDeleteOutline size={'sm'} />
                                     <ConfirmDeleteModal
                                        isOpen={isOpen}
                                        onOpenChange={onOpenChange}
-                                       onConfirmDelete={() => handleDelete}
+                                       onConfirmDelete={() => handleDelete(item)}
                                     ></ConfirmDeleteModal>
                                  </Button>
-                                 {/* <Button
-                                    variant={'light'}
-                                    onPress={handleEdit}
-                                    className="min-w-10 h-2/3 p-0"
-                                 >
-                                    <MdOutlineEdit className="text-2xl" />
-                                 </Button> */}
+
                                  <ReorderIcon dragControls={dragControls} />
                               </>
                            ) : (
@@ -132,22 +108,15 @@ export const Item = ({
                               variant={'light'}
                               className="min-w-10 h-2/3 p-0"
                               onPress={handleShowModalConfirm}
-                              // onClick={() => handleDelete(item)}
                            >
                               <MdDeleteOutline className="text-2xl" />
                               <ConfirmDeleteModal
                                  isOpen={isOpen}
                                  onOpenChange={onOpenChange}
-                                 onConfirmDelete={() => handleDelete}
+                                 onConfirmDelete={() => handleDelete(item)}
                               ></ConfirmDeleteModal>
                            </Button>
-                           {/* <Button
-                              variant={'light'}
-                              onPress={handleEdit}
-                              className="min-w-10 h-2/3 p-0"
-                           >
-                              <MdOutlineEdit className="text-2xl" />
-                           </Button> */}
+
                            <Button
                               variant={'light'}
                               onPress={handleDropdown}
