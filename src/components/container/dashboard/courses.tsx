@@ -1,14 +1,21 @@
+'use client';
 
-"use client"
-
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
-import { IoIosAdd } from "react-icons/io";
-import RowData from "./course/course";
-import Link from "next/link";
-import { Suspense, useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import path from "path";
-
+import {
+   Button,
+   Input,
+   Modal,
+   ModalBody,
+   ModalContent,
+   ModalFooter,
+   ModalHeader,
+   useDisclosure,
+} from '@nextui-org/react';
+import { IoIosAdd } from 'react-icons/io';
+import RowData from './course/course';
+import Link from 'next/link';
+import { Suspense, useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import path from 'path';
 
 const Courses = () => {
 

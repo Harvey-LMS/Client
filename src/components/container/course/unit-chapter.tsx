@@ -1,195 +1,253 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Lesson from "./unit-lesson";
-import { Item } from "@/components/reorder/item-drag";
-import { Reorder } from "framer-motion";
-import { Input } from "@nextui-org/input";
-import { Button } from "@nextui-org/react";
+import { useEffect, useState } from 'react';
+import Lesson from './unit-lesson';
+import { Item } from '@/components/reorder/item-drag';
+import { Reorder } from 'framer-motion';
+import { Input } from '@nextui-org/input';
+import { Button, useDisclosure } from '@nextui-org/react';
+import { IoIosAdd } from 'react-icons/io';
+import { FaEdit } from 'react-icons/fa';
+import ModalCreate from './modal-create';
+
+import axios from 'axios';
+import dotenv from 'dotenv';
+import { IChapter } from '@/types/course';
+import ModalNotify from './modal-notify';
+dotenv.config();
 
 const Chapter = () => {
-  const initialItemsChapter = [
-    "Chapter 1: Getting started chapter",
-    "Chapter 2: Basic",
-    "Chapter 3: Practice",
-    "Chapter 4: Test",
-  ];
+   const [data, setData] = useState<IChapter[]>([]);
+   const [openChapters, setOpenChapters] = useState<string | null>(null);
+   const [titleInput, setTitleInput] = useState('');
+   const [descriptionInput, setDescriptionInput] = useState('');
+   const [isEditTitle, setIsEditTitle] = useState<string | null>(null);
 
-  const initialLessons: { [key: string]: string[] } = {
-    "Chapter 1: Getting started chapter": ["Lesson 1: Introduction"],
-    "Chapter 2: Basic": [
-      "Lesson 1: Basics Reading",
-      "Lesson 2: Basics Writing",
-    ],
-    "Chapter 3: Practice": [
-      "Lesson 1: Exercises",
-      "Lesson 2: Practice 1",
-      "Lesson 3: Practice 2",
-    ],
-    "Chapter 4: Test": ["Lesson 1: Practice Test", "Lesson 2: Final Test"],
-  };
+   const [isShowEditDescription, setIsShowEditDescription] = useState<string | null>(null);
 
-  const initialDescription: { [key: string]: string } = {
-    "Chapter 1: Getting started chapter": "This is the first chapter",
-    "Chapter 2: Basic": "This is the second chapter",
-    "Chapter 3: Practice": "This is the third chapter",
-    "Chapter 4: Test": "This is the fourth chapter",
-  };
+   const { isOpen, onOpenChange } = useDisclosure();
 
-  const [items, setItems] = useState(initialItemsChapter);
-  const [lessons, setLessons] = useState(initialLessons);
-  const [descriptions, setDescriptions] = useState(initialDescription);
+   const handleShowModalCreate = () => {
+      onOpenChange();
+   };
 
-  // const [openChapters, setOpenChapters] = useState<string[]>([]);
-  const [openChapters, setOpenChapters] = useState<string | null>(null);
+   const handleShowEditDescription = (chapter: string) => {
+      setIsShowEditDescription((prev) => (prev === chapter ? null : chapter));
+   };
 
-  const [titleInput, setTitleInput] = useState("");
+   const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setDescriptionInput(e.target.value);
+   };
 
-  const [descriptionInput, setDescriptionInput] = useState("");
-  const [description, setDescription] = useState("This is description");
+   const handleSaveChapter = async (chapterName: string) => {
+      const dataGet = await axios.get('http://localhost:8000/chapters');
+      const newChapter = {
+         id: dataGet.data.length + 1,
+         title: `Chapter ${dataGet.data.length + 1}: ` + chapterName,
+         description: '',
+         lessons: [],
+      };
 
-  const [isEditTitle, setIsEditTitle] = useState<string | null>(null);
-  const [isShowEdit, setIsShowEdit] = useState<string | null>(null);
+      try {
+         const response = await axios.post('http://localhost:8000/chapters', newChapter);
+         if (response.status === 201) {
+            setData((prevData) => [...prevData, response.data]);
+            onOpenChange();
+         } else {
+            console.error('Failed to create new chapter');
+         }
+      } catch (error) {
+         console.error('Error creating new chapter:', error);
+      }
+   };
 
-  const handleShowEdit = (item: string) => {
-    setTitleInput(item);
-    setDescriptionInput(descriptions[item] || "");
-    if (isEditTitle === item) {
-      setIsEditTitle(null);
-      setIsShowEdit((prev) => (prev === item ? null : item));
-      // setIsShowEdit(null)
-    } else {
-      setIsEditTitle(item);
-      setIsShowEdit(item);
-    }
-  };
+   const handleUpdateDescription = async (chapterId: number, newDescription: string) => {
+      try {
+         const currentDataResponse = await axios.get(`http://localhost:8000/chapters/${chapterId}`);
+         if (currentDataResponse.status !== 200) {
+            console.error('Failed to fetch current chapter data');
+            return;
+         }
 
-  const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDescriptionInput(e.target.value);
-  };
+         const currentData = currentDataResponse.data;
+         const updatedData = {
+            ...currentData,
+            description: newDescription,
+         };
+         const response = await axios.put(
+            `http://localhost:8000/chapters/${chapterId}`,
+            updatedData,
+         );
+         if (response.status === 200) {
+            alert('Lesson content updated successfully');
+         } else {
+            console.error('Failed to update lesson content');
+         }
+         setIsShowEditDescription(null);
+      } catch (error) {
+         console.error('Error updating lesson content:', error);
+         throw error;
+      }
+   };
 
-  const handleDeleteItem = (items: string) => {
-    setItems((prevItems) => prevItems.filter((i) => i !== items));
-  };
+   const handleDeleteItem = async (itemId: string) => {
+      try {
+         const response = await axios.delete(`http://localhost:8000/chapters/${itemId}`);
+         if (response.status === 200) {
+            alert('Item deleted successfully');
+            setData((prevData) => prevData.filter((item) => item.id.toString() !== itemId));
+         } else {
+            alert('Failed to delete item');
+         }
+      } catch (error) {
+         console.error('Error deleting item:', error);
+      }
+   };
 
-  const handleDropdown = (item: string) => {
-    // setOpenChapters((prev) =>
-    //   prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
-    // );
-    setOpenChapters((prev) => (prev === item ? null : item));
-  };
+   const handleDropdown = (item: string) => {
+      setOpenChapters((prev) => (prev === item ? null : item));
+   };
 
-  const handleCancelEdit = (item: string) => {
-    handleShowEdit(item);
-  };
+   const handleChangeTitleChapter = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setTitleInput(e.target.value);
+   };
 
-  const handleChangeTitleChapter = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitleInput(e.target.value);
-  };
+   useEffect(() => {
+      const fetchData = async () => {
+         try {
+            const response = await axios.get('http://localhost:8000/chapters');
+            setData(response.data);
+         } catch (error) {
+            console.error('Error: ', error);
+         }
+      };
+      fetchData();
+   }, []);
 
-  const handleSaveEditChapter = (item: string) => {
-    // setDescription(descriptionInput);
-    setItems((prevItems) =>
-      prevItems.map((i) => (i === item ? titleInput : i))
-    );
-
-    setDescriptions((prevDescriptions) => ({
-      ...prevDescriptions,
-      [titleInput]: descriptionInput,
-    }));
-    handleShowEdit(item);
-  };
-
-  return (
-    <div className="w-full p-2">
-      <div className="m-2">
-        <Reorder.Group
-          className="flex flex-col gap-4 p-2"
-          axis="y"
-          onReorder={setItems}
-          values={items}
-        >
-          {items.map((item) => (
-            <div
-              key={item}
-              className={`flex flex-col gap-4 p-2
-                ${
-                  openChapters === item
-                    ? "border-4 border-solid bg-[#F7F7F7] shadow-sm rounded-md"
-                    : "bg-white border-1 border-solid border-[#DBDBDB] rounded-md"
-                }
-              `}
+   return (
+      <div className="w-full p-2 shadow-md">
+         <div className="m-2">
+            <Reorder.Group
+               className="flex flex-col gap-4 p-2"
+               axis="y"
+               onReorder={setData}
+               values={data}
             >
-              <Item
-                item={item}
-                handleDelete={handleDeleteItem}
-                handleEdit={() => handleShowEdit(item)}
-                handleDropdown={() => handleDropdown(item)}
-                type="chapter"
-                isEditTitle={isEditTitle === item}
-                handleChangeTitleChapter={handleChangeTitleChapter}
-              />
+               {data.map((item) => (
+                  <Reorder.Item
+                     as="div"
+                     value={item}
+                     key={item.id}
+                     className={`flex flex-col gap-4 p-2
+                        ${
+                           openChapters === item.title
+                              ? 'border-4 border-solid bg-[#F7F7F7] shadow-sm rounded-md'
+                              : 'bg-white border-1 border-solid border-[#DBDBDB] rounded-md'
+                        }`}
+                  >
+                     <Item
+                        item={item}
+                        handleDelete={() => handleDeleteItem(item.id.toString())}
+                        handleDropdown={() => handleDropdown(item.title)}
+                        type="chapter"
+                        isEditTitle={isEditTitle === item.title}
+                        handleChangeTitleChapter={handleChangeTitleChapter}
+                     ></Item>
+                     {openChapters === item.title && (
+                        <div className="">
+                           <div className="border border-gray-300 bg-white mb-2"></div>
 
-              {openChapters === item && (
-                <div className="">
-                  <div className="border border-gray-300 bg-white mb-2"></div>
+                           <div className="flex flex-col mx-4">
+                              <div className="mx-5">
+                                 <div
+                                    className={`flex flex-col p-2 ${
+                                       isShowEditDescription ? 'gap-2' : 'gap-0'
+                                    } border-1 border-solid rounded-md bg-[#F3F3F3]`}
+                                 >
+                                    <div className="flex flex-row gap-2 justify-between">
+                                       <span className="text-md font-semibold">Description</span>
+                                       {isShowEditDescription === item.title ? (
+                                          <></>
+                                       ) : (
+                                          <Button
+                                             onClick={() => handleShowEditDescription(item.title)}
+                                             className="flex flex-row gap-2 "
+                                             variant={'light'}
+                                          >
+                                             <div>
+                                                <FaEdit />
+                                             </div>
+                                             <span>Edit description</span>
+                                          </Button>
+                                       )}
+                                    </div>
+                                    {isShowEditDescription === item.title ? (
+                                       <Input
+                                          onChange={handleChangeDescription}
+                                          placeholder={'Enter chapter description'}
+                                          variant={'faded'}
+                                          className="w-full"
+                                       />
+                                    ) : (
+                                       <span className="text-sm">{item.description}</span>
+                                    )}
+                                 </div>
+                                 <div className="border border-gray-300 bg-white mt-2"></div>
+                              </div>
 
-                  <div className="flex flex-col mx-4">
-                    <div className="mx-5">
-                      <div className="flex flex-col p-2 gap-4 border-1 border-solid rounded-md bg-[#F3F3F3]">
-                        <span className="text-md font-semibold">
-                          Description
-                        </span>
-                        {isShowEdit === item ? (
-                          <Input
-                            onChange={handleChangeDescription}
-                            placeholder={"Enter to chapter description"}
-                            variant={"faded"}
-                            className="w-full"
-                          />
-                        ) : (
-                          <span className="text-sm">{descriptions[item]}</span>
-                        )}
-                      </div>
-                      <div className="border border-gray-300 bg-white mt-2"></div>
-                    </div>
-
-                    <Lesson
-                      chapter={item}
-                      lessons={lessons[item]}
-                      setLessons={setLessons}
-                    />
-                    <div className="m-2">
-                      {isShowEdit === item ? (
-                        <div className="flex flex-row gap-6 justify-end">
-                          <Button
-                            onClick={() => handleCancelEdit(item)}
-                            // onClick={() => handleShowDropdown(item)}
-                            variant={"light"}
-                            className="text-red-600"
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            onClick={() => handleSaveEditChapter(item)}
-                            color={"primary"}
-                          >
-                            Save
-                          </Button>
+                              <Lesson
+                                 chapterId={item.id}
+                                 lessons={item.lessons}
+                                 setLessons={() => console.log('setLessons')}
+                              />
+                              <div className="m-2">
+                                 {isShowEditDescription === item.title ? (
+                                    <div className="flex flex-row gap-6 justify-end">
+                                       <Button
+                                          onClick={() => setIsShowEditDescription(null)}
+                                          variant={'light'}
+                                          className="text-red-600"
+                                       >
+                                          Cancel
+                                       </Button>
+                                       <Button
+                                          onClick={() =>
+                                             handleUpdateDescription(item.id, descriptionInput)
+                                          }
+                                          color={'primary'}
+                                       >
+                                          Save
+                                       </Button>
+                                    </div>
+                                 ) : (
+                                    <div className="flex flex-row gap-6 justify-end"></div>
+                                 )}
+                              </div>
+                           </div>
                         </div>
-                      ) : (
-                        <div className="flex flex-row gap-6 justify-end"></div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
+                     )}
+                  </Reorder.Item>
+               ))}
+            </Reorder.Group>
+            <div className="flex items-center justify-center">
+               <Button
+                  onPress={handleShowModalCreate}
+                  variant={'light'}
+                  className="flex flex-row items-center justify-center"
+               >
+                  <IoIosAdd className="text-3xl" />
+                  <span className="font-semibold">Add </span>
+                  <ModalCreate
+                     isOpen={isOpen}
+                     onOpenChange={onOpenChange}
+                     onSave={handleSaveChapter}
+                     name="chapter"
+                  ></ModalCreate>
+               </Button>
             </div>
-          ))}
-        </Reorder.Group>
+         </div>
       </div>
-    </div>
-  );
+   );
 };
 
 export default Chapter;

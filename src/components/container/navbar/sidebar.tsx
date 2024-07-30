@@ -1,6 +1,6 @@
-"use client"
+'use client';
 
-import Image from "next/image";
+import Image from 'next/image';
 
 import Brand from "@/assets/Brand.svg";
 import React, { useEffect, useState } from "react";
@@ -14,23 +14,23 @@ import { MdOutlineDashboard } from "react-icons/md";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
 interface SidebarItemProps {
-  expanded: boolean;
-  icon?: React.ReactNode | "";
-  name: string;
-  isSubItem?: boolean | false;
-  url?: string;
+   expanded: boolean;
+   icon?: React.ReactNode | '';
+   name: string;
+   isSubItem?: boolean | false;
+   url?: string;
 }
 
 interface SidebarSubItemProps {
-  expanded: boolean;
-  icon?: React.ReactNode | "";
-  title?: string;
-  children?: React.ReactNode;
-  url?: string | null;
+   expanded: boolean;
+   icon?: React.ReactNode | '';
+   title?: string;
+   children?: React.ReactNode;
+   url?: string | null;
 }
 
 const Sidebar = () => {
-  const [expanded, setExpanded] = useState<boolean>(false); // false = thu hẹp   true = mở rộng
+   const [expanded, setExpanded] = useState<boolean>(false); // false = thu hẹp   true = mở rộng
 
   return (
     <motion.div
@@ -71,13 +71,7 @@ const Sidebar = () => {
               <div className="bg-hover-2 h-0.5 rounded-full w-full">
               </div>
             </div>
-          ) :
-          (
-            <div className="bg-hover-2 h-0.5 rounded-full w-full">
-            </div>
-          )
-        }
-      </div>
+         </div>
 
       <div className="">
         <SidebarSusbItem expanded={expanded} icon={<MdOutlineDashboard className="text-2xl" />} title="Course Manager">
@@ -90,8 +84,20 @@ const Sidebar = () => {
       </div>
     </motion.div>
 
-  );
-}
+         <div className="">
+            <SidebarSusbItem
+               expanded={expanded}
+               icon={<MdOutlineDashboard className="text-2xl" />}
+               title="aslkdj"
+            >
+               <SidebarItem expanded={expanded} name={'Dashboard'} isSubItem></SidebarItem>
+               <SidebarItem expanded={expanded} name={'Course'} isSubItem></SidebarItem>
+            </SidebarSusbItem>
+            {/* <SidebarSusbItem expanded={expanded} icon={<MdOutlineDashboard className="text-2xl" />} url={"/"} title={"Course"}></SidebarSusbItem> */}
+         </div>
+      </motion.div>
+   );
+};
 
 const SidebarItem = ({ expanded, name, url}: SidebarItemProps) => {
   return (
@@ -103,9 +109,8 @@ const SidebarItem = ({ expanded, name, url}: SidebarItemProps) => {
           </Button>
         </Link>
       </div>
-    </div>
-  )
-}
+   );
+};
 
 const SidebarSusbItem = ({ expanded, icon, title, children, url }: SidebarSubItemProps) => {
   const [isDown, setIsDown] = useState<boolean>(false);
@@ -149,9 +154,15 @@ const SidebarSusbItem = ({ expanded, icon, title, children, url }: SidebarSubIte
             <p className="truncate">{expanded ? (title) : ("")}</p>
           </div>
 
-          <motion.div className={`${expanded ? "block" : "hidden"}`} animate={{ rotate: isDown ? 0 : 90 }} transition={{ duration: 0.1 }}>
-            <FaAngleDown />
-          </motion.div>
+                  <motion.div
+                     className={`${expanded ? 'block' : 'hidden'}`}
+                     animate={{ rotate: isDown ? 0 : 90 }}
+                     transition={{ duration: 0.1 }}
+                  >
+                     <FaAngleDown />
+                  </motion.div>
+               </Button>
+            )}
 
         </Button>)}
 
@@ -167,12 +178,7 @@ const SidebarSusbItem = ({ expanded, icon, title, children, url }: SidebarSubIte
           </div>)}
         </motion.div>
       </div>
-
-
-
-
-    </div>
-  )
-}
+   );
+};
 
 export default Sidebar;
