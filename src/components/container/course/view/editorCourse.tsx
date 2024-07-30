@@ -34,7 +34,7 @@ const EditorCourse = ({ title, value }: EditorCourseProps) => {
 
     const [hideShowMore, setHideShowMore] = useState<boolean>(false);
 
-    const contentRef = useRef<HTMLDivElement>(null);
+
 
 
     useEffect(() => {
@@ -53,6 +53,25 @@ const EditorCourse = ({ title, value }: EditorCourseProps) => {
         setValueInput(data);
         setEditMode(false);
     }
+
+
+
+    // Test
+
+    const [maxHeight, setMaxHeight] = useState(0);
+    const contentRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (contentRef.current) {
+            setMaxHeight(contentRef.current.scrollHeight);
+            if (data.length > 2000) {
+                setHideShowMore(true);
+            }
+            else {
+                setHideShowMore(false);
+            }
+        }
+    }, [isShow, data]);
 
 
 
@@ -111,13 +130,23 @@ const EditorCourse = ({ title, value }: EditorCourseProps) => {
                         onChange={setValueInput}
                         modules={modules}
                         formats={formats}
-                        className="p-0 custom-quill-editor  w-full bg-background max-h-[500px] overflow-auto relative flex flex-col justify-start items-center"
+                        className="p-0 custom-quill-editor  w-full bg-background min-h-[300px] max-h-[500px] overflow-auto relative flex flex-col justify-start items-center"
 
                     />
 
                 ) : (
                     <div className="w-full">
-                        <motion.div animate={{ height: isShow ? 200 : "100%" }} dangerouslySetInnerHTML={{ __html: data }} className={`overflow-hidden ${isShow ? ("gradient-mask-b-0 max-h-[200px]") : ("")}`}>
+                            <motion.div 
+                            ref={contentRef} 
+
+                            initial={{ height: 0 }} 
+                            animate={{ 
+                                height: isShow ? 250 : maxHeight ,
+                                maskImage: isShow ? "linear-gradient(to bottom, rgba(0, 0, 0, 1.0) 0%, transparent 100%)" : "linear-gradient(to bottom, rgba(0, 0, 0, 1.0) 100%, transparent 100%)"
+                            }} 
+
+                            dangerouslySetInnerHTML={{ __html: data }} 
+                            className={`overflow-hidden `}>
 
                         </motion.div>
                         {hideShowMore && (

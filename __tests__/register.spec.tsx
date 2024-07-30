@@ -2,16 +2,16 @@ import { checkEmail, checkUsername } from "@/app/(auth)/register/handle";
 import "@testing-library/jest-dom";
 
 
-jest.mock("next/navigation", () => ({
-  ...jest.requireActual("next/navigation"), // If you need actual implementations from next/navigation
-  useRouter: () => ({
-    pathname: "/mock-path", // Mock pathname or any other property/method your component uses
-    query: {}, // Mock query parameters if needed
-    push: jest.fn(), // Mock push method if your component uses it
-    // Add other properties or methods as needed by your component
-  }),
-  useSearchParams: () => jest.fn(),
-}));
+// jest.mock("next/navigation", () => ({
+//   ...jest.requireActual("next/navigation"), // If you need actual implementations from next/navigation
+//   useRouter: () => ({
+//     pathname: "/mock-path", // Mock pathname or any other property/method your component uses
+//     query: {}, // Mock query parameters if needed
+//     push: jest.fn(), // Mock push method if your component uses it
+//     // Add other properties or methods as needed by your component
+//   }),
+//   useSearchParams: () => jest.fn(),
+// }));
 
 
 describe("Register Page - Username", () => {

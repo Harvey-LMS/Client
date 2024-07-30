@@ -8,9 +8,10 @@ import { FiEdit } from "react-icons/fi";
 interface PriceFieldCourseProps {
     title: string | "";
     value: string | "0.00";
+    type?: "price" | "discount";
 }
 
-const PriceFieldCourse: React.FC<PriceFieldCourseProps> = ({ title, value }: PriceFieldCourseProps) => {
+const PriceFieldCourse: React.FC<PriceFieldCourseProps> = ({ title, value, type = "price" }: PriceFieldCourseProps) => {
     const [editMode, setEditMode] = useState<boolean>(false);
     const [valueInput, setValueInput] = useState<string | "0.00">(value);
 
@@ -53,16 +54,17 @@ const PriceFieldCourse: React.FC<PriceFieldCourseProps> = ({ title, value }: Pri
                         placeholder={data ? data : "Enter value"}
                         onChange={(e) => setValueInput(e.target.value)}
                         min={0}
-                        step={0.01}
+                        step={1}
+                        max={type === "price" ? "" : 100}
                         endContent={
                             <div className="pointer-events-none flex items-center">
-                                <span className="text-default-400 text-small">$</span>
+                                <span className="text-default-400 text-small">{type === "price" ? "$" : "%"}</span>
                             </div>
                         }
                     />
                 ) : (
                     <div>
-                            {`${valueInput}$`}
+                            {`${valueInput}${type === "price" ? "$" : "%"}`}
                     </div>
 
                 )

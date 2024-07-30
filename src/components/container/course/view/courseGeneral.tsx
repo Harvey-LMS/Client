@@ -15,6 +15,7 @@ import PriceFieldCourse from "./priceFieldCourse";
 
 // DATA
 import { Ilanguage, language } from "@/data/language";
+import DateTimeFieldCourse from "./dateTimeCourseField";
 
 const CourseGeneral: React.FC = () => {
     return (
@@ -27,7 +28,7 @@ const CourseGeneral: React.FC = () => {
             </div>
 
 
-            <div className="flex flex-row justify-start items-start w-full gap-2 p-4 relative overflow-visible">
+            <div className="flex flex-row justify-start items-start w-full gap-2 p-4 ">
                 <div className="w-9/12 border rounded-lg px-3 shadow-md py-3 ">
                     <div className="flex flex-row justify-start items-center gap-3">
                         <MdOutlineSubtitles className="text-5xl"></MdOutlineSubtitles>
@@ -67,6 +68,159 @@ const CourseGeneral: React.FC = () => {
                         eDescription valueDescription valscription valueDescription valueDescription valu
                         eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
                         eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu  eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu  eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu  eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu  eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu  eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu  eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu  eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu  eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu  eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
+                        eDescription valueDescription valscription valueDescription valueDescription valu
                         eDescription valueDescription valscription valueDescription valueDescription valu
                         eDescription valueDescription valscription valueDescription valueDescription valu
                         eDescription valueDescription valscription valueDescription valueDescription valu
@@ -91,8 +245,8 @@ const CourseGeneral: React.FC = () => {
                     ></ThumbnailCourseField>
                 </div>
 
-                <div className="w-3/12 sticky top-20">
-                    <div className="flex flex-col gap-3">
+                <div className="w-3/12 sticky top-20 block overflow-x-hidden h-full overflow-y-auto">
+                    <div className="flex flex-col gap-2">
                         <div className=" border rounded-lg px-3 shadow-sm py-3">
                             <div className="flex flex-row justify-start items-center gap-3">
                                 <MdOutlinePriceChange className="text-5xl"></MdOutlinePriceChange>
@@ -108,6 +262,7 @@ const CourseGeneral: React.FC = () => {
                             <PriceFieldCourse
                                 title="Discount"
                                 value="3"
+                                type="discount"
                             />
                         </div>
 
@@ -132,7 +287,8 @@ const CourseGeneral: React.FC = () => {
                             />
                             <ListItemsCourse
                                 title="Tag"
-                                value={["Price value", "setValueInput", "setValueInput", "setValueInput", "setValueInput", "setValueInput", "setValueInput", "setValueInput", "setValueInput", "setValueInput"]}
+                                value={["IELTS", "TOEIC", "Fast learn"]}         
+                                list={["IELTS", "TOEIC", "Fast learn"]}                       
                                 add
                             />
 
@@ -143,10 +299,9 @@ const CourseGeneral: React.FC = () => {
                             />
 
 
-                            <FieldCourse
+                            <DateTimeFieldCourse
                             title="Premiere"
-                            value="22-12-2003" 
-                            type="datetime"
+                            value="2024-07-29T10:15:30"
                             />
 
 
