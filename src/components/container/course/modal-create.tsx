@@ -31,26 +31,33 @@ export default function ModalCreate({ isOpen, onOpenChange, onSave, name }: Prop
 
    return (
       <div>
-         <Modal size={'md'} isOpen={isOpen} onOpenChange={onOpenChange}>
+         <Modal size={'3xl'} isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent>
                {(onClose) => (
                   <div className="flex flex-col gap-1">
-                     <ModalHeader className="flex justify-center items-center">
-                        <span className="text-3xl font-semibold">Create new {name}</span>
+                     <ModalHeader className="flex flex-col gap-1 text-3xl font-bold">
+                        Create new {name}
                      </ModalHeader>
                      <ModalBody>
-                        <div className="m-2 text-center w-full">
+                        <div>
+                           <p className="font-semibold text-xl">Name your {name}</p>
+                           <p>{`What would you like to name your course? Don't worry, you can always change later`}</p>
+                        </div>
+                        <div>
+                           <p className="font-medium">
+                              {name.charAt(0).toUpperCase() + name.slice(1)} title
+                           </p>
                            <Input
-                              clearable
-                              fullWidth
-                              size="lg"
-                              placeholder={`Enter to ${name} name`}
                               onChange={handleChange}
+                              variant="bordered"
+                              placeholder={`e.g. "Toeic"`}
+                              classNames={{ input: 'px-3' }}
                            />
                         </div>
                      </ModalBody>
+
                      <ModalFooter className="flex justify-end">
-                        <div className="flex flex-row gap-8">
+                        <div className="flex flex-row gap-4">
                            <Button variant="light" onPress={onClose}>
                               Cancel
                            </Button>

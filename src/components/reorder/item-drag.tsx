@@ -10,11 +10,11 @@ import { MdDeleteOutline, MdOutlineEdit } from 'react-icons/md';
 import { FaVideo } from 'react-icons/fa6';
 import { IoIosArrowDown } from 'react-icons/io';
 import ConfirmDeleteModal from '../container/course/modal-confirm';
+import { IChapter, ILesson } from '@/types/course';
 
 interface Props {
-   item: string;
-   handleDelete: (item: string) => void;
-   handleEdit: () => void;
+   item: IChapter | ILesson;
+   handleDelete: (itemId: string) => void;
    handleDropdown: () => void;
    type: string;
    isEditTitle: boolean;
@@ -24,7 +24,6 @@ interface Props {
 export const Item = ({
    item,
    handleDelete,
-   handleEdit,
    handleDropdown,
    type,
    isEditTitle,
@@ -34,7 +33,7 @@ export const Item = ({
    const boxShadow = useRaisedShadow(y);
    const dragControls = useDragControls();
 
-   const [value, setValue] = React.useState<string>(item);
+   const [value, setValue] = React.useState<IChapter | ILesson>(item);
 
    const { isOpen, onOpenChange } = useDisclosure();
 
@@ -42,10 +41,10 @@ export const Item = ({
       onOpenChange();
    };
 
-   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setValue(e.target.value);
-      handleChangeTitleChapter(e);
-   };
+   // const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+   //    setValue(e.target.value);
+   //    handleChangeTitleChapter(e);
+   // };
 
    return (
       <div className="flex flex-row">
@@ -63,7 +62,6 @@ export const Item = ({
                <Reorder.Item
                   className="w-full"
                   value={item}
-                  id={item}
                   style={{ boxShadow, y }}
                   dragListener={false}
                   dragControls={dragControls}
@@ -76,7 +74,7 @@ export const Item = ({
                               type === 'chapter' ? 'text-md font-semibold ' : 'text-sm'
                            }`}
                         >
-                           {item}
+                           {item.title}
                         </span>
                      </div>
                      {type === 'chapter' ? (
@@ -92,10 +90,9 @@ export const Item = ({
                                     <ConfirmDeleteModal
                                        isOpen={isOpen}
                                        onOpenChange={onOpenChange}
-                                       onConfirmDelete={() => handleDelete(item)}
+                                       onConfirmDelete={() => handleDelete(item.id.toString())}
                                     ></ConfirmDeleteModal>
                                  </Button>
-
                                  <ReorderIcon dragControls={dragControls} />
                               </>
                            ) : (
@@ -113,10 +110,9 @@ export const Item = ({
                               <ConfirmDeleteModal
                                  isOpen={isOpen}
                                  onOpenChange={onOpenChange}
-                                 onConfirmDelete={() => handleDelete(item)}
+                                 onConfirmDelete={() => handleDelete(item.id.toString())}
                               ></ConfirmDeleteModal>
                            </Button>
-
                            <Button
                               variant={'light'}
                               onPress={handleDropdown}

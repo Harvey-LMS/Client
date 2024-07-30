@@ -1,8 +1,80 @@
 {
    "chapters": [
-      { "id": 1, "title": "Chapter 1", "description": "Description 1" },
-      { "id": 2, "title": "Chapter 2", "description": "Description 2" },
-      { "id": 3, "title": "Chapter 3", "description": "Description 3" },
-      { "id": 4, "title": "Chapter 4", "description": "Description 4" }
+      {
+         "id": "1",
+         "title": "Chapter 1: Getting started chapter",
+         "description": "Description 1",
+         "lessons": [
+            {
+               "id": 1,
+               "title": "Lesson 1: Introduction",
+               "content": "Content 11",
+               "url": ""
+            }
+         ]
+      },
+      {
+         "id": "2",
+         "title": "Chapter 2: Basic",
+         "description": "sdsad",
+         "lessons": [
+            {
+               "id": 1,
+               "title": "Lesson 1: Basics Reading",
+               "content": "Content 21",
+               "url": ""
+            },
+            {
+               "id": 2,
+               "title": "Lesson 2: Basics Writing",
+               "content": "Content 22",
+               "url": ""
+            }
+         ]
+      },
+      {
+         "id": "3",
+         "title": "Chapter 3: Practice",
+         "description": "Description 3",
+         "lessons": [
+            {
+               "id": 1,
+               "title": "Lesson 1: Exercises",
+               "content": "Content 31",
+               "url": ""
+            },
+            {
+               "id": 2,
+               "title": "Lesson 2: Practice 1",
+               "content": "Content 32",
+               "url": ""
+            },
+            {
+               "id": 3,
+               "title": "Lesson 3: Practice 2",
+               "content": "Content 33",
+               "url": ""
+            }
+         ]
+      },
+      {
+         "id": "4",
+         "title": "Chapter 4: Test",
+         "description": "This is the fourth chapter",
+         "lessons": [
+            {
+               "id": 1,
+               "title": "Lesson 1: Practice Test",
+               "content": "Content 41",
+               "url": ""
+            },
+            {
+               "id": 2,
+               "title": "Lesson 2: Final Test",
+               "content": "Content 42",
+               "url": ""
+            }
+         ]
+      }
    ]
 }

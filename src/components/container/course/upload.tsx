@@ -29,6 +29,7 @@ const UploadFile = ({ value, isShowEdit, onFileUpload }: Props) => {
             setValueInput(result);
             setUploaderKey((prevKey) => prevKey + 1);
             onFileUpload(result, type);
+            console.log('File URL: ', result);
          }
       };
 
