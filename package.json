@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "api": "json-server --watch ./db/course.json --port 4000"
   },
   "dependencies": {
     "@nextui-org/checkbox": "^2.1.2",

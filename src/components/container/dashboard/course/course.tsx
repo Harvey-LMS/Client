@@ -7,10 +7,13 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { title } from "process";
 import { use, useEffect, useState } from "react";
+import { IoIosSearch } from "react-icons/io";
 import { MdModeEdit } from "react-icons/md";
 import { MdOutlineDelete } from "react-icons/md";
 
 import { MdOutlineChromeReaderMode } from "react-icons/md";
+
+import { deleteCourse } from "@/app/dashboard/(courses)/course/handle";
 
 interface ICourseProps {
   input: ICourse[] | [];
@@ -24,12 +27,15 @@ const Course = ({ input, page, totalPage }: ICourseProps) => {
 
 
   const [nameCourseDelete, setNameCourseDelete] = useState<string>("");
+  const [id, setId] = useState<number>(1);
 
-  const data = input;
+  const data: ICourse[] = input;
 
   const [isFetching, setIsFetching] = useState<boolean>(true);
 
   const router = useRouter();
+
+  const [search, setSearch] = useState<string>("");
 
   useEffect(() => {
     if (data)
@@ -53,7 +59,7 @@ const Course = ({ input, page, totalPage }: ICourseProps) => {
                 <Button color="primary" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="danger" onPress={onClose}>
+                <Button color="danger" onPress={() => {  deleteCourse(id); onClose() }}>
                   Delete
                 </Button>
               </ModalFooter>
@@ -74,7 +80,7 @@ const Course = ({ input, page, totalPage }: ICourseProps) => {
                 </div>
                 <div>
                   <p className="font-medium">Course title</p>
-                  <Input variant="bordered" placeholder={`e.g. "Toeic"`} classNames={{input: "px-3"}}/>
+                  <Input variant="bordered" placeholder={`e.g. "Toeic"`} classNames={{ input: "px-3" }} />
                 </div>
               </ModalBody>
               <ModalFooter className="justify-center">
@@ -91,18 +97,27 @@ const Course = ({ input, page, totalPage }: ICourseProps) => {
       </Modal>
 
       {(data && data.length > 0) ? (
-        <div>
-          <table className="table-fixed w-full">
+        <div className="flex flex-col justify-start items-start gap-3">
+          <div className="w-1/2">
+            <Input
+              value={search}
+              variant="bordered"
+              placeholder="Search"
+              onChange={(e) => { setSearch(e.target.value) }}
+              endContent={<IoIosSearch className="cursor-pointer" />}
+            />
+          </div>
+          <table className="table-fixed w-full border overflow-auto">
             <thead>
-              <tr>
-                <th className="w-2 "></th>
-                <th className="w-7 ">Image</th>
-                <th className="w-32 ">Title</th>
-                <th className="w-6 ">Update</th>
-                <th className="w-6 ">Price</th>
-                <th className="w-6 ">Level</th>
-                <th className="w-6 ">Status</th>
-                <th className="w-6 ">Edit</th>
+              <tr className="border-2">
+                <th className="w-2 py-2 border-r-1"></th>
+                <th className="w-7 py-2  border-r-1">Image</th>
+                <th className="w-32 py-2  border-r-1">Title</th>
+                <th className="w-6 py-2 border-r-1">Update</th>
+                <th className="w-6 py-2 border-r-1">Price</th>
+                <th className="w-6 py-2 border-r-1">Level</th>
+                <th className="w-6 py-2 border-r-1">Status</th>
+                <th className="w-6 py-2 border-r-1">Edit</th>
               </tr>
             </thead>
             <tbody>
@@ -121,7 +136,7 @@ const Course = ({ input, page, totalPage }: ICourseProps) => {
               )))
                 :
                 (data && data.map((item: ICourse) => (
-                  <tr key={item.id} className="hover:bg-hover" onClick={()=> {router.push(`view/${item.id}`)}}>
+                  <tr key={item.id} className="hover:bg-hover border-b-1 border-gray-200 odd:bg-gray-100">
                     <td className="py-4 px-3 font-semibold text-center">{item.id}</td>
                     <td className="py-4 flex justify-center items-center">
                       <Image src={item.thumnailURL} alt={item.title} width={100} height={70} />
@@ -147,8 +162,8 @@ const Course = ({ input, page, totalPage }: ICourseProps) => {
                     </td>
                     <td className="py-4 text-center">
                       <div className="items-center justify-center flex flex-row gap-2">
-                        <MdOutlineDelete className="text-danger rounded-sm hover:bg-hover-2 text-4xl p-1" onClick={() => { onOpenDelete(); setNameCourseDelete(item.title) }} />
-                        <MdModeEdit className="text-secondary rounded-sm hover:bg-hover-2 text-4xl p-1" />
+                        <MdOutlineDelete className="text-danger rounded-sm hover:bg-hover-2 text-4xl p-1" onClick={() => { onOpenDelete(); setId(item.id); setNameCourseDelete(item.title) }} />
+                        <MdModeEdit onClick={() => { router.push(`view/${item.id}`) }} className="text-secondary rounded-sm hover:bg-hover-2 text-4xl p-1" />
                       </div>
                     </td>
                   </tr>
@@ -172,12 +187,12 @@ const Course = ({ input, page, totalPage }: ICourseProps) => {
             />
           </div>
         </div>
-      ):(
+      ) : (
         <div className="mt-32 flex flex-col justify-center items-center gap-2 w-full text-foreground">
-        <MdOutlineChromeReaderMode className="text-7xl" />
-        <p className="font-semibold text-xl ">You do not have any courses</p>
-        <Button variant="ghost" className="font-semibold hover:bg-primary" onClick={onOpenCreate}>Create a new course</Button>
-      </div>
+          <MdOutlineChromeReaderMode className="text-7xl" />
+          <p className="font-semibold text-xl ">You do not have any courses</p>
+          <Button variant="ghost" className="font-semibold hover:bg-primary" onClick={onOpenCreate}>Create a new course</Button>
+        </div>
       )}
 
 

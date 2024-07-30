@@ -339,7 +339,7 @@ const Register = () => {
             priority={true}
           />
         </div>
-        <div className="flex flex-col ml-5 max-md:ml-0 max-md:w-full bg-white border-gray-300 rounded-3xl shadow-lg border px-5 py-6">
+        <div className="flex flex-col ml-5 max-md:ml-0 max-w-[500px] max-md:w-full bg-white border-gray-300 rounded-3xl shadow-lg border px-5 py-6">
           <div className="flex flex-col grow justify-center text-base leading-6 text-zinc-700 text-opacity-40  max-md:max-w-full ">
             <div className="flex gap-3 justify-between items-start self-center pb-8 text-2xl font-semibold tracking-wide whitespace-nowrap text-zinc-700">
               <Image
@@ -378,7 +378,8 @@ const Register = () => {
                 errorMessage={errors.errorMessage.email}
               />
               <Input
-                className="text-black max-md:max-w-full"
+                className="text-black md:w-full"
+                classNames={{errorMessage: "whitespace-wrap w-full"}}
                 variant="bordered"
                 label="Password"
                 type={passwordIsVisible ? "text" : "password"}

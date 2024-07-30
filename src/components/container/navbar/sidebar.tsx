@@ -3,14 +3,14 @@
 import Image from "next/image";
 
 import Brand from "@/assets/Brand.svg";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
 import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 import { Button } from "@nextui-org/react";
 import { MdOutlineDashboard } from "react-icons/md";
-import { FaDiscourse } from "react-icons/fa";
+
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
 interface SidebarItemProps {
@@ -34,6 +34,7 @@ const Sidebar = () => {
 
   return (
     <motion.div
+      initial={{ width: 0 }}
       animate={{
         width: expanded ? 350 : 80
       }}
@@ -79,9 +80,11 @@ const Sidebar = () => {
       </div>
 
       <div className="">
-        <SidebarSusbItem expanded={expanded} icon={<MdOutlineDashboard className="text-2xl" />} title="aslkdj">
-          <SidebarItem expanded={expanded} name={"Dashboard"} isSubItem></SidebarItem>
-          <SidebarItem expanded={expanded} name={"Course"} isSubItem></SidebarItem>
+        <SidebarSusbItem expanded={expanded} icon={<MdOutlineDashboard className="text-2xl" />} title="Course Manager">
+          <SidebarItem expanded={expanded} name={"Course"} url="/dashboard/course" isSubItem></SidebarItem>
+          <SidebarItem expanded={expanded} name={"Test"} url="/dashboard/test" isSubItem></SidebarItem>
+          <SidebarItem expanded={expanded} name={"Quiz"} url="/dashboard/quiz" isSubItem></SidebarItem>
+
         </SidebarSusbItem>
         {/* <SidebarSusbItem expanded={expanded} icon={<MdOutlineDashboard className="text-2xl" />} url={"/"} title={"Course"}></SidebarSusbItem> */}
       </div>
@@ -90,11 +93,11 @@ const Sidebar = () => {
   );
 }
 
-const SidebarItem = ({ expanded, name,url }: SidebarItemProps) => {
+const SidebarItem = ({ expanded, name, url}: SidebarItemProps) => {
   return (
-    <div className={``}>
+    <div className={`w-full`}>
       <div className={` w-full flex flex-row justify-center items-center rounded-lg text-md`}>
-        <Link href={''} className={`w-full h-full flex flex-row items-center bg-background ${expanded ? ("px-5"): ("")}`} >
+        <Link href={url ? url : ""} className={`w-full h-full flex flex-row items-center bg-background ${expanded ? ("px-5") : ("")}`} >
           <Button className={`font-semibold min-w-0 justify-start bg-background data-[hover=true]:opacity-100 hover:bg-primary hover:text-primary-foreground w-full ${expanded ? ("") : ("rounded-none px-7")}`}>
             <p className="truncate">{name}</p>
           </Button>
@@ -106,7 +109,22 @@ const SidebarItem = ({ expanded, name,url }: SidebarItemProps) => {
 
 const SidebarSusbItem = ({ expanded, icon, title, children, url }: SidebarSubItemProps) => {
   const [isDown, setIsDown] = useState<boolean>(false);
-  const [hover, setHover] = useState<boolean>(false);
+
+  const [currentIsShow, setCurrentIsShow] = useState<boolean>(isDown);
+
+
+
+  useEffect(() => {
+    if (!expanded) {
+      setCurrentIsShow(isDown);
+      setIsDown(false);
+
+    }
+    else {
+      setIsDown(currentIsShow)
+    }
+
+  }, [expanded])
 
   return (
     <div>
@@ -125,9 +143,7 @@ const SidebarSusbItem = ({ expanded, icon, title, children, url }: SidebarSubIte
         ) : (<Button
           className={`data-[hover=true]:opacity-100 hover:text-primary-foreground z-50 text-background-foreground bg-background my-2 w-full flex flex-row min-w-0 justify-center items-center rounded-lg font-bold text-xl hover:bg-primary ${expanded ? ("") : ("p-2")}`}
           onClick={() => { setIsDown(!isDown) }}
-          onMouseOver={() => { setHover(true) }}
-          onMouseLeave={() => { setHover(false) }}
-          >
+        >
           <div className={` w-full h-full flex flex-row items-center  ${expanded ? ("py-2 px-2 justify-start gap-3") : ("m-auto justify-center")}`} >
             {icon}
             <p className="truncate">{expanded ? (title) : ("")}</p>
@@ -139,10 +155,13 @@ const SidebarSusbItem = ({ expanded, icon, title, children, url }: SidebarSubIte
 
         </Button>)}
 
-        <motion.div className={`${expanded ? (""): (`${isDown ? ("border absolute  left-full  top-3 m-0 "): ("")}`)}`}  animate={{ height: isDown ? "auto" : 0 }} transition={{ duration: 0.1 }}> 
+        <motion.div 
+        className={`${expanded ? ("") : (`${isDown ? ("min-w-[200px] border-2 absolute p-3 bg-background left-full ml-1 rounded-2xl  top-3 m-0 w-full whitespace-nowrap ") : ("")}`)}`} 
+        animate={{ height: isDown ? "auto" : 0 }} 
+        transition={{ duration: 0.1 }}>
 
-          
-          {isDown && (<div className="bg-background">
+
+          {isDown && (<div className="bg-background w-full">
             {!expanded && (<p className="text-center font-bold text-xl">{title}</p>)}
             {children}
           </div>)}

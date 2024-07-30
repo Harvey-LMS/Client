@@ -1,7 +1,7 @@
 "use client"
 
 import { Button, Chip, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
-import { useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 import { CheckboxGroup, Checkbox } from "@nextui-org/react";
 import { IoSearchOutline } from "react-icons/io5";
@@ -72,7 +72,7 @@ const ListItemsCourse:React.FC<ListItemsCourseProps> = ({ title = "", value = []
         }
     }
 
-    return (<div>
+    return (<div  className="w-full">
         <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl" onClose={handleCancel}>
             <ModalContent>
                 {(onClose) => (
@@ -186,16 +186,16 @@ const ListItemsCourse:React.FC<ListItemsCourseProps> = ({ title = "", value = []
 
             <div className="flex flex-row justify-start items-center gap-3 w-full mt-3">
                 <div className="flex flex-wrap">
-                    {data.slice(0, 2).map((item) => (
+                    {data.slice(0, 5).map((item) => (
                         <Chip key={item} 
                             className="m-1 border-primary select-none"
                             variant="bordered"
                         >{item}</Chip>
                     ))}
-                    {data.length > 2 && <Chip
+                    {data.length > 5 && <Chip
                         className="m-1 border-primary select-none"
                         variant="bordered"
-                        >+{data.length - 2}</Chip>}
+                        >+{data.length - 5}</Chip>}
                 </div>
             </div>
 

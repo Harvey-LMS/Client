@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, Input } from "@nextui-org/react";
+import { Button, DatePicker, Input } from "@nextui-org/react";
 import { useState } from "react";
 import { FiEdit } from "react-icons/fi";
 
@@ -20,9 +20,8 @@ const QuillEditor = dynamic(() => import('react-quill'), { ssr: false });
 interface FieldCourseProps {
     title: string | "";
     value: string | "";
-    type?: "text" | "datetime" | "select"
+    type?: "text" | "select"
 }
-
 
 const FieldCourse: React.FC<FieldCourseProps> = ({ title, value, type = "text" }: FieldCourseProps) => {
     const [editMode, setEditMode] = useState<boolean>(false);
@@ -61,30 +60,37 @@ const FieldCourse: React.FC<FieldCourseProps> = ({ title, value, type = "text" }
 
             <div className="flex flex-row justify-between items-center gap-3 w-full mt-3">
                 {editMode ? (
-                    type === "text" || type === "datetime" ? 
-                    (
-                        <Input type={type === "text" ? "text" : (type === "datetime" ? "datetime" : "text")} className="p-0 w-full border border-border rounded-md  group-data-[focus=true]:bg-white"
-                            classNames={{ inputWrapper: " group-data-[focus=true]:bg-white group-data-[focus=true]:border-primary" }}
-                            value={valueInput}
-                            placeholder={data ? data : "Enter value"}
-                            onChange={(e) => { setValueInput(e.target.value) }}
-                        />
+                    type === "text" ?
+                        (
+                            <Input type={"text"} className="p-0 w-full border border-border rounded-md  group-data-[focus=true]:bg-white"
+                                classNames={{ inputWrapper: " group-data-[focus=true]:bg-white group-data-[focus=true]:border-primary" }}
+                                value={valueInput}
+                                placeholder={data ? data : "Enter value"}
+                                onChange={(e) => { setValueInput(e.target.value) }}
+                            />
+                        )
+                        :
+                        (
+                            type === "select" ? (
+                                <Select defaultSelectedKeys={[valueInput]}>
+                                    <SelectItem key={"Easy"} value="Easy">Easy</SelectItem>
+                                    <SelectItem key={"Medium"} value="Medium">Medium</SelectItem>
+                                    <SelectItem key={"Hard"} value="Hard">Hard</SelectItem>
+                                </Select>
+                            ) : (
+                                <div>
+
+                                </div>
+                            )
+                        )
                     )
-                    : 
-                    (
-                    <Select defaultSelectedKeys={[valueInput]}>
-                        <SelectItem key={"Easy"} value="Easy">Easy</SelectItem>
-                        <SelectItem key={"Medium"} value="Medium">Medium</SelectItem>
-                        <SelectItem key={"Hard"} value="Hard">Hard</SelectItem>
-                    </Select>
-                    ))
                     : (
                         <div>
                             {valueInput}
                         </div>
 
                     )
-            }
+                }
             </div>
 
             {editMode ? (<div className="flex flex-row justify-end items-center gap-3 w-full mt-3">

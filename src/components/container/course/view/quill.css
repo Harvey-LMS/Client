@@ -9,12 +9,12 @@
 
 .custom-quill-editor .ql-container {
    width: 100%;
-      height: 100%;
+   height: 300px;
 }
 
 .custom-quill-editor .ql-editor {
    width: 100%;
-   height: 100%;
+   height: 300px;
    overflow: auto
 }
 

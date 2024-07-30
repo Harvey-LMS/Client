@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { motion } from "framer-motion";
 
 const CourseDetail = () => {
     const router = useRouter();
@@ -20,11 +21,11 @@ const CourseDetail = () => {
             </div>
             <div className="rounded-md px-1 py-2 w-full">
                 <div className="rounded-md px-5 py-2 flex flex-row gap-5 justify-start items-center bg-hover w-full bg-zinc-100 dark:bg-stone-950">
-                    <div className={`cursor-pointer ${isGeneral ? ("py-1 px-12 font-semibold bg-primary text-primary-foreground rounded-md") : ("")}`}
+                    <motion.div layout className={`cursor-pointer ${isGeneral ? ("py-1 px-12 font-semibold bg-primary text-primary-foreground rounded-md") : ("")}`}
                         onClick={() => setIsGeneral(true)}
                     >
                         General
-                    </div>
+                    </motion.div>
                     <div className={`cursor-pointer ${!isGeneral ? ("py-1 px-12 font-semibold bg-primary text-primary-foreground rounded-md") : ("")}`}
                         onClick={() => setIsGeneral(false)}
                     >Units</div>
