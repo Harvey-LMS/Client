@@ -11,6 +11,7 @@ import { FaVideo } from 'react-icons/fa6';
 import { IoIosArrowDown } from 'react-icons/io';
 import ConfirmDeleteModal from '../container/course/modal-confirm';
 import { IChapter, ILesson } from '@/types/course';
+import { DivideCircle } from 'lucide-react';
 
 interface Props {
    item: IChapter | ILesson;
@@ -19,6 +20,7 @@ interface Props {
    type: string;
    isEditTitle: boolean;
    handleChangeTitleChapter: (e: React.ChangeEvent<HTMLInputElement>) => void;
+   isDropdown: boolean;
 }
 
 export const Item = ({
@@ -28,6 +30,7 @@ export const Item = ({
    type,
    isEditTitle,
    handleChangeTitleChapter,
+   isDropdown,
 }: Props) => {
    const y = useMotionValue(0);
    const boxShadow = useRaisedShadow(y);
@@ -48,17 +51,19 @@ export const Item = ({
 
    return (
       <div className="flex flex-row">
-         <div className="flex flex-row gap-2 w-full h-6">
-            <div className="flex justify-center items-center">
+         <div className="group flex flex-row gap-2 w-full h-6">
+            {/* <div className=" flex justify-center items-center">
                {type === 'chapter' ? (
-                  <Button variant={'light'} onPress={handleDropdown} className="min-w-10 h-2/3 p-0">
+                  <div onClick={handleDropdown} className="">
                      <IoIosArrowDown className="text-xl" />
-                  </Button>
+                  </div>
                ) : (
-                  <ReorderIcon dragControls={dragControls} />
+                  <div>
+                     <ReorderIcon dragControls={dragControls} />
+                  </div>
                )}
-            </div>
-            <div onClick={handleDropdown} className="w-full flex justify-center items-center">
+            </div> */}
+            <div onClick={handleDropdown} className="group w-full flex justify-center items-center">
                <Reorder.Item
                   className="w-full"
                   value={item}
@@ -67,61 +72,82 @@ export const Item = ({
                   dragControls={dragControls}
                >
                   <div className="flex flex-row justify-between">
-                     <div className="flex flex-row gap-4 items-center w-full">
-                        {type === 'chapter' ? '' : <FaVideo className="w-7 h-5" />}
-                        <span
-                           className={`flex justify-center items-center select-none ${
-                              type === 'chapter' ? 'text-md font-semibold ' : 'text-sm'
-                           }`}
-                        >
-                           {item.title}
-                        </span>
+                     <div className="flex flex-col w-full">
+                        <div className="flex flex-row gap-4 items-center w-full">
+                           <div className=" flex justify-center items-center">
+                              {type === 'chapter' ? (
+                                 <div onClick={handleDropdown} className="">
+                                    <IoIosArrowDown className="text-xl" />
+                                 </div>
+                              ) : (
+                                 <div>
+                                    <ReorderIcon dragControls={dragControls} />
+                                 </div>
+                              )}
+                           </div>
+
+                           {type === 'chapter' ? '' : <FaVideo className="w-7 h-5" />}
+                           <div className="flex flex-row justify-between w-full min-h-10">
+                              <span
+                                 className={`flex justify-center items-center select-none ${
+                                    type === 'chapter' ? 'text-md font-semibold ' : 'text-sm'
+                                 }`}
+                              >
+                                 {item.title}
+                              </span>
+                              {type === 'chapter' ? (
+                                 <div className="flex flex-row gap-1 justify-center items-center">
+                                    {!isEditTitle ? (
+                                       <>
+                                          <Button
+                                             variant={'light'}
+                                             className="min-w-10 h-2/3 p-0"
+                                             onPress={handleShowModalConfirm}
+                                          >
+                                             <MdDeleteOutline size={'sm'} />
+                                             <ConfirmDeleteModal
+                                                isOpen={isOpen}
+                                                onOpenChange={onOpenChange}
+                                                onConfirmDelete={() =>
+                                                   handleDelete(item.id.toString())
+                                                }
+                                             ></ConfirmDeleteModal>
+                                          </Button>
+                                          <ReorderIcon dragControls={dragControls} />
+                                       </>
+                                    ) : (
+                                       <div></div>
+                                    )}
+                                 </div>
+                              ) : (
+                                 <div className="flex flex-row gap-1 justify-center items-center">
+                                    <Button
+                                       variant={'light'}
+                                       className="min-w-10 h-2/3 p-0"
+                                       onPress={handleShowModalConfirm}
+                                    >
+                                       <MdDeleteOutline className="text-2xl" />
+                                       <ConfirmDeleteModal
+                                          isOpen={isOpen}
+                                          onOpenChange={onOpenChange}
+                                          onConfirmDelete={() => handleDelete(item.id.toString())}
+                                       ></ConfirmDeleteModal>
+                                    </Button>
+                                    <Button
+                                       variant={'light'}
+                                       onPress={handleDropdown}
+                                       className="min-w-10 h-2/3 p-0"
+                                    >
+                                       <IoIosArrowDown className="" size={'sm'} />
+                                    </Button>
+                                 </div>
+                              )}
+                           </div>
+                        </div>
+                        {type === 'chapter' && isDropdown && (
+                           <div className="border border-gray-300 bg-white mb-2 h-2/3"></div>
+                        )}
                      </div>
-                     {type === 'chapter' ? (
-                        <div className="flex flex-row gap-1 justify-center items-center">
-                           {!isEditTitle ? (
-                              <>
-                                 <Button
-                                    variant={'light'}
-                                    className="min-w-10 h-2/3 p-0"
-                                    onPress={handleShowModalConfirm}
-                                 >
-                                    <MdDeleteOutline size={'sm'} />
-                                    <ConfirmDeleteModal
-                                       isOpen={isOpen}
-                                       onOpenChange={onOpenChange}
-                                       onConfirmDelete={() => handleDelete(item.id.toString())}
-                                    ></ConfirmDeleteModal>
-                                 </Button>
-                                 <ReorderIcon dragControls={dragControls} />
-                              </>
-                           ) : (
-                              <div></div>
-                           )}
-                        </div>
-                     ) : (
-                        <div className="flex flex-row gap-1 justify-center items-center">
-                           <Button
-                              variant={'light'}
-                              className="min-w-10 h-2/3 p-0"
-                              onPress={handleShowModalConfirm}
-                           >
-                              <MdDeleteOutline className="text-2xl" />
-                              <ConfirmDeleteModal
-                                 isOpen={isOpen}
-                                 onOpenChange={onOpenChange}
-                                 onConfirmDelete={() => handleDelete(item.id.toString())}
-                              ></ConfirmDeleteModal>
-                           </Button>
-                           <Button
-                              variant={'light'}
-                              onPress={handleDropdown}
-                              className="min-w-10 h-2/3 p-0"
-                           >
-                              <IoIosArrowDown className="" size={'sm'} />
-                           </Button>
-                        </div>
-                     )}
                   </div>
                </Reorder.Item>
             </div>

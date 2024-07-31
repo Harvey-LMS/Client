@@ -11,7 +11,7 @@ import { ILesson } from '@/types/course';
 import axios from 'axios';
 
 interface Props {
-   chapterId: number;
+   chapterId: string;
    lessons: ILesson[];
    setLessons: React.Dispatch<React.SetStateAction<{ [key: string]: ILesson[] }>>;
 }
@@ -20,9 +20,6 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
    const [items, setItems] = useState(lessons);
 
    const [contentInput, setContentInput] = useState('');
-   const [content, setContent] = useState(
-      'Take one of Udemy’s range of Python courses and learn how to code using this incredibly useful language. Its simple syntax and readability makes Python perfect for Flask, Django, data science, and machine learning. You’ll learn how to build everything from games to sites to apps. Choose from a range of courses that will appeal to',
-   );
    const [lessonNameInput, setLessonNameInput] = useState('');
    const [isShowEditContent, setIsShowEditContent] = useState<string | null>(null);
    const [isShowEditUpload, setIsShowEditUpload] = useState<string | null>(null);
@@ -37,16 +34,17 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
    const handleShowModalCreate = () => {
       onOpenChange();
    };
+
+   const apiUrl = 'http://localhost:8000/chapters';
+
    const handleSaveLesson = async (title: string) => {
       try {
-         const currentChapterResponse = await axios.get(
-            `http://localhost:8000/chapters/${chapterId}`,
-         );
+         const currentChapterResponse = await axios.get(`${apiUrl}/${chapterId}`);
          const currentChapter = currentChapterResponse.data;
 
          const newLesson = {
             id: currentChapter.lessons.length + 1,
-            title: title,
+            title: `Lesson ${currentChapter.lessons.length + 1}: ` + title,
             content: '',
          };
 
@@ -57,10 +55,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
             lessons: updatedLessons,
          };
 
-         const response = await axios.put(
-            `http://localhost:8000/chapters/${chapterId}`,
-            updatedChapter,
-         );
+         const response = await axios.put(`${apiUrl}/${chapterId}`, updatedChapter);
 
          if (response.status === 200) {
             setLessons((prev) => ({
@@ -77,22 +72,33 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
       }
    };
 
-   const handleUpdateContent = async (lessonId: number, newContent: string) => {
+   const handleUpdateContent = async (lessonId: string, newContent: string) => {
       try {
-         const chapterResponse = await axios.get(`http://localhost:8000/chapters/${chapterId}`);
+         const chapterResponse = await axios.get(`${apiUrl}/${chapterId}`);
          const chapterData = chapterResponse.data;
 
          const updatedLessons = chapterData.lessons.map((lesson: any) => {
             if (lesson.id === lessonId) {
+               setItems((prev) => {
+                  const updatedItems = prev.map((item) => {
+                     if (item.id === lessonId) {
+                        return { ...item, content: newContent };
+                     }
+                     return item;
+                  });
+                  return updatedItems;
+               });
                return { ...lesson, content: newContent };
             }
+
             return lesson;
          });
 
-         const response = await axios.patch(`http://localhost:8000/chapters/${chapterId}`, {
+         const response = await axios.patch(`${apiUrl}/${chapterId}`, {
             ...chapterData,
             lessons: updatedLessons,
          });
+
          setIsShowEditContent(null);
          return response.data;
       } catch (error) {
@@ -101,11 +107,9 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
       }
    };
 
-   const handleDeleteItem = async (lessonId: number) => {
+   const handleDeleteItem = async (lessonId: string) => {
       try {
-         const currentChapterResponse = await axios.get(
-            `http://localhost:8000/chapters/${chapterId}`,
-         );
+         const currentChapterResponse = await axios.get(`${apiUrl}/${chapterId}`);
          const currentChapter = currentChapterResponse.data;
 
          const updatedLessons = currentChapter.lessons.filter(
@@ -117,13 +121,9 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
             lessons: updatedLessons,
          };
 
-         const response = await axios.put(
-            `http://localhost:8000/chapters/${chapterId}`,
-            updatedChapter,
-         );
+         const response = await axios.put(`${apiUrl}/${chapterId}`, updatedChapter);
 
          if (response.status === 200) {
-            alert('Lesson deleted successfully');
             setItems(updatedLessons);
          } else {
             console.error('Failed to delete the lesson');
@@ -133,7 +133,8 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
       }
    };
 
-   const handleShowEditContent = (lesson: string) => {
+   const handleShowEditContent = (lesson: string, currentContent: string) => {
+      setContentInput(currentContent);
       setIsShowEditContent((prev) => (prev === lesson ? null : lesson));
    };
 
@@ -223,6 +224,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                         type="lesson"
                         isEditTitle={isEditTitle === lesson.title}
                         handleChangeTitleChapter={() => console.log('')}
+                        isDropdown={openLessons === lesson.title}
                      />
                      {openLessons === lesson.title && (
                         <div>
@@ -240,7 +242,10 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                                           {isShowEditContent === lesson.title ? (
                                              <Button
                                                 onClick={() =>
-                                                   handleShowEditContent(lesson.id.toString())
+                                                   handleShowEditContent(
+                                                      lesson.title,
+                                                      lesson.content,
+                                                   )
                                                 }
                                                 className="flex flex-row gap-2"
                                                 variant="light"
@@ -252,7 +257,12 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                                              </Button>
                                           ) : (
                                              <Button
-                                                onClick={() => handleShowEditContent(lesson.title)}
+                                                onClick={() =>
+                                                   handleShowEditContent(
+                                                      lesson.title,
+                                                      lesson.content,
+                                                   )
+                                                }
                                                 className="flex flex-row gap-2"
                                                 variant="light"
                                              >

@@ -20,7 +20,8 @@ const Chapter = () => {
    const [data, setData] = useState<IChapter[]>([]);
    const [openChapters, setOpenChapters] = useState<string | null>(null);
    const [titleInput, setTitleInput] = useState('');
-   const [descriptionInput, setDescriptionInput] = useState('');
+   const [descriptionInput, setDescriptionInput] = useState<string>('');
+
    const [isEditTitle, setIsEditTitle] = useState<string | null>(null);
 
    const [isShowEditDescription, setIsShowEditDescription] = useState<string | null>(null);
@@ -31,7 +32,8 @@ const Chapter = () => {
       onOpenChange();
    };
 
-   const handleShowEditDescription = (chapter: string) => {
+   const handleShowEditDescription = (chapter: string, currentDescription: string) => {
+      setDescriptionInput(currentDescription);
       setIsShowEditDescription((prev) => (prev === chapter ? null : chapter));
    };
 
@@ -39,8 +41,10 @@ const Chapter = () => {
       setDescriptionInput(e.target.value);
    };
 
+   const apiUrl = 'http://localhost:8000/chapters';
+
    const handleSaveChapter = async (chapterName: string) => {
-      const dataGet = await axios.get('http://localhost:8000/chapters');
+      const dataGet = await axios.get(apiUrl);
       const newChapter = {
          id: dataGet.data.length + 1,
          title: `Chapter ${dataGet.data.length + 1}: ` + chapterName,
@@ -49,7 +53,7 @@ const Chapter = () => {
       };
 
       try {
-         const response = await axios.post('http://localhost:8000/chapters', newChapter);
+         const response = await axios.post(apiUrl, newChapter);
          if (response.status === 201) {
             setData((prevData) => [...prevData, response.data]);
             onOpenChange();
@@ -61,9 +65,9 @@ const Chapter = () => {
       }
    };
 
-   const handleUpdateDescription = async (chapterId: number, newDescription: string) => {
+   const handleUpdateDescription = async (chapterId: string, newDescription: string) => {
       try {
-         const currentDataResponse = await axios.get(`http://localhost:8000/chapters/${chapterId}`);
+         const currentDataResponse = await axios.get(`${apiUrl}/${chapterId}`);
          if (currentDataResponse.status !== 200) {
             console.error('Failed to fetch current chapter data');
             return;
@@ -74,12 +78,11 @@ const Chapter = () => {
             ...currentData,
             description: newDescription,
          };
-         const response = await axios.put(
-            `http://localhost:8000/chapters/${chapterId}`,
-            updatedData,
-         );
+         const response = await axios.put(`${apiUrl}/${chapterId}`, updatedData);
          if (response.status === 200) {
-            alert('Lesson content updated successfully');
+            setData((prevData) =>
+               prevData.map((item) => (item.id === chapterId ? updatedData : item)),
+            );
          } else {
             console.error('Failed to update lesson content');
          }
@@ -92,15 +95,41 @@ const Chapter = () => {
 
    const handleDeleteItem = async (itemId: string) => {
       try {
-         const response = await axios.delete(`http://localhost:8000/chapters/${itemId}`);
+         const response = await axios.delete(`${apiUrl}/${itemId}`);
          if (response.status === 200) {
-            alert('Item deleted successfully');
-            setData((prevData) => prevData.filter((item) => item.id.toString() !== itemId));
+            setData((prevData) => prevData.filter((item) => item.id !== itemId));
          } else {
             alert('Failed to delete item');
          }
       } catch (error) {
          console.error('Error deleting item:', error);
+      }
+   };
+
+   const updateChapterTitles = (chapters: IChapter[]) => {
+      return chapters.map((chapter, index) => ({
+         ...chapter,
+         title: `Chapter ${index + 1}: ${chapter.title.split(': ')[1]}`,
+      }));
+   };
+
+   const handleReorder = async (newData: IChapter[]) => {
+      const updatedChapters = updateChapterTitles(newData);
+      setData(updatedChapters);
+      console.log('update: ', updatedChapters);
+      console.log('data: ', data);
+
+      try {
+         const req = await axios.put(apiUrl, updatedChapters, {
+            headers: { 'Content-Type': 'application/json' },
+         });
+         if (req.status === 200) {
+            console.log('Chapters updated successfully');
+         } else {
+            console.error('Failed to update chapters. Status:', req.status);
+         }
+      } catch (error) {
+         console.log(error);
       }
    };
 
@@ -115,7 +144,7 @@ const Chapter = () => {
    useEffect(() => {
       const fetchData = async () => {
          try {
-            const response = await axios.get('http://localhost:8000/chapters');
+            const response = await axios.get(apiUrl);
             setData(response.data);
          } catch (error) {
             console.error('Error: ', error);
@@ -130,7 +159,7 @@ const Chapter = () => {
             <Reorder.Group
                className="flex flex-col gap-4 p-2"
                axis="y"
-               onReorder={setData}
+               onReorder={handleReorder}
                values={data}
             >
                {data.map((item) => (
@@ -147,16 +176,15 @@ const Chapter = () => {
                   >
                      <Item
                         item={item}
-                        handleDelete={() => handleDeleteItem(item.id.toString())}
+                        handleDelete={() => handleDeleteItem(item.id)}
                         handleDropdown={() => handleDropdown(item.title)}
                         type="chapter"
                         isEditTitle={isEditTitle === item.title}
                         handleChangeTitleChapter={handleChangeTitleChapter}
+                        isDropdown={openChapters === item.title}
                      ></Item>
                      {openChapters === item.title && (
                         <div className="">
-                           <div className="border border-gray-300 bg-white mb-2"></div>
-
                            <div className="flex flex-col mx-4">
                               <div className="mx-5">
                                  <div
@@ -170,7 +198,12 @@ const Chapter = () => {
                                           <></>
                                        ) : (
                                           <Button
-                                             onClick={() => handleShowEditDescription(item.title)}
+                                             onClick={() =>
+                                                handleShowEditDescription(
+                                                   item.title,
+                                                   item.description,
+                                                )
+                                             }
                                              className="flex flex-row gap-2 "
                                              variant={'light'}
                                           >
@@ -187,42 +220,42 @@ const Chapter = () => {
                                           placeholder={'Enter chapter description'}
                                           variant={'faded'}
                                           className="w-full"
+                                          value={descriptionInput}
                                        />
                                     ) : (
                                        <span className="text-sm">{item.description}</span>
                                     )}
                                  </div>
+                                 <div className="m-2">
+                                    {isShowEditDescription === item.title ? (
+                                       <div className="flex flex-row gap-6 justify-end">
+                                          <Button
+                                             onClick={() => setIsShowEditDescription(null)}
+                                             variant={'light'}
+                                             className="text-red-600"
+                                          >
+                                             Cancel
+                                          </Button>
+                                          <Button
+                                             onClick={() =>
+                                                handleUpdateDescription(item.id, descriptionInput)
+                                             }
+                                             color={'primary'}
+                                          >
+                                             Save
+                                          </Button>
+                                       </div>
+                                    ) : (
+                                       <div className="flex flex-row gap-6 justify-end"></div>
+                                    )}
+                                 </div>
                                  <div className="border border-gray-300 bg-white mt-2"></div>
                               </div>
-
                               <Lesson
                                  chapterId={item.id}
                                  lessons={item.lessons}
                                  setLessons={() => console.log('setLessons')}
                               />
-                              <div className="m-2">
-                                 {isShowEditDescription === item.title ? (
-                                    <div className="flex flex-row gap-6 justify-end">
-                                       <Button
-                                          onClick={() => setIsShowEditDescription(null)}
-                                          variant={'light'}
-                                          className="text-red-600"
-                                       >
-                                          Cancel
-                                       </Button>
-                                       <Button
-                                          onClick={() =>
-                                             handleUpdateDescription(item.id, descriptionInput)
-                                          }
-                                          color={'primary'}
-                                       >
-                                          Save
-                                       </Button>
-                                    </div>
-                                 ) : (
-                                    <div className="flex flex-row gap-6 justify-end"></div>
-                                 )}
-                              </div>
                            </div>
                         </div>
                      )}

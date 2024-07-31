@@ -27,7 +27,7 @@ export interface IDraftCourse {
 }
 
 export interface ILesson {
-   id: number;
+   id: string;
    title: string;
    content: string;
    url: string;
@@ -35,7 +35,7 @@ export interface ILesson {
 }
 
 export interface IChapter {
-   id: number;
+   id: string;
    title: string;
    description: string;
    lessons: ILesson[];
