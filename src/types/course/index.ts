@@ -40,3 +40,10 @@ export interface IChapter {
    lessons: ILesson[];
    orderIndex: number;
 }
+
+export interface IAccount {
+   id: string;
+   username: string;
+   password: string;
+   email: string;
+}

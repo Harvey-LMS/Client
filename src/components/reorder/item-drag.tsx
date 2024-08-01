@@ -52,17 +52,6 @@ export const Item = ({
    return (
       <div className="flex flex-row">
          <div className="group flex flex-row gap-2 w-full h-6">
-            {/* <div className=" flex justify-center items-center">
-               {type === 'chapter' ? (
-                  <div onClick={handleDropdown} className="">
-                     <IoIosArrowDown className="text-xl" />
-                  </div>
-               ) : (
-                  <div>
-                     <ReorderIcon dragControls={dragControls} />
-                  </div>
-               )}
-            </div> */}
             <div onClick={handleDropdown} className="group w-full flex justify-center items-center">
                <Reorder.Item
                   className="w-full"

@@ -60,8 +60,6 @@ const UploadFile = ({ value, isShowEdit, onFileUpload }: Props) => {
                   title="PDF Preview"
                />
             );
-         default:
-            return <div>File not valid (include PDF, Video, Audio)</div>;
       }
    };
 
@@ -105,7 +103,7 @@ const UploadFile = ({ value, isShowEdit, onFileUpload }: Props) => {
                {<div className="flex justify-center items-center">{renderContent()}</div>}
             </div>
          ) : (
-            <div>Please upload a file</div>
+            <></>
          )}
       </div>
    );

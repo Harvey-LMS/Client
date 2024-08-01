@@ -41,19 +41,19 @@ const Chapter = () => {
       setDescriptionInput(e.target.value);
    };
 
-   const apiUrl = 'http://localhost:8000/chapters';
+   const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_CHAPTER;
 
    const handleSaveChapter = async (chapterName: string) => {
-      const dataGet = await axios.get(apiUrl);
+      const dataGet = await axios.get(apiUrl as string);
       const newChapter = {
          id: (dataGet.data.length + 1).toString(),
          title: `Chapter ${dataGet.data.length + 1}: ` + chapterName,
-         description: '',
+         description: 'This is default description',
          lessons: [],
       };
 
       try {
-         const response = await axios.post(apiUrl, newChapter);
+         const response = await axios.post(apiUrl as string, newChapter);
          if (response.status === 201) {
             setData((prevData) => [...prevData, response.data]);
             onOpenChange();
@@ -96,8 +96,12 @@ const Chapter = () => {
    const handleDeleteItem = async (itemId: string) => {
       try {
          const response = await axios.delete(`${apiUrl}/${itemId}`);
+
          if (response.status === 200) {
-            setData((prevData) => prevData.filter((item) => item.id !== itemId));
+            // setData((prevData) => prevData.filter((item) => item.id !== itemId));
+            const newData = data.filter((item) => item.id !== itemId);
+            const updatedChapters = updateChaptersIndex(newData);
+            setData(updatedChapters);
          } else {
             alert('Failed to delete item');
          }
@@ -106,7 +110,7 @@ const Chapter = () => {
       }
    };
 
-   const updateChaptersReorder = (chapters: IChapter[]) => {
+   const updateChaptersIndex = (chapters: IChapter[]) => {
       return chapters.map((chapter, index) => ({
          ...chapter,
          // id: (index + 1).toString(),
@@ -116,7 +120,7 @@ const Chapter = () => {
    };
 
    const handleReorder = async (newData: IChapter[]) => {
-      const updatedChapters = updateChaptersReorder(newData);
+      const updatedChapters = updateChaptersIndex(newData);
       setData(updatedChapters);
 
       try {
@@ -158,7 +162,7 @@ const Chapter = () => {
    useEffect(() => {
       const fetchData = async () => {
          try {
-            const response = await axios.get(apiUrl);
+            const response = await axios.get(apiUrl as string);
             const data = [...response.data].sort((a, b) => a.orderIndex - b.orderIndex);
             setData(data);
          } catch (error) {

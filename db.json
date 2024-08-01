@@ -1,4 +1,18 @@
 {
+  "accounts": [
+    {
+      "id": "1",
+      "username": "colnat",
+      "password": "12345678Loc",
+      "email": ""
+    },
+    {
+      "id": "2",
+      "username": "testuser",
+      "password": "11223344Test",
+      "email": ""
+    }
+  ],
   "chapters": [
     {
       "id": "1",
@@ -72,13 +86,15 @@
           "id": 1,
           "title": "Lesson 1: Practice Test",
           "content": "Content 41",
-          "url": ""
+          "url": "",
+          "orderIndex": 1
         },
         {
           "id": 2,
           "title": "Lesson 2: Final Test",
           "content": "Content 42",
-          "url": ""
+          "url": "",
+          "orderIndex": 2
         }
       ],
       "orderIndex": 4
