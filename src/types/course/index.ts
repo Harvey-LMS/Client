@@ -30,8 +30,7 @@ export interface ILesson {
    id: string;
    title: string;
    content: string;
-   url: string;
-   typeFile: string;
+   orderIndex: number;
 }
 
 export interface IChapter {
@@ -39,4 +38,5 @@ export interface IChapter {
    title: string;
    description: string;
    lessons: ILesson[];
+   orderIndex: number;
 }

@@ -17,7 +17,7 @@ interface Props {
 }
 
 const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
-   const [items, setItems] = useState(lessons);
+   const [data, setData] = useState(lessons);
 
    const [contentInput, setContentInput] = useState('');
    const [lessonNameInput, setLessonNameInput] = useState('');
@@ -62,7 +62,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                ...prev,
                [chapterId]: updatedLessons,
             }));
-            setItems(updatedLessons);
+            setData(updatedLessons);
             onOpenChange();
          } else {
             console.error('Failed to create new lesson');
@@ -79,7 +79,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
 
          const updatedLessons = chapterData.lessons.map((lesson: any) => {
             if (lesson.id === lessonId) {
-               setItems((prev) => {
+               setData((prev) => {
                   const updatedItems = prev.map((item) => {
                      if (item.id === lessonId) {
                         return { ...item, content: newContent };
@@ -124,7 +124,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
          const response = await axios.put(`${apiUrl}/${chapterId}`, updatedChapter);
 
          if (response.status === 200) {
-            setItems(updatedLessons);
+            setData(updatedLessons);
          } else {
             console.error('Failed to delete the lesson');
          }
@@ -159,12 +159,34 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
       setLessonNameInput(e.target.value);
    };
 
+   const updateLessonsOrder = async (updatedLessons: ILesson[]) => {
+      try {
+         const currentChapterResponse = await axios.get(`${apiUrl}/${chapterId}`);
+         const currentChapter = currentChapterResponse.data;
+
+         const updatedChapter = {
+            ...currentChapter,
+            lessons: updatedLessons,
+         };
+
+         await axios.put(`${apiUrl}/${chapterId}`, updatedChapter);
+      } catch (error) {
+         console.error('Error updating lessons order:', error);
+      }
+   };
+
    const handleReorder = (newItems: ILesson[]) => {
-      setItems(newItems);
+      const updatedItems = newItems.map((item, index) => ({
+         ...item,
+         title: `Lesson ${index + 1}: ${item.title.split(': ')[1]}`,
+         orderIndex: index + 1,
+      }));
+      setData(updatedItems);
       setLessons((prev) => ({
          ...prev,
-         [chapterId]: newItems,
+         [chapterId]: updatedItems,
       }));
+      updateLessonsOrder(updatedItems);
    };
 
    const renderFileContent = (file: string, type: string | null) => {
@@ -205,9 +227,9 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                className="flex flex-col gap-4 p-2"
                axis="y"
                onReorder={handleReorder}
-               values={items}
+               values={data}
             >
-               {items.map((lesson) => (
+               {data.map((lesson) => (
                   <Reorder.Item
                      key={lesson.id}
                      value={lesson}

@@ -46,7 +46,7 @@ const Chapter = () => {
    const handleSaveChapter = async (chapterName: string) => {
       const dataGet = await axios.get(apiUrl);
       const newChapter = {
-         id: dataGet.data.length + 1,
+         id: (dataGet.data.length + 1).toString(),
          title: `Chapter ${dataGet.data.length + 1}: ` + chapterName,
          description: '',
          lessons: [],
@@ -106,30 +106,44 @@ const Chapter = () => {
       }
    };
 
-   const updateChapterTitles = (chapters: IChapter[]) => {
+   const updateChaptersReorder = (chapters: IChapter[]) => {
       return chapters.map((chapter, index) => ({
          ...chapter,
+         // id: (index + 1).toString(),
          title: `Chapter ${index + 1}: ${chapter.title.split(': ')[1]}`,
+         orderIndex: index + 1,
       }));
    };
 
    const handleReorder = async (newData: IChapter[]) => {
-      const updatedChapters = updateChapterTitles(newData);
+      const updatedChapters = updateChaptersReorder(newData);
       setData(updatedChapters);
-      console.log('update: ', updatedChapters);
-      console.log('data: ', data);
 
       try {
-         const req = await axios.put(apiUrl, updatedChapters, {
-            headers: { 'Content-Type': 'application/json' },
-         });
-         if (req.status === 200) {
+         const updatePromises = updatedChapters.map((chapter) =>
+            axios.put(`${apiUrl}/${chapter.id}`, chapter, {
+               headers: { 'Content-Type': 'application/json' },
+            }),
+         );
+
+         const responses = await Promise.all(updatePromises);
+
+         if (responses.every((response) => response.status === 200)) {
             console.log('Chapters updated successfully');
          } else {
-            console.error('Failed to update chapters. Status:', req.status);
+            console.error('Failed to update some chapters.');
+            responses.forEach((response) => {
+               if (response.status !== 200) {
+                  console.error(
+                     `Failed to update chapter ${response.data.id}. Status:`,
+                     response.status,
+                  );
+                  console.error('Response data:', response.data);
+               }
+            });
          }
       } catch (error) {
-         console.log(error);
+         console.error('Error updating chapters:', error);
       }
    };
 
@@ -145,7 +159,8 @@ const Chapter = () => {
       const fetchData = async () => {
          try {
             const response = await axios.get(apiUrl);
-            setData(response.data);
+            const data = [...response.data].sort((a, b) => a.orderIndex - b.orderIndex);
+            setData(data);
          } catch (error) {
             console.error('Error: ', error);
          }
