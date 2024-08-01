@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const NotFound = () => {
   return (
-    <div className="flex flex-col max-h-full justify-center pt-20 mt-20">
+    <div className="flex flex-col max-h-full justify-center bg-background h-screen">
       <div className="justify-center items-center text-center mb-4">
         <span className="text-5xl font-bold">PAGE NOT FOUND</span>
         <br />

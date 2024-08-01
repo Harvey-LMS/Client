@@ -3,32 +3,44 @@ import Course from "@/components/container/dashboard/course/course";
 import { ICourse } from "@/types/course";
 import axios from "axios";
 import { cache } from "react";
+import TestPage from "./test";
 
 interface reponseCoursePage{
     first: number,
-    prev: number|null,
-    next: number|null,
-    last: number|null,
+    prev: number,
+    next: number,
+    last: number,
     pages: number,
     items: number,
     data: ICourse[]
 }
 
 const Page = async() => {
-    const page = 1;
-    const limit = 2;
+    // const page = 1;
+    // const limit = 2;
     
+    // try {
+    //     const response = await axios.get<reponseCoursePage>(`http://localhost:4000/courses?_page=${page}&_per_page=${limit}`);
 
-    const response = await axios.get<reponseCoursePage>(`http://localhost:4000/courses?_page=${page}&_per_page=${limit}`);
-    // ?_page=1&_per_page=25
+    //     const data: ICourse[] | [] = await response.data.data;
 
-    const data:ICourse[]|[] = await response.data.data;
-    
-    const totalPage = await response.data.pages;
-    
-    return ( 
+    //     const totalPage = await response.data.pages;
+
+    //     console.log(data);
+
+    //     return (
+
+    //         <Course input={data} page={page} totalPage={totalPage}></Course>
+    //     );
+    // } catch (error) {
         
-        <Course input={data} page={page} totalPage={totalPage}></Course>
-);
+    // }
+
+    return (
+        <TestPage>
+        </TestPage>
+    )
+
+
 }
 export default Page;
