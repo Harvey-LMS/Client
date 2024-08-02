@@ -40,9 +40,9 @@ const Chapter = () => {
       setTitleInput(e.target.value);
    };
 
-   const handleShowEditDescription = (chapter: string, currentDescription: string) => {
+   const handleShowEditDescription = (chapterId: string, currentDescription: string) => {
       setDescriptionInput(currentDescription);
-      setIsShowEditDescription((prev) => (prev === chapter ? null : chapter));
+      setIsShowEditDescription((prev) => (prev === chapterId ? null : chapterId));
    };
 
    const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,6 +58,7 @@ const Chapter = () => {
          title: `Chapter ${dataGet.data.length + 1}: ` + chapterName,
          description: 'This is default description',
          lessons: [],
+         orderIndex: dataGet.data.length + 1,
       };
 
       try {
@@ -231,6 +232,7 @@ const Chapter = () => {
                         handleDropdown={() => handleDropdown(item.id)}
                         type="chapter"
                         isDropdown={openChapters === item.id}
+                        fileType=""
                      ></Item>
                      {openChapters === item.id && (
                         <div className="">
@@ -304,15 +306,12 @@ const Chapter = () => {
                                  >
                                     <div className="flex flex-row gap-2 justify-between">
                                        <span className="text-md font-semibold">Description</span>
-                                       {isShowEditDescription === item.title ? (
+                                       {isShowEditDescription === item.id ? (
                                           <></>
                                        ) : (
                                           <Button
                                              onClick={() =>
-                                                handleShowEditDescription(
-                                                   item.title,
-                                                   item.description,
-                                                )
+                                                handleShowEditDescription(item.id, item.description)
                                              }
                                              className="flex flex-row gap-2 "
                                              variant={'light'}
@@ -324,7 +323,7 @@ const Chapter = () => {
                                           </Button>
                                        )}
                                     </div>
-                                    {isShowEditDescription === item.title ? (
+                                    {isShowEditDescription === item.id ? (
                                        <Input
                                           onChange={handleChangeDescription}
                                           placeholder={'Enter chapter description'}
@@ -337,7 +336,7 @@ const Chapter = () => {
                                     )}
                                  </div>
                                  <div className="m-2">
-                                    {isShowEditDescription === item.title ? (
+                                    {isShowEditDescription === item.id ? (
                                        <div className="flex flex-row gap-6 justify-end">
                                           <Button
                                              onClick={() => setIsShowEditDescription(null)}
@@ -361,6 +360,7 @@ const Chapter = () => {
                                  </div>
                                  <div className="border border-gray-300 bg-white mt-2"></div>
                               </div>
+
                               <Lesson
                                  chapterId={item.id}
                                  lessons={item.lessons}

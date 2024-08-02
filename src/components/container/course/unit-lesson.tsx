@@ -9,6 +9,7 @@ import { FaEdit } from 'react-icons/fa';
 import ModalCreate from './modal-create';
 import { ILesson } from '@/types/course';
 import axios from 'axios';
+import { url } from 'inspector';
 
 interface Props {
    chapterId: string;
@@ -42,7 +43,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
 
    const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_CHAPTER;
 
-   const handleSaveLesson = async (title: string) => {
+   const handleCreateLesson = async (title: string) => {
       try {
          const currentChapterResponse = await axios.get(`${apiUrl}/${chapterId}`);
          const currentChapter = currentChapterResponse.data;
@@ -51,6 +52,8 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
             id: currentChapter.lessons.length + 1,
             title: `Lesson ${currentChapter.lessons.length + 1}: ` + title,
             content: 'This is default content',
+            url: '',
+            orderIndex: currentChapter.lessons.length + 1,
          };
 
          const updatedLessons = [...currentChapter.lessons, newLesson];
@@ -178,6 +181,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
          console.error('Error deleting the lesson:', error);
       }
    };
+
    const updateLessonsOrder = async (updatedLessons: ILesson[]) => {
       try {
          const currentChapterResponse = await axios.get(`${apiUrl}/${chapterId}`);
@@ -239,6 +243,42 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
       setContentInput(e.target.value);
    };
 
+   // const handleSaveUpload = async (lessonId: string, newUrl: string) => {
+   //    try {
+   //       const chapterResponse = await axios.get(`${apiUrl}/${chapterId}`);
+   //       const chapterData = chapterResponse.data;
+
+   //       const updatedLessons = chapterData.lessons.map((lesson: ILesson) => {
+   //          if (lesson.id === lessonId) {
+   //             setData((prev) => {
+   //                const updatedItems = prev.map((item) => {
+   //                   if (item.id === lessonId) {
+   //                      return { ...item, url: newUrl };
+   //                   }
+   //                   return item;
+   //                });
+   //                return updatedItems;
+   //             });
+   //             return { ...lesson, url: newUrl };
+   //          }
+
+   //          return lesson;
+   //       });
+
+   //       const response = await axios.patch(`${apiUrl}/${chapterId}`, {
+   //          ...chapterData,
+   //          lessons: updatedLessons,
+   //       });
+
+   //       renderFileContent(fileUrl, fileType);
+   //       setIsShowEditUpload(null);
+   //       return response.data;
+   //    } catch (error) {
+   //       console.error('Error updating lesson title:', error);
+   //       throw error;
+   //    }
+   // };
+
    const handleSaveUpload = () => {
       renderFileContent(fileUrl, fileType);
       setIsShowEditUpload(null);
@@ -256,14 +296,12 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
             return (
                <video className="border rounded-lg object-cover w-[680px] h-[400px]" controls>
                   <source src={file} type="video/mp4" />
-                  Your browser does not support the video tag.
                </video>
             );
          case 'MPEG':
             return (
                <audio className="border rounded-lg size-120" controls>
                   <source src={file} type="audio/mpeg" />
-                  Your browser does not support the audio element.
                </audio>
             );
          case 'PDF':
@@ -308,148 +346,142 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                         handleDropdown={() => handleDropdown(lesson.id)}
                         type="lesson"
                         isDropdown={openLessons === lesson.id}
+                        fileType={fileUploads[lesson.title]?.type || ''}
                      />
                      {openLessons === lesson.id && (
                         <div>
                            <div className="border border-gray-300 bg-white m-2"></div>
                            <div className="p-2">
                               <div className="my-2">
-                                 <div className="flex flex-col gap-0">
-                                    <div
-                                       className={`flex flex-col ${
-                                          isShowEditTitle === lesson.id ? 'gap-2' : 'gap-0'
-                                       }bg-[#F3F3F3] border-1 border-solid rounded-md p-2`}
-                                    >
-                                       <div className="flex flex-row gap-2 justify-between">
-                                          <span className="text-md font-semibold">Title</span>
-                                          {isShowEditTitle === lesson.id ? (
-                                             <></>
-                                          ) : (
-                                             <Button
-                                                onClick={() =>
-                                                   handleShowEditTitle(
-                                                      lesson.id,
-                                                      lesson.title.split(': ')[1],
-                                                   )
-                                                }
-                                                className="flex flex-row gap-2"
-                                                variant="light"
-                                             >
-                                                <div>
-                                                   <FaEdit />
-                                                </div>
-                                                <span>Edit title</span>
-                                             </Button>
-                                          )}
+                                 <div
+                                    className={`flex flex-col p-2 ${
+                                       isShowEditTitle ? 'gap-2' : 'gap-0'
+                                    } border-1 border-solid rounded-md bg-[#F3F3F3]`}
+                                 >
+                                    <div className="flex flex-row gap-2 justify-between">
+                                       <span className="text-md font-semibold">Title</span>
+                                       {isShowEditTitle === lesson.id ? (
+                                          <></>
+                                       ) : (
+                                          <Button
+                                             onClick={() =>
+                                                handleShowEditTitle(
+                                                   lesson.id,
+                                                   lesson.title.split(': ')[1],
+                                                )
+                                             }
+                                             className="flex flex-row gap-2"
+                                             variant="light"
+                                          >
+                                             <div>
+                                                <FaEdit />
+                                             </div>
+                                             <span>Edit title</span>
+                                          </Button>
+                                       )}
+                                    </div>
+                                    {isShowEditTitle === lesson.id ? (
+                                       <Input
+                                          onChange={handleChangeTitle}
+                                          variant="faded"
+                                          className="w-full"
+                                          value={titleInput}
+                                       />
+                                    ) : (
+                                       <span className="text-sm">
+                                          {lesson.title.split(': ')[1]}
+                                       </span>
+                                    )}
+                                 </div>
+                                 <div className="my-2">
+                                    {isShowEditTitle === lesson.id ? (
+                                       <div className="flex flex-row gap-6 justify-end">
+                                          <Button
+                                             onClick={() => setIsShowEditTitle(null)}
+                                             variant="light"
+                                             className="text-red-600"
+                                          >
+                                             Cancel
+                                          </Button>
+                                          <Button
+                                             onClick={() =>
+                                                handleUpdateTitle(lesson.id, titleInput)
+                                             }
+                                             color="primary"
+                                          >
+                                             Save
+                                          </Button>
                                        </div>
-                                       {isShowEditTitle === lesson.id ? (
-                                          <Input
-                                             onChange={handleChangeTitle}
-                                             variant="faded"
-                                             className="w-full"
-                                             value={titleInput}
-                                          />
-                                       ) : (
-                                          <span className="text-sm">
-                                             {lesson.title.split(': ')[1]}
-                                          </span>
-                                       )}
-                                    </div>
-                                    <div className="my-2">
-                                       {isShowEditTitle === lesson.id ? (
-                                          <div className="flex flex-row gap-6 justify-end">
-                                             <Button
-                                                onClick={() => setIsShowEditTitle(null)}
-                                                variant="light"
-                                                className="text-red-600"
-                                             >
-                                                Cancel
-                                             </Button>
-                                             <Button
-                                                onClick={() =>
-                                                   handleUpdateTitle(lesson.id, titleInput)
-                                                }
-                                                color="primary"
-                                             >
-                                                Save
-                                             </Button>
-                                          </div>
-                                       ) : (
-                                          ''
-                                       )}
-                                    </div>
+                                    ) : (
+                                       ''
+                                    )}
                                  </div>
                               </div>
 
                               <div className="my-2">
-                                 <div className="flex flex-col gap-0">
-                                    <div
-                                       className={`flex flex-col ${
-                                          isShowEditContent === lesson.id ? 'gap-2' : 'gap-0'
-                                       }bg-[#F3F3F3] border-1 border-solid rounded-md p-2`}
-                                    >
-                                       <div className="flex flex-row gap-2 justify-between">
-                                          <span className="text-md font-semibold">Content</span>
-                                          {isShowEditContent === lesson.id ? (
-                                             <></>
-                                          ) : (
-                                             <Button
-                                                onClick={() =>
-                                                   handleShowEditContent(
-                                                      lesson.title,
-                                                      lesson.content,
-                                                   )
-                                                }
-                                                className="flex flex-row gap-2"
-                                                variant="light"
-                                             >
-                                                <div>
-                                                   <FaEdit />
-                                                </div>
-                                                <span>Edit content</span>
-                                             </Button>
-                                          )}
+                                 <div
+                                    className={`flex flex-col p-2 ${
+                                       isShowEditContent ? 'gap-2' : 'gap-0'
+                                    } border-1 border-solid rounded-md bg-[#F3F3F3]`}
+                                 >
+                                    <div className="flex flex-row gap-2 justify-between">
+                                       <span className="text-md font-semibold">Content</span>
+                                       {isShowEditContent === lesson.id ? (
+                                          <></>
+                                       ) : (
+                                          <Button
+                                             onClick={() =>
+                                                handleShowEditContent(lesson.id, lesson.content)
+                                             }
+                                             className="flex flex-row gap-2"
+                                             variant="light"
+                                          >
+                                             <div>
+                                                <FaEdit />
+                                             </div>
+                                             <span>Edit content</span>
+                                          </Button>
+                                       )}
+                                    </div>
+                                    {isShowEditContent === lesson.id ? (
+                                       <Input
+                                          onChange={handleChangeContent}
+                                          placeholder="Enter lesson content"
+                                          variant="faded"
+                                          className="w-full"
+                                          value={contentInput}
+                                       />
+                                    ) : (
+                                       <span className="text-sm">{lesson.content}</span>
+                                    )}
+                                 </div>
+                                 <div className="my-2">
+                                    {isShowEditContent === lesson.id ? (
+                                       <div className="flex flex-row gap-6 justify-end">
+                                          <Button
+                                             onClick={() => setIsShowEditContent(null)}
+                                             variant="light"
+                                             className="text-red-600"
+                                          >
+                                             Cancel
+                                          </Button>
+                                          <Button
+                                             onClick={() =>
+                                                handleUpdateContent(lesson.id, contentInput)
+                                             }
+                                             color="primary"
+                                          >
+                                             Save
+                                          </Button>
                                        </div>
-                                       {isShowEditContent === lesson.id ? (
-                                          <Input
-                                             onChange={handleChangeContent}
-                                             placeholder="Enter lesson content"
-                                             variant="faded"
-                                             className="w-full"
-                                             value={contentInput}
-                                          />
-                                       ) : (
-                                          <span className="text-sm">{lesson.content}</span>
-                                       )}
-                                    </div>
-                                    <div className="my-2">
-                                       {isShowEditContent === lesson.id ? (
-                                          <div className="flex flex-row gap-6 justify-end">
-                                             <Button
-                                                onClick={() => setIsShowEditContent(null)}
-                                                variant="light"
-                                                className="text-red-600"
-                                             >
-                                                Cancel
-                                             </Button>
-                                             <Button
-                                                onClick={() =>
-                                                   handleUpdateContent(lesson.id, contentInput)
-                                                }
-                                                color="primary"
-                                             >
-                                                Save
-                                             </Button>
-                                          </div>
-                                       ) : (
-                                          ''
-                                       )}
-                                    </div>
+                                    ) : (
+                                       ''
+                                    )}
                                  </div>
                               </div>
 
                               <div className="my-2">
-                                 <div className="flex flex-col gap-4 bg-[#F3F3F3] border-1 border-solid rounded-md p-2">
+                                 <div className="flex flex-col gap-4  border-1 border-solid rounded-md p-2">
                                     <div className="flex flex-row justify-between ">
                                        <span className="text-md font-semibold">Upload</span>
                                        {/* <UploadFile
@@ -527,7 +559,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
             <ModalCreate
                isOpen={isOpen}
                onOpenChange={onOpenChange}
-               onSave={(lessonName) => handleSaveLesson(lessonName)}
+               onSave={(lessonName) => handleCreateLesson(lessonName)}
                name="lesson"
             />
          </div>

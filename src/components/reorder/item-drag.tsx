@@ -6,9 +6,11 @@ import { useRaisedShadow } from '@/components/reorder/use-raised-shadow';
 import { ReorderIcon } from '@/components/reorder/icon';
 import { Button, Input, useDisclosure } from '@nextui-org/react';
 
-import { MdDeleteOutline, MdOutlineEdit } from 'react-icons/md';
-import { FaVideo } from 'react-icons/fa6';
+import { MdDeleteOutline, MdOutlineAudioFile, MdOutlineEdit } from 'react-icons/md';
+import { FaRegFilePdf, FaVideo } from 'react-icons/fa6';
 import { IoIosArrowDown } from 'react-icons/io';
+import { ImFileEmpty } from 'react-icons/im';
+
 import ConfirmDeleteModal from '../container/course/modal-confirm';
 import { IChapter, ILesson } from '@/types/course';
 import { DivideCircle } from 'lucide-react';
@@ -19,9 +21,10 @@ interface Props {
    handleDropdown: () => void;
    type: string;
    isDropdown: boolean;
+   fileType: string;
 }
 
-export const Item = ({ item, handleDelete, handleDropdown, type, isDropdown }: Props) => {
+export const Item = ({ item, handleDelete, handleDropdown, type, isDropdown, fileType }: Props) => {
    const y = useMotionValue(0);
    const boxShadow = useRaisedShadow(y);
    const dragControls = useDragControls();
@@ -65,7 +68,18 @@ export const Item = ({ item, handleDelete, handleDropdown, type, isDropdown }: P
                               )}
                            </div>
 
-                           {type === 'chapter' ? '' : <FaVideo className="w-7 h-5" />}
+                           {type !== 'chapter' && fileType === 'MP4' && (
+                              <FaVideo className="w-7 h-5" />
+                           )}
+                           {type !== 'chapter' && fileType === 'PDF' && (
+                              <FaRegFilePdf className="w-7 h-5" />
+                           )}
+                           {type !== 'chapter' && fileType === 'MP3' && (
+                              <MdOutlineAudioFile className="w-7 h-5" />
+                           )}
+                           {type !== 'chapter' && fileType === '' && (
+                              <ImFileEmpty className="w-7 h-5" />
+                           )}
                            <div className="flex flex-row justify-between w-full min-h-10">
                               <span
                                  className={`flex justify-center items-center select-none ${
@@ -81,7 +95,7 @@ export const Item = ({ item, handleDelete, handleDropdown, type, isDropdown }: P
                                        className="min-w-10 h-2/3 p-0"
                                        onPress={handleShowModalConfirm}
                                     >
-                                       <MdDeleteOutline size={'sm'} />
+                                       <MdDeleteOutline className="text-2xl" />
                                        <ConfirmDeleteModal
                                           isOpen={isOpen}
                                           onOpenChange={onOpenChange}
