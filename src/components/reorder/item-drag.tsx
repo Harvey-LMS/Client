@@ -18,20 +18,10 @@ interface Props {
    handleDelete: (itemId: string) => void;
    handleDropdown: () => void;
    type: string;
-   isEditTitle: boolean;
-   handleChangeTitleChapter: (e: React.ChangeEvent<HTMLInputElement>) => void;
    isDropdown: boolean;
 }
 
-export const Item = ({
-   item,
-   handleDelete,
-   handleDropdown,
-   type,
-   isEditTitle,
-   handleChangeTitleChapter,
-   isDropdown,
-}: Props) => {
+export const Item = ({ item, handleDelete, handleDropdown, type, isDropdown }: Props) => {
    const y = useMotionValue(0);
    const boxShadow = useRaisedShadow(y);
    const dragControls = useDragControls();
@@ -86,27 +76,19 @@ export const Item = ({
                               </span>
                               {type === 'chapter' ? (
                                  <div className="flex flex-row gap-1 justify-center items-center">
-                                    {!isEditTitle ? (
-                                       <>
-                                          <Button
-                                             variant={'light'}
-                                             className="min-w-10 h-2/3 p-0"
-                                             onPress={handleShowModalConfirm}
-                                          >
-                                             <MdDeleteOutline size={'sm'} />
-                                             <ConfirmDeleteModal
-                                                isOpen={isOpen}
-                                                onOpenChange={onOpenChange}
-                                                onConfirmDelete={() =>
-                                                   handleDelete(item.id.toString())
-                                                }
-                                             ></ConfirmDeleteModal>
-                                          </Button>
-                                          <ReorderIcon dragControls={dragControls} />
-                                       </>
-                                    ) : (
-                                       <div></div>
-                                    )}
+                                    <Button
+                                       variant={'light'}
+                                       className="min-w-10 h-2/3 p-0"
+                                       onPress={handleShowModalConfirm}
+                                    >
+                                       <MdDeleteOutline size={'sm'} />
+                                       <ConfirmDeleteModal
+                                          isOpen={isOpen}
+                                          onOpenChange={onOpenChange}
+                                          onConfirmDelete={() => handleDelete(item.id.toString())}
+                                       ></ConfirmDeleteModal>
+                                    </Button>
+                                    <ReorderIcon dragControls={dragControls} />
                                  </div>
                               ) : (
                                  <div className="flex flex-row gap-1 justify-center items-center">

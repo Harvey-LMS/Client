@@ -164,8 +164,8 @@ const RegisterOTP = () => {
                      Email Verification.
                      <br />
                      <span className="leading text-medium text-slate-400 font-normal">
-                        We have sent a verification code to your email <br />
-                        Please enter the OTP code from your email below
+                        We have sent a verification code to your email. <br />
+                        Please enter the OTP code from your email
                      </span>
                   </div>
                   <InputOTP

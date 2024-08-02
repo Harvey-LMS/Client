@@ -151,7 +151,7 @@ const Login = () => {
    };
 
    const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_ACCOUNT;
-   console.log('=>apiUrl: ', apiUrl);
+  
    useEffect(() => {
       const fetchData = async () => {
          try {

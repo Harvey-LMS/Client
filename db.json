@@ -23,7 +23,14 @@
           "id": 1,
           "title": "Lesson 1: Introduction",
           "content": "Content update",
-          "url": ""
+          "url": "",
+          "orderIndex": 1
+        },
+        {
+          "id": 2,
+          "title": "Lesson 2: Speaking",
+          "content": "This is default content",
+          "orderIndex": 2
         }
       ],
       "orderIndex": 1
@@ -37,13 +44,15 @@
           "id": 1,
           "title": "Lesson 1: Basics Reading",
           "content": "Content 21",
-          "url": ""
+          "url": "",
+          "orderIndex": 1
         },
         {
           "id": 2,
           "title": "Lesson 2: Basics Writing",
           "content": "Content 22",
-          "url": ""
+          "url": "",
+          "orderIndex": 2
         }
       ],
       "orderIndex": 2
@@ -56,7 +65,7 @@
         {
           "id": 1,
           "title": "Lesson 1: Exercises",
-          "content": "Content 31",
+          "content": "Content",
           "url": "",
           "orderIndex": 1
         },

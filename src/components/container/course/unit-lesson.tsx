@@ -20,14 +20,19 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
    const [data, setData] = useState(lessons);
 
    const [contentInput, setContentInput] = useState('');
-   const [lessonNameInput, setLessonNameInput] = useState('');
+   const [titleInput, setTitleInput] = useState('');
+
+   const [isShowEditTitle, setIsShowEditTitle] = useState<string | null>(null);
    const [isShowEditContent, setIsShowEditContent] = useState<string | null>(null);
    const [isShowEditUpload, setIsShowEditUpload] = useState<string | null>(null);
+
    const [openLessons, setOpenLessons] = useState<string | null>(null);
-   const [isEditTitle, setIsEditTitle] = useState<string | null>(null);
    const [isShowCreate, setIsShowCreate] = useState(false);
    const [fileUrl, setFileUrl] = useState<string>('');
-   const [fileType, setFileType] = useState<string | null>(null);
+   const [fileType, setFileType] = useState<string | null>('');
+   const [fileUploads, setFileUploads] = useState<{ [key: string]: { url: string; type: string } }>(
+      {},
+   );
 
    const { isOpen, onOpenChange } = useDisclosure();
 
@@ -35,7 +40,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
       onOpenChange();
    };
 
-   const apiUrl = 'http://localhost:8000/chapters';
+   const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_CHAPTER;
 
    const handleSaveLesson = async (title: string) => {
       try {
@@ -69,6 +74,41 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
          }
       } catch (error) {
          console.error('Error creating new lesson:', error);
+      }
+   };
+
+   const handleUpdateTitle = async (lessonId: string, newTitle: string) => {
+      try {
+         const chapterResponse = await axios.get(`${apiUrl}/${chapterId}`);
+         const chapterData = chapterResponse.data;
+
+         const updatedLessons = chapterData.lessons.map((lesson: ILesson) => {
+            if (lesson.id === lessonId) {
+               setData((prev) => {
+                  const updatedItems = prev.map((item) => {
+                     if (item.id === lessonId) {
+                        return { ...item, title: `Lesson ${item.orderIndex}: ` + newTitle };
+                     }
+                     return item;
+                  });
+                  return updatedItems;
+               });
+               return { ...lesson, title: `Lesson ${lesson.orderIndex}: ` + newTitle };
+            }
+
+            return lesson;
+         });
+
+         const response = await axios.patch(`${apiUrl}/${chapterId}`, {
+            ...chapterData,
+            lessons: updatedLessons,
+         });
+
+         setIsShowEditTitle(null);
+         return response.data;
+      } catch (error) {
+         console.error('Error updating lesson title:', error);
+         throw error;
       }
    };
 
@@ -168,15 +208,31 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
       updateLessonsOrder(updatedItems);
    };
 
-   const handleShowEditContent = (lesson: string, currentContent: string) => {
-      setContentInput(currentContent);
-      setIsShowEditContent((prev) => (prev === lesson ? null : lesson));
+   const handleFileUpload = (lessonTitle: string, fileUrl: string, fileType: string) => {
+      setFileUploads((prev) => ({
+         ...prev,
+         [lessonTitle]: { url: fileUrl, type: fileType },
+      }));
    };
 
-   const handleShowEditUpload = (lesson: string, currentUrl: string, currentType: string) => {
+   const handleShowEditTitle = (lessonId: string, currentTitle: string) => {
+      setTitleInput(currentTitle);
+      setIsShowEditTitle((prev) => (prev === lessonId ? null : lessonId));
+   };
+
+   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setTitleInput(e.target.value);
+   };
+
+   const handleShowEditContent = (lessonId: string, currentContent: string) => {
+      setContentInput(currentContent);
+      setIsShowEditContent((prev) => (prev === lessonId ? null : lessonId));
+   };
+
+   const handleShowEditUpload = (lessonId: string, currentUrl: string, currentType: string) => {
       setFileUrl(currentUrl);
       setFileType(currentType);
-      setIsShowEditUpload((prev) => (prev === lesson ? null : lesson));
+      setIsShowEditUpload((prev) => (prev === lessonId ? null : lessonId));
    };
 
    const handleChangeContent = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -188,12 +244,8 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
       setIsShowEditUpload(null);
    };
 
-   const handleDropdown = (lesson: string) => {
-      setOpenLessons((prev) => (prev === lesson ? null : lesson));
-   };
-
-   const handleChangeLesson = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setLessonNameInput(e.target.value);
+   const handleDropdown = (lessonId: string) => {
+      setOpenLessons((prev) => (prev === lessonId ? null : lessonId));
    };
 
    const renderFileContent = (file: string, type: string | null) => {
@@ -223,7 +275,11 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                />
             );
          default:
-            return <div>There is not thing</div>;
+            return (
+               <div>
+                  <span>Click edit to upload</span>
+               </div>
+            );
       }
    };
 
@@ -241,7 +297,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                      key={lesson.id}
                      value={lesson}
                      className={`p-2 ${
-                        openLessons === lesson.title
+                        openLessons === lesson.id
                            ? 'border-4 border-primary border-solid rounded-md -m-1'
                            : 'border-1 border-solid border-[#E9E9E9] bg-[#F2F2F2] rounded-md'
                      }`}
@@ -249,13 +305,11 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                      <Item
                         item={lesson}
                         handleDelete={() => handleDeleteItem(lesson.id)}
-                        handleDropdown={() => handleDropdown(lesson.title)}
+                        handleDropdown={() => handleDropdown(lesson.id)}
                         type="lesson"
-                        isEditTitle={isEditTitle === lesson.title}
-                        handleChangeTitleChapter={() => console.log('')}
-                        isDropdown={openLessons === lesson.title}
+                        isDropdown={openLessons === lesson.id}
                      />
-                     {openLessons === lesson.title && (
+                     {openLessons === lesson.id && (
                         <div>
                            <div className="border border-gray-300 bg-white m-2"></div>
                            <div className="p-2">
@@ -263,17 +317,19 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                                  <div className="flex flex-col gap-0">
                                     <div
                                        className={`flex flex-col ${
-                                          isShowEditContent === lesson.title ? 'gap-2' : 'gap-0'
+                                          isShowEditTitle === lesson.id ? 'gap-2' : 'gap-0'
                                        }bg-[#F3F3F3] border-1 border-solid rounded-md p-2`}
                                     >
                                        <div className="flex flex-row gap-2 justify-between">
-                                          <span className="text-md font-semibold">Content</span>
-                                          {isShowEditContent === lesson.title ? (
+                                          <span className="text-md font-semibold">Title</span>
+                                          {isShowEditTitle === lesson.id ? (
+                                             <></>
+                                          ) : (
                                              <Button
                                                 onClick={() =>
-                                                   handleShowEditContent(
-                                                      lesson.title,
-                                                      lesson.content,
+                                                   handleShowEditTitle(
+                                                      lesson.id,
+                                                      lesson.title.split(': ')[1],
                                                    )
                                                 }
                                                 className="flex flex-row gap-2"
@@ -282,8 +338,60 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                                                 <div>
                                                    <FaEdit />
                                                 </div>
-                                                <span>Edit content</span>
+                                                <span>Edit title</span>
                                              </Button>
+                                          )}
+                                       </div>
+                                       {isShowEditTitle === lesson.id ? (
+                                          <Input
+                                             onChange={handleChangeTitle}
+                                             variant="faded"
+                                             className="w-full"
+                                             value={titleInput}
+                                          />
+                                       ) : (
+                                          <span className="text-sm">
+                                             {lesson.title.split(': ')[1]}
+                                          </span>
+                                       )}
+                                    </div>
+                                    <div className="my-2">
+                                       {isShowEditTitle === lesson.id ? (
+                                          <div className="flex flex-row gap-6 justify-end">
+                                             <Button
+                                                onClick={() => setIsShowEditTitle(null)}
+                                                variant="light"
+                                                className="text-red-600"
+                                             >
+                                                Cancel
+                                             </Button>
+                                             <Button
+                                                onClick={() =>
+                                                   handleUpdateTitle(lesson.id, titleInput)
+                                                }
+                                                color="primary"
+                                             >
+                                                Save
+                                             </Button>
+                                          </div>
+                                       ) : (
+                                          ''
+                                       )}
+                                    </div>
+                                 </div>
+                              </div>
+
+                              <div className="my-2">
+                                 <div className="flex flex-col gap-0">
+                                    <div
+                                       className={`flex flex-col ${
+                                          isShowEditContent === lesson.id ? 'gap-2' : 'gap-0'
+                                       }bg-[#F3F3F3] border-1 border-solid rounded-md p-2`}
+                                    >
+                                       <div className="flex flex-row gap-2 justify-between">
+                                          <span className="text-md font-semibold">Content</span>
+                                          {isShowEditContent === lesson.id ? (
+                                             <></>
                                           ) : (
                                              <Button
                                                 onClick={() =>
@@ -302,7 +410,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                                              </Button>
                                           )}
                                        </div>
-                                       {isShowEditContent === lesson.title ? (
+                                       {isShowEditContent === lesson.id ? (
                                           <Input
                                              onChange={handleChangeContent}
                                              placeholder="Enter lesson content"
@@ -315,7 +423,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                                        )}
                                     </div>
                                     <div className="my-2">
-                                       {isShowEditContent === lesson.title ? (
+                                       {isShowEditContent === lesson.id ? (
                                           <div className="flex flex-row gap-6 justify-end">
                                              <Button
                                                 onClick={() => setIsShowEditContent(null)}
@@ -341,31 +449,28 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                               </div>
 
                               <div className="my-2">
-                                 <div className="flex flex-col gap-4 bg-gray-50 border-1 border-solid rounded-md p-2">
-                                    <div className="flex flex-row justify-between">
+                                 <div className="flex flex-col gap-4 bg-[#F3F3F3] border-1 border-solid rounded-md p-2">
+                                    <div className="flex flex-row justify-between ">
                                        <span className="text-md font-semibold">Upload</span>
                                        {/* <UploadFile
-                                          isShowEdit={isShowEditUpload === lesson.title}
+                                          isShowEdit={true}
                                           value={fileUrl}
                                           onFileUpload={(file, type) => {
                                              setFileUrl(file);
                                              setFileType(type);
                                           }}
                                        /> */}
-                                       {isShowEditUpload === lesson.title ? (
+                                       {isShowEditUpload === lesson.id ? (
                                           <UploadFile
-                                             isShowEdit={isShowEditUpload === lesson.title}
+                                             isShowEdit={isShowEditUpload === lesson.id}
                                              value={fileUrl}
-                                             onFileUpload={(file, type) => {
-                                                setFileUrl(file);
-                                                setFileType(type);
-                                             }}
+                                             onFileUpload={(file, type) =>
+                                                handleFileUpload(lesson.title, file, type)
+                                             }
                                           />
                                        ) : (
                                           <Button
-                                             onClick={() =>
-                                                handleShowEditUpload(lesson.title, '', '')
-                                             }
+                                             onClick={() => handleShowEditUpload(lesson.id, '', '')}
                                              className="flex flex-row gap-2"
                                              variant="light"
                                           >
@@ -376,7 +481,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                                           </Button>
                                        )}
                                     </div>
-                                    {isShowEditUpload === lesson.title ? (
+                                    {isShowEditUpload === lesson.id ? (
                                        <div className="mt-2 flex flex-row gap-6 justify-end">
                                           <Button
                                              onClick={() => setIsShowEditUpload(null)}
@@ -394,7 +499,10 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                                        </div>
                                     ) : (
                                        <div className="flex justify-center items-center">
-                                          {renderFileContent(fileUrl, fileType)}
+                                          {renderFileContent(
+                                             fileUploads[lesson.title]?.url || '',
+                                             fileUploads[lesson.title]?.type || '',
+                                          )}
                                        </div>
                                     )}
                                  </div>

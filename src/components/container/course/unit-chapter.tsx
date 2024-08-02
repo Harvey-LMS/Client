@@ -13,23 +13,31 @@ import ModalCreate from './modal-create';
 import axios from 'axios';
 import dotenv from 'dotenv';
 import { IChapter } from '@/types/course';
-import ModalNotify from './modal-notify';
+
 dotenv.config();
 
 const Chapter = () => {
    const [data, setData] = useState<IChapter[]>([]);
    const [openChapters, setOpenChapters] = useState<string | null>(null);
-   const [titleInput, setTitleInput] = useState('');
+   const [titleInput, setTitleInput] = useState<string>('');
    const [descriptionInput, setDescriptionInput] = useState<string>('');
 
-   const [isEditTitle, setIsEditTitle] = useState<string | null>(null);
-
+   const [isShowEditTitle, setIsShowEditTitle] = useState<string | null>(null);
    const [isShowEditDescription, setIsShowEditDescription] = useState<string | null>(null);
 
    const { isOpen, onOpenChange } = useDisclosure();
 
    const handleShowModalCreate = () => {
       onOpenChange();
+   };
+
+   const handleShowEditTitle = (chapterId: string, currentTitle: string) => {
+      setTitleInput(currentTitle);
+      setIsShowEditTitle((prev) => (prev === chapterId ? null : chapterId));
+   };
+
+   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setTitleInput(e.target.value);
    };
 
    const handleShowEditDescription = (chapter: string, currentDescription: string) => {
@@ -62,6 +70,34 @@ const Chapter = () => {
          }
       } catch (error) {
          console.error('Error creating new chapter:', error);
+      }
+   };
+
+   const handleUpdateTitle = async (chapterId: string, newTitle: string) => {
+      try {
+         const currentDataResponse = await axios.get(`${apiUrl}/${chapterId}`);
+         if (currentDataResponse.status !== 200) {
+            console.error('Failed to fetch current chapter data');
+            return;
+         }
+
+         const currentData = currentDataResponse.data;
+         const updatedData = {
+            ...currentData,
+            title: `Chapter ${currentData.orderIndex}: ` + newTitle,
+         };
+         const response = await axios.put(`${apiUrl}/${chapterId}`, updatedData);
+         if (response.status === 200) {
+            setData((prevData) =>
+               prevData.map((item) => (item.id === chapterId ? updatedData : item)),
+            );
+         } else {
+            console.error('Failed to update lesson content');
+         }
+         setIsShowEditTitle(null);
+      } catch (error) {
+         console.error('Error updating lesson content:', error);
+         throw error;
       }
    };
 
@@ -151,12 +187,8 @@ const Chapter = () => {
       }
    };
 
-   const handleDropdown = (item: string) => {
-      setOpenChapters((prev) => (prev === item ? null : item));
-   };
-
-   const handleChangeTitleChapter = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setTitleInput(e.target.value);
+   const handleDropdown = (itemId: string) => {
+      setOpenChapters((prev) => (prev === itemId ? null : itemId));
    };
 
    useEffect(() => {
@@ -188,7 +220,7 @@ const Chapter = () => {
                      key={item.id}
                      className={`flex flex-col gap-4 p-2
                         ${
-                           openChapters === item.title
+                           openChapters === item.id
                               ? 'border-4 border-solid bg-[#F7F7F7] shadow-sm rounded-md'
                               : 'bg-white border-1 border-solid border-[#DBDBDB] rounded-md'
                         }`}
@@ -196,15 +228,74 @@ const Chapter = () => {
                      <Item
                         item={item}
                         handleDelete={() => handleDeleteItem(item.id)}
-                        handleDropdown={() => handleDropdown(item.title)}
+                        handleDropdown={() => handleDropdown(item.id)}
                         type="chapter"
-                        isEditTitle={isEditTitle === item.title}
-                        handleChangeTitleChapter={handleChangeTitleChapter}
-                        isDropdown={openChapters === item.title}
+                        isDropdown={openChapters === item.id}
                      ></Item>
-                     {openChapters === item.title && (
+                     {openChapters === item.id && (
                         <div className="">
                            <div className="flex flex-col mx-4">
+                              <div className="mx-5">
+                                 <div
+                                    className={`flex flex-col p-2 ${
+                                       isShowEditTitle ? 'gap-2' : 'gap-0'
+                                    } border-1 border-solid rounded-md bg-[#F3F3F3]`}
+                                 >
+                                    <div className="flex flex-row gap-2 justify-between">
+                                       <span className="text-md font-semibold">Title</span>
+                                       {isShowEditTitle === item.id ? (
+                                          <></>
+                                       ) : (
+                                          <Button
+                                             onClick={() =>
+                                                handleShowEditTitle(
+                                                   item.id,
+                                                   item.title.split(': ')[1],
+                                                )
+                                             }
+                                             className="flex flex-row gap-2 "
+                                             variant={'light'}
+                                          >
+                                             <div>
+                                                <FaEdit />
+                                             </div>
+                                             <span>Edit title</span>
+                                          </Button>
+                                       )}
+                                    </div>
+                                    {isShowEditTitle === item.id ? (
+                                       <Input
+                                          onChange={handleChangeTitle}
+                                          variant={'faded'}
+                                          className="w-full"
+                                          value={titleInput}
+                                       />
+                                    ) : (
+                                       <span className="text-sm">{item.title.split(': ')[1]}</span>
+                                    )}
+                                 </div>
+                                 <div className="m-2">
+                                    {isShowEditTitle === item.id ? (
+                                       <div className="flex flex-row gap-6 justify-end">
+                                          <Button
+                                             onClick={() => setIsShowEditTitle(null)}
+                                             variant={'light'}
+                                             className="text-red-600"
+                                          >
+                                             Cancel
+                                          </Button>
+                                          <Button
+                                             onClick={() => handleUpdateTitle(item.id, titleInput)}
+                                             color={'primary'}
+                                          >
+                                             Save
+                                          </Button>
+                                       </div>
+                                    ) : (
+                                       <div className="flex flex-row gap-6 justify-end"></div>
+                                    )}
+                                 </div>
+                              </div>
                               <div className="mx-5">
                                  <div
                                     className={`flex flex-col p-2 ${
