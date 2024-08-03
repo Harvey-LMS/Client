@@ -1,17 +1,16 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import RegisterSVG from "@/assets/Register.svg";
-import Brand from "@/assets/Brand.svg";
-import Link from "next/link";
-import { Input } from "@nextui-org/input";
-import { Button } from "@nextui-org/react";
+import Image from 'next/image';
+import RegisterSVG from '@/assets/Register.svg';
+import Brand from '@/assets/Brand.svg';
+import Link from 'next/link';
+import { Input } from '@nextui-org/input';
+import { Button } from '@nextui-org/react';
 
-import { BiSolidHide } from "react-icons/bi";
-import { BiSolidShow } from "react-icons/bi";
+import { BiSolidHide } from 'react-icons/bi';
+import { BiSolidShow } from 'react-icons/bi';
 
 import { useEffect, useRef, useState } from "react";
-
 
 import { useRouter } from 'next/navigation';
 
@@ -20,24 +19,24 @@ import { AnimatePresence, motion } from "framer-motion";
 import { current } from "@reduxjs/toolkit";
 
 interface Errors {
-  isError: {
-    username: boolean;
-    email: boolean;
-    password: boolean;
-    confirmPassword: boolean;
-  },
-  errorMessage: {
-    username: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-  }
+   isError: {
+      username: boolean;
+      email: boolean;
+      password: boolean;
+      confirmPassword: boolean;
+   };
+   errorMessage: {
+      username: string;
+      email: string;
+      password: string;
+      confirmPassword: string;
+   };
 }
 
 interface User {
-  username: string,
-  gmail: string,
-  password: string
+   username: string;
+   gmail: string;
+   password: string;
 }
 
 interface BookProps {
@@ -45,42 +44,42 @@ interface BookProps {
 }
 
 const Register = () => {
-  const router = useRouter();
-  const [errors, setErrors] = useState<Errors>({
-    isError: {
-      username: false,
-      email: false,
-      password: false,
-      confirmPassword: false
-    },
-    errorMessage: {
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: ""
-    }
-  });
+   const router = useRouter();
+   const [errors, setErrors] = useState<Errors>({
+      isError: {
+         username: false,
+         email: false,
+         password: false,
+         confirmPassword: false,
+      },
+      errorMessage: {
+         username: '',
+         email: '',
+         password: '',
+         confirmPassword: '',
+      },
+   });
 
-  const [userName, setUserName] = useState<string>("")
+   const [userName, setUserName] = useState<string>('');
 
-  const changeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserName(e.target.value)
+   const changeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setUserName(e.target.value);
 
-    if (errors.isError.username) {
-      if (e.target.value.match(/^(?=.{3,20}$)(?![_.-])(?!.*[_.-]{2})[a-zA-Z0-9_-]+([^._-])$/)) {
-        setErrors({
-          isError: {
-            ...errors.isError,
-            username: false
-          },
-          errorMessage: {
-            ...errors.errorMessage,
-            username: ""
-          }
-        })
+      if (errors.isError.username) {
+         if (e.target.value.match(/^(?=.{3,20}$)(?![_.-])(?!.*[_.-]{2})[a-zA-Z0-9_-]+([^._-])$/)) {
+            setErrors({
+               isError: {
+                  ...errors.isError,
+                  username: false,
+               },
+               errorMessage: {
+                  ...errors.errorMessage,
+                  username: '',
+               },
+            });
+         }
       }
-    }
-  }
+   };
 
   const blurUsername = () => {
     checkUsername(userName).then((result) => {
@@ -113,26 +112,26 @@ const Register = () => {
     )
   }
 
-  const [email, setEmail] = useState<string>("")
+   const [email, setEmail] = useState<string>('');
 
-  const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value)
+   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setEmail(e.target.value);
 
-    if (errors.isError.email) {
-      if (e.target.value.match(/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/i)) {
-        setErrors({
-          isError: {
-            ...errors.isError,
-            email: false
-          },
-          errorMessage: {
-            ...errors.errorMessage,
-            email: ""
-          }
-        })
+      if (errors.isError.email) {
+         if (e.target.value.match(/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/i)) {
+            setErrors({
+               isError: {
+                  ...errors.isError,
+                  email: false,
+               },
+               errorMessage: {
+                  ...errors.errorMessage,
+                  email: '',
+               },
+            });
+         }
       }
-    }
-  }
+   };
 
   const blurEmail = () => {
     checkEmail(email).then((result) => {
@@ -165,29 +164,33 @@ const Register = () => {
     )
   }
 
-  const [password, setPassword] = useState<string>("")
+   const [password, setPassword] = useState<string>('');
 
-  const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value)
+   const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPassword(e.target.value);
 
-    if (errors.isError.confirmPassword) {
-      setConfirmPassword("")
-    }
+      if (errors.isError.confirmPassword) {
+         setConfirmPassword('');
+      }
 
-    if (e.target.value.match((/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/))) {
-      setErrors({
-        isError: {
-          ...errors.isError,
-          password: false
-        },
-        errorMessage: {
-          ...errors.errorMessage,
-          password: ""
-        }
-      })
-      return true
-    }
-  }
+      if (
+         e.target.value.match(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+         )
+      ) {
+         setErrors({
+            isError: {
+               ...errors.isError,
+               password: false,
+            },
+            errorMessage: {
+               ...errors.errorMessage,
+               password: '',
+            },
+         });
+         return true;
+      }
+   };
 
   const blurPassword = () => {
     const result = checkPassword(password)
@@ -216,18 +219,79 @@ const Register = () => {
       })
     }
 
+   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
-  }
+   const changeConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setConfirmPassword(e.target.value);
 
+      const result = checkConfirmPassword(password, e.target.value);
 
+      if (result === '') {
+         setErrors({
+            isError: {
+               ...errors.isError,
+               confirmPassword: false,
+            },
+            errorMessage: {
+               ...errors.errorMessage,
+               confirmPassword: '',
+            },
+         });
+         setButton(false);
+      } else {
+         setErrors({
+            isError: {
+               ...errors.isError,
+               confirmPassword: true,
+            },
+            errorMessage: {
+               ...errors.errorMessage,
+               confirmPassword: result,
+            },
+         });
+         setButton(true);
+      }
+   };
+   const blurConfirmPassword = () => {
+      const result = checkConfirmPassword(password, confirmPassword);
 
+      if (result === '') {
+         setErrors({
+            isError: {
+               ...errors.isError,
+               confirmPassword: false,
+            },
+            errorMessage: {
+               ...errors.errorMessage,
+               confirmPassword: '',
+            },
+         });
+         setButton(false);
+      } else {
+         setErrors({
+            isError: {
+               ...errors.isError,
+               confirmPassword: true,
+            },
+            errorMessage: {
+               ...errors.errorMessage,
+               confirmPassword: result,
+            },
+         });
+         setButton(true);
+      }
+   };
 
-  const [confirmPassword, setConfirmPassword] = useState<string>("")
+   const [passwordIsVisible, setPasswordVisible] = useState<boolean>(false);
+   const [confirmPasswordIsVisible, setConfirmPasswordVisible] = useState<boolean>(false);
 
-  const changeConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setConfirmPassword(e.target.value)
+   const handlePasswordVisible = () => {
+      setPasswordVisible(!passwordIsVisible);
+   };
 
-    const result = checkConfirmPassword(password, e.target.value)
+   const handleConfirmPasswordVisible = () => {
+      setConfirmPasswordVisible(!confirmPasswordIsVisible);
+   };
 
     if (result === "") {
       setErrors({
@@ -543,8 +607,7 @@ const Register = () => {
           </motion.div>
         </div>
       </div>
-    </div>
-  );
+   );
 };
 
-export default Register;  
+export default Register;

@@ -50,7 +50,7 @@ export default function ModalCreate({ isOpen, onOpenChange, onSave, name }: Prop
                            <Input
                               onChange={handleChange}
                               variant="bordered"
-                              placeholder={`e.g. "Toeic"`}
+                              placeholder={`e.g. "Test"`}
                               classNames={{ input: 'px-3' }}
                            />
                         </div>

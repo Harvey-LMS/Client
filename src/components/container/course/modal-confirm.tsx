@@ -20,7 +20,7 @@ interface Props {
 export default function ConfirmDeleteModal({ isOpen, onOpenChange, onConfirmDelete }: Props) {
    return (
       <div>
-         <Modal size={'md'}  isOpen={isOpen} onOpenChange={onOpenChange}>
+         <Modal size={'md'} isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent>
                {(onClose) => (
                   <div className="flex flex-col gap-1">

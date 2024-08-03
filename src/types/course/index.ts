@@ -13,16 +13,23 @@ export interface ICourse {
 }
 
 export interface ILesson {
-   id: number;
+   id: string;
    title: string;
    content: string;
-   url: string;
-   typeFile: string;
+   orderIndex: number;
 }
 
 export interface IChapter {
-   id: number;
+   id: string;
    title: string;
    description: string;
    lessons: ILesson[];
+   orderIndex: number;
+}
+
+export interface IAccount {
+   id: string;
+   username: string;
+   password: string;
+   email: string;
 }
