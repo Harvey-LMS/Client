@@ -1,4 +1,4 @@
-import { apiGet, apiPost } from "../api";
+import { apiGet, apiPost } from "@/api/api";
 
 const getUser = async (param: RequestInit = {}) => {
   return await apiGet("user", param);
