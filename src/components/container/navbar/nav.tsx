@@ -2,8 +2,9 @@
 "use client"
 import Menu from "@/assets/icon/menu-icon.svg";
 
-import { MdOutlineMail } from "react-icons/md";
+import { MdNavigateBefore, MdNavigateNext, MdOutlineMail } from "react-icons/md";
 import { HiOutlineVideoCamera } from "react-icons/hi";
+import { IoMenu } from "react-icons/io5";
 import { FaChevronDown } from "react-icons/fa";
 
 
@@ -34,8 +35,13 @@ import { IoIosSearch } from "react-icons/io";
 
 import Sidebar from "./sidebar";
 
-const Nav = ({ children }: { children: React.ReactNode }) => {
+interface Props {
+   children: React.ReactNode
+}
+
+const Nav: React.FC<Props> = ({ children }: Props) => {
    const [isMenuOpen, setIsMenuOpen] = useState(false);
+   const [expand, setExpand] = useState<boolean>(true);
 
    const toggleMenu = () => {
       setIsMenuOpen(!isMenuOpen);
@@ -66,22 +72,19 @@ const Nav = ({ children }: { children: React.ReactNode }) => {
 
    return (
       <div className="flex flex-row justify-center items-start w-full">
-
-         <Sidebar></Sidebar>
-
          <div className="w-full flex flex-col justify-start items-start">
-            <Navbar position="sticky" className=" bg-white shadow-sm" maxWidth="full" >
-               <NavbarBrand className="flex md:hidden w-full">
-                  <div
-                     className={`md:hidden w-10 h-10 flex flex-row items-center justify-center cursor-pointer  rounded-sm ${isMenuOpen ? "hidden" : "block"}`}
-                     onClick={toggleMenu}
-                  >
-                     <Image
-                        alt={"menu"}
-                        src={Brand}
-                        className=""
-                        width={24}
+            <Navbar position="sticky" className=" bg-white shadow-sm h-[64px] w-full" classNames={{ wrapper: "px-4" }} maxWidth="full" height={64}>
+               <NavbarBrand className="flex w-full gap-5">
+                  <div className=" rounded-full hover:bg-hover p-3" onClick={() => { setExpand(!expand) }} >
+                     <IoMenu className="text-2xl"
                      />
+                  </div>
+
+                  <div className={`flex flex-row justify-center items-center rounded-lg font-bold text-xl`}>
+                     <Link href={"/"} className={`left-0 flex flex-row items-center justify-start gap-2`} >
+                        <Image src={Brand} alt="brand" className="w-10" width={40} />
+                        <p>HarveyOD</p>
+                     </Link>
                   </div>
                </NavbarBrand>
 
@@ -158,7 +161,14 @@ const Nav = ({ children }: { children: React.ReactNode }) => {
                   </NavbarItem>
                </NavbarContent>
             </Navbar>
-            {children}
+            <div className="w-full flex flex-row justify-start items-start">
+               <Sidebar expanded={expand}></Sidebar>
+
+               <div className="w-full mt-5">
+                  {children}
+               </div>
+            </div>
+
          </div>
 
       </div>

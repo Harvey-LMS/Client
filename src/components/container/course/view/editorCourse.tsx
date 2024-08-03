@@ -130,7 +130,7 @@ const EditorCourse = ({ title, value }: EditorCourseProps) => {
                         onChange={setValueInput}
                         modules={modules}
                         formats={formats}
-                        className="p-0 custom-quill-editor  w-full bg-background min-h-[300px] max-h-[500px] overflow-auto relative flex flex-col justify-start items-center"
+                        className="p-0 custom-quill-editor overflow-hidden max-w-full w-full bg-background min-h-[300px] max-h-[500px] relative flex flex-col justify-start items-center"
 
                     />
 
@@ -146,7 +146,7 @@ const EditorCourse = ({ title, value }: EditorCourseProps) => {
                             }} 
 
                             dangerouslySetInnerHTML={{ __html: data }} 
-                            className={`overflow-hidden `}>
+                                className={`ql-editor overflow-hidden text-ellipsis break-words`}>
 
                         </motion.div>
                         {hideShowMore && (

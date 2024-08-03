@@ -1,0 +1,19 @@
+{
+    "user": {
+        "id": 1,
+        "usename": "admin",
+        "password": "admin",
+        "email": "admin@gmail.com",
+        "AccountRoleId": {
+            "id": 1,
+            "name": "Admin",
+            "description": "Admin",
+            "permissions": [
+                "create",
+                "read",
+                "update",
+                "delete"
+            ]
+        }
+    }
+}

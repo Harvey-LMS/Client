@@ -5,13 +5,14 @@ import Image from "next/image";
 import Brand from "@/assets/Brand.svg";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 import { Button } from "@nextui-org/react";
 import { MdOutlineDashboard } from "react-icons/md";
 
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 interface SidebarItemProps {
   expanded: boolean;
@@ -27,66 +28,37 @@ interface SidebarSubItemProps {
   title?: string;
   children?: React.ReactNode;
   url?: string | null;
+  isOpenSubitem: boolean;
 }
 
-const Sidebar = () => {
-  const [expanded, setExpanded] = useState<boolean>(false); // false = thu hẹp   true = mở rộng
+interface SidebarProps {
+  expanded: boolean;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ expanded }: SidebarProps) => {
+  const [isOpenSubitem, setIsOpenSubitem] = useState<boolean>(false);
+
 
   return (
     <motion.div
-      initial={{ width: 0 }}
       animate={{
-        width: expanded ? 350 : 80
+        width: expanded ? 300 : 80
       }}
       transition={{ duration: 0.5, type: "spring" }}
       className={`border-r h-screen z-50 flex flex-col justify-start sticky top-0 min-w-3`}>
-      <div
-        className={` p-1`}>
-        <div className={`relative h-fit w-full`}>
-          <div className={`w-full flex flex-row justify-center items-center rounded-lg font-bold text-xl ${expanded ? ("py-2 px-2") : ("p-2 hover:bg-hover")}`}>
-            <Link href={"/"} className={`left-0 w-full flex flex-row items-center justify-center gap-3`} >
-              <Image src={Brand} alt="brand" width={40} />
-              {expanded && (<p>HarveyOD</p>)}
-            </Link>
-          </div>
-          {expanded ? (
-            <MdNavigateBefore className="absolute m-auto bottom-0 top-0 -right-3 text-foreground bg-primary-500 rounded-full"
-              onClick={() => { setExpanded(!expanded) }} />
-          ) : (
-
-            <MdNavigateNext className="absolute m-auto bottom-0 top-0 -right-3 text-foreground bg-primary-500 rounded-full"
-              onClick={() => { setExpanded(!expanded) }} />
-          )}
-        </div>
-      </div>
-
-
-      <div className="flex flex-row justify-center items-center w-full h-2">
-        {expanded ?
-          (
-            <div className="flex flex-row justify-center items-center gap-1 text-hover-2 w-full">
-              <div className="bg-hover-2 h-0.5 rounded-full w-1/5">
-              </div>
-              <p className="font-bold text-sm">Service</p>
-              <div className="bg-hover-2 h-0.5 rounded-full w-full">
-              </div>
-            </div>
-          ) :
-          (
-            <div className="bg-hover-2 h-0.5 rounded-full w-full">
-            </div>
-          )
-        }
-      </div>
 
       <div className="">
-        <SidebarSusbItem expanded={expanded} icon={<MdOutlineDashboard className="text-2xl" />} title="Course Manager">
+        <SidebarSusbItem key={"Course"} expanded={expanded} isOpenSubitem={isOpenSubitem} icon={<MdOutlineDashboard className="text-2xl" />} title="Course Manager">
           <SidebarItem expanded={expanded} name={"Course"} url="/dashboard/course" isSubItem></SidebarItem>
           <SidebarItem expanded={expanded} name={"Test"} url="/dashboard/test" isSubItem></SidebarItem>
           <SidebarItem expanded={expanded} name={"Quiz"} url="/dashboard/quiz" isSubItem></SidebarItem>
-
         </SidebarSusbItem>
-        {/* <SidebarSusbItem expanded={expanded} icon={<MdOutlineDashboard className="text-2xl" />} url={"/"} title={"Course"}></SidebarSusbItem> */}
+
+        <SidebarSusbItem key={"Test"} expanded={expanded} isOpenSubitem={isOpenSubitem} icon={<MdOutlineDashboard className="text-2xl" />} title="Course Manager">
+          <SidebarItem expanded={expanded} name={"Course"} url="/dashboard/course" isSubItem></SidebarItem>
+          <SidebarItem expanded={expanded} name={"Test"} url="/dashboard/test" isSubItem></SidebarItem>
+          <SidebarItem expanded={expanded} name={"Quiz"} url="/dashboard/quiz" isSubItem></SidebarItem>
+        </SidebarSusbItem>
       </div>
     </motion.div>
 
@@ -95,7 +67,7 @@ const Sidebar = () => {
 
 const SidebarItem = ({ expanded, name, url }: SidebarItemProps) => {
   return (
-    <div className={`w-full`}>
+    <div className={`w-full bg-background`}>
       <div className={` w-full flex flex-row justify-center items-center rounded-lg text-md`}>
         <Link href={url ? url : ""} className={`w-full h-full flex flex-row items-center bg-background ${expanded ? ("px-5") : ("")}`} >
           <Button className={`font-semibold min-w-0 justify-start bg-background data-[hover=true]:opacity-100 hover:bg-primary hover:text-primary-foreground w-full ${expanded ? ("") : ("rounded-none px-7")}`}>
@@ -107,12 +79,16 @@ const SidebarItem = ({ expanded, name, url }: SidebarItemProps) => {
   )
 }
 
-const SidebarSusbItem = ({ expanded, icon, title, children, url }: SidebarSubItemProps) => {
-  const [isDown, setIsDown] = useState<boolean>(false);
+const SidebarSusbItem = ({ expanded, icon, title, children, url, isOpenSubitem }: SidebarSubItemProps) => {
+  const [isDown, setIsDown] = useState<boolean>(isOpenSubitem);
 
   const [currentIsShow, setCurrentIsShow] = useState<boolean>(isDown);
 
+  const router = useRouter();
 
+  const [height, setHeight] = useState<number>(0);
+
+  const currentRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!expanded) {
@@ -126,26 +102,40 @@ const SidebarSusbItem = ({ expanded, icon, title, children, url }: SidebarSubIte
 
   }, [expanded, currentIsShow])
 
+  useEffect(() => {
+    if (currentRef.current) {
+      setHeight(currentRef.current.scrollHeight);
+      console.log(currentRef.current.scrollHeight)
+    }
+  }, [])
+
+
   return (
     <div>
-      <div className="relative p-3">
+      <div className="relative px-1">
         {url ? (
-          <Link href={url} className="">
-            <Button
-              className={` data-[hover=true]:opacity-100 hover:text-primary-foreground z-50 text-background-foreground bg-background my-2 w-full flex flex-row min-w-0 justify-center items-center rounded-lg font-bold text-xl hover:bg-primary ${expanded ? ("") : ("p-2")}`}
-              onClick={() => { setIsDown(!isDown) }}>
-              <div className={`w-full h-full flex flex-row items-center  ${expanded ? ("py-2 px-2 justify-start gap-3") : ("m-auto justify-center")}`} >
+          <Button
+            className={` data-[hover=true]:opacity-100 hover:text-primary-foreground z-50 
+                text-background-foreground bg-background my-2 w-full flex flex-row 
+                min-w-0 justify-center items-center rounded-lg font-bold text-xl hover:bg-primary px-0
+                ${expanded ? ("") : ("p-2")}`}
+
+            onClick={() => { setIsDown(!isDown); router.push(url) }}>
+            <div className={`w-full h-full flex flex-row items-center  ${expanded ? ("py-2 px-2 justify-start gap-3") : ("m-auto justify-center")}`} >
+              <div>
                 {icon}
-                <p className="truncate">{expanded ? (title) : ("")}</p>
               </div>
-            </Button>
-          </Link>
+              <p className="truncate">{expanded ? (title) : ("")}</p>
+            </div>
+          </Button>
         ) : (<Button
           className={`data-[hover=true]:opacity-100 hover:text-primary-foreground z-50 text-background-foreground bg-background my-2 w-full flex flex-row min-w-0 justify-center items-center rounded-lg font-bold text-xl hover:bg-primary ${expanded ? ("") : ("p-2")}`}
           onClick={() => { setIsDown(!isDown) }}
         >
           <div className={` w-full h-full flex flex-row items-center  ${expanded ? ("py-2 px-2 justify-start gap-3") : ("m-auto justify-center")}`} >
-            {icon}
+            <div>
+              {icon}
+            </div>
             <p className="truncate">{expanded ? (title) : ("")}</p>
           </div>
 
@@ -154,18 +144,29 @@ const SidebarSusbItem = ({ expanded, icon, title, children, url }: SidebarSubIte
           </motion.div>
 
         </Button>)}
+        {/* <AnimatePresence>
+          <motion.div
+            className={`bg-background ${expanded ? ("") : (`${isDown ? ("min-w-[200px] border-2 absolute p-3 bg-background left-full ml-1 rounded-2xl  top-3 m-0 w-full whitespace-nowrap ") : ("")}`)}`}
+            animate={{ height: isDown ? height : 0 }}
+            exit={{ height: 0 }}
+            transition={{ duration: 2 }}>
 
-        <motion.div
-          className={`${expanded ? ("") : (`${isDown ? ("min-w-[200px] border-2 absolute p-3 bg-background left-full ml-1 rounded-2xl  top-3 m-0 w-full whitespace-nowrap ") : ("")}`)}`}
-          animate={{ height: isDown ? "auto" : 0 }}
-          transition={{ duration: 0.1 }}>
+            <div >
 
 
-          {isDown && (<div className="bg-background w-full">
+            </div>
+
+          </motion.div>
+        </AnimatePresence> */}
+
+
+        <AutoExpandedDiv>
+          {isDown && (<div ref={currentRef} className="bg-background w-full">
             {!expanded && (<p className="text-center font-bold text-xl">{title}</p>)}
             {children}
           </div>)}
-        </motion.div>
+
+        </AutoExpandedDiv>
       </div>
 
 
@@ -176,3 +177,32 @@ const SidebarSusbItem = ({ expanded, icon, title, children, url }: SidebarSubIte
 }
 
 export default Sidebar;
+
+
+interface AutoExpandedDivProps {
+  children: React.ReactNode;
+}
+
+const AutoExpandedDiv: React.FC<AutoExpandedDivProps> = ({children}: AutoExpandedDivProps) => {
+    const [height, setHeight] = useState<number>(0);
+    const currentRef = React.useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (currentRef.current) {
+            setHeight(currentRef.current.scrollHeight);
+        }
+    }, [children])
+
+  return (
+    <motion.div
+    initial={{ height: 0 }}
+    animate={{ height: height }}
+    transition={{ duration: 0.5 }}
+    
+    >
+      <div ref={currentRef} className="bg-background w-full">
+        {children}
+      </div>
+    </motion.div>
+  )
+}

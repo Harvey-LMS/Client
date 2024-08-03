@@ -1,32 +1,73 @@
 'use client';
 
 import {
-   Button,
-   Input,
-   Modal,
-   ModalBody,
-   ModalContent,
-   ModalFooter,
-   ModalHeader,
-   useDisclosure,
+  Button,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  useDisclosure,
 } from '@nextui-org/react';
-import { IoIosAdd } from 'react-icons/io';
+import { IoIosAdd, IoIosArrowRoundBack } from 'react-icons/io';
 import RowData from './course/course';
 import Link from 'next/link';
-import { Suspense, useEffect, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { Suspense, useEffect, useLayoutEffect, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import path from 'path';
+import { motion } from 'framer-motion';
+import ChooseBarProps from '../layout/ChooseBar';
+import Course from "@/components/container/dashboard/course/course";
+import { ICourse } from '@/types/course';
+import axios from 'axios';
 
-const Courses = () => {
+interface reponseCoursePage {
+  first: number,
+  prev: number,
+  next: number,
+  last: number,
+  pages: number,
+  items: number,
+  data: ICourse[]
+}
+
+interface Props {
+  course: ICourse[],
+  coursePage: number,
+  courseTotalPage: number
+}
+
+const tabs: [string, string, ...string[]] = ["Course", "Draft-Course"];
+
+const Courses: React.FC<Props> = ({course, coursePage, courseTotalPage}: Props) => {
+  const [initialTab, setInitialTab] = useState<string>(tabs[0]);
+
+  const tabsProps = {
+    key: tabs,
+    change: (a: string) => setInitialTab(a),
+    value: initialTab
+  };
+
+  const searchParams = useSearchParams();
 
   const pathName = usePathname();
-  const route = pathName.split("/")[2];
+
+  useEffect(() => {
+    if (searchParams.has("tab")) {
+      const tab = searchParams.get("tab");
+      if (tab && tabs.includes(tab)) {
+        setInitialTab(tab);
+      }
+    }
+  }, [searchParams]);
 
   const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeCreate } = useDisclosure();
 
 
+
   return (
-    <div>
+    <div className=''>
       <Modal size="3xl" isOpen={isOpenCreate} onOpenChange={onOpenChangeCreate}>
         <ModalContent>
           {(onClose) => (
@@ -54,28 +95,11 @@ const Courses = () => {
           )}
         </ModalContent>
       </Modal>
-      <div>
-        <p className="font-bold text-3xl">Course</p>
-      </div>
 
-      <div className="flex flex-row justify-between items-center w-full border-b-1 border-b-gray-500 py-2">
-        <div className="flex flex-row justify-center items-center gap-5 text-lg">
-          <Link href={"/dashboard/course"} className={`cursor-pointer ${route === "course" ? "font-bold text-primary " : ""}`}>
-            <div>
-              Course
-            </div>
-          </Link>
-          <Link href={"/dashboard/draft-course"} className={`cursor-pointer ${route === "draft-course" ? "font-bold text-primary " : ""}`}>
-            <div>
-              Draft Course
-            </div>
-          </Link>
-        </div>
-        <Button variant="ghost" className="flex flex-row justify-center items-center text-xl" onClick={onOpenCreate}>
-          <IoIosAdd />
-          <p className="font-semibold">Create</p>
-        </Button>
-      </div>
+      <ChooseBarProps tabs={tabsProps}>
+
+      </ChooseBarProps>
+      <Course course={course} coursePage={coursePage} courseTotalPage={courseTotalPage} tab={initialTab}></Course>
     </div>
   );
 }

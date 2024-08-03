@@ -1,6 +1,8 @@
 import CourseGeneral from "@/components/container/course/view/courseGeneral";
 
-const Page = () => {
+const Page = async() => {
+    
+
     return ( 
         <CourseGeneral>
 

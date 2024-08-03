@@ -11,7 +11,7 @@
       "category": "Mobile Development",
       "thumnailURL": "http://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
       "updateAt": "2021-07-01",
-      "status": "Active"
+      "status": "Not-Active"
     },
     {
       "id": "2",
@@ -24,7 +24,7 @@
       "category": "Mobile Development",
       "thumnailURL": "http://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
       "updateAt": "2021-07-01",
-      "status": "Active"
+      "status": "Not-Active"
     },
     {
       "id": "3",
@@ -103,7 +103,8 @@
       "thumnailURL": "http://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
       "updateAt": "2021-07-01",
       "status": "Active"
-    },{
+    },
+    {
       "id": "9",
       "title": "React Native9",
       "descriptions": "React Native: The Practical Guide [2021 Edition]",
@@ -119,32 +120,6 @@
     {
       "id": "10",
       "title": "React Native10",
-      "descriptions": "React Native: Advanced Concepts",
-      "language": "English",
-      "level": "Advanced",
-      "price": 29.99,
-      "discountPrice": 19.99,
-      "category": "Mobile Development",
-      "thumnailURL": "http://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-      "updateAt": "2021-07-01",
-      "status": "Active"
-    },
-    {
-      "id": "11",
-      "title": "React Native11",
-      "descriptions": "React Native: The Practical Guide [2021 Edition]",
-      "language": "English",
-      "level": "Beginner",
-      "price": 19.99,
-      "discountPrice": 9.99,
-      "category": "Mobile Development",
-      "thumnailURL": "http://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-      "updateAt": "2021-07-01",
-      "status": "Active"
-    },
-    {
-      "id": "12",
-      "title": "React Native12",
       "descriptions": "React Native: Advanced Concepts",
       "language": "English",
       "level": "Advanced",
