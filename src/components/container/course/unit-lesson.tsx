@@ -212,10 +212,10 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
       updateLessonsOrder(updatedItems);
    };
 
-   const handleFileUpload = (lessonTitle: string, fileUrl: string, fileType: string) => {
+   const handleFileUpload = (lessonId: string, fileUrl: string, fileType: string) => {
       setFileUploads((prev) => ({
          ...prev,
-         [lessonTitle]: { url: fileUrl, type: fileType },
+         [lessonId]: { url: fileUrl, type: fileType },
       }));
    };
 
@@ -346,7 +346,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                         handleDropdown={() => handleDropdown(lesson.id)}
                         type="lesson"
                         isDropdown={openLessons === lesson.id}
-                        fileType={fileUploads[lesson.title]?.type || ''}
+                        fileType={fileUploads[lesson.id]?.type || ''}
                      />
                      {openLessons === lesson.id && (
                         <div>
@@ -497,7 +497,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                                              isShowEdit={isShowEditUpload === lesson.id}
                                              value={fileUrl}
                                              onFileUpload={(file, type) =>
-                                                handleFileUpload(lesson.title, file, type)
+                                                handleFileUpload(lesson.id, file, type)
                                              }
                                           />
                                        ) : (
@@ -532,8 +532,8 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                                     ) : (
                                        <div className="flex justify-center items-center">
                                           {renderFileContent(
-                                             fileUploads[lesson.title]?.url || '',
-                                             fileUploads[lesson.title]?.type || '',
+                                             fileUploads[lesson.id]?.url || '',
+                                             fileUploads[lesson.id]?.type || '',
                                           )}
                                        </div>
                                     )}

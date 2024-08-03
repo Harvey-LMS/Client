@@ -15,6 +15,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { IAccount } from '@/types/course';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface Errors {
    isError: {
@@ -151,7 +152,7 @@ const Login = () => {
    };
 
    const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_ACCOUNT;
-  
+
    useEffect(() => {
       const fetchData = async () => {
          try {
@@ -166,8 +167,8 @@ const Login = () => {
    }, []);
 
    return (
-      <div className="flex flex-col justify-center items-center text-base m-auto max-md:flex-col p-0.5 w-full md:px-40 lg:px-5">
-         <div className="flex flex-row gap-16 justify-center items-center w-full">
+      <div className="flex justify-center items-center text-base m-auto max-md:flex-col p-0.5 w-full md:px-40 lg:px-5">
+         <div className="flex flex-row gap-20 justify-center items-center w-full">
             <Image
                alt="Harvey"
                priority={true}
@@ -176,20 +177,25 @@ const Login = () => {
                width={550}
                height={500}
             />
-            <div className="flex flex-col px-8 py-7 mt-5 mb-4 max-w-full bg-white border-gray-300 rounded-3xl shadow-lg border w-full lg:w-1/3">
+            <motion.div
+               layout
+               transition={{ duration: 0.2 }}
+               className="flex flex-col px-8 py-7 mt-5 mb-4 max-w-full bg-white border-gray-300 rounded-3xl shadow-lg border w-full lg:w-1/3"
+            >
                <div className="flex flex-row gap-3 max-md:hidden justify-center items-center  pb-8 text-2xl font-semibold tracking-wide whitespace-nowrap text-zinc-700 text-opacity-90">
                   <Image alt="brand" priority={true} src={Brand} className="" />
                   <div className="mt-2.5">HarveyOD</div>
                </div>
-               <div className="text-xl font-semibold leading-8 text-zinc-700 text-opacity-90">
-                  Welcome to <span className="font-extrabold">HarveyOD</span>
+               <div className="flex flex-col">
+                  <div className="text-xl font-semibold leading-8 text-zinc-700 text-opacity-90">
+                     Welcome to <span className="font-extrabold">HarveyOD</span>
+                  </div>
+                  <span className="text-sm tracking-normal text-zinc-700 text-opacity-60">
+                     Please login to your account
+                  </span>
+                  <span className="text-sm text-danger-600 mt-2">{errors.errorMsg.isLogin}</span>
                </div>
-               <div className="text-sm tracking-normal text-zinc-700 text-opacity-60">
-                  Please login to your account
-               </div>
-
-               <span className="text-sm text-danger-600 mt-2">{errors.errorMsg.isLogin}</span>
-               <div>
+               <div className="flex flex-col">
                   <div className="mt-5 max-md:flex-col">
                      <Input
                         aria-label="username"
@@ -200,7 +206,21 @@ const Login = () => {
                         onBlur={checkUserName}
                         onChange={handleUsername}
                         isInvalid={errors.isError.username}
-                        errorMessage={errors.errorMsg.username}
+                        errorMessage={
+                           <AnimatePresence>
+                              {errors.isError.username && (
+                                 <motion.div
+                                    layout
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: 10 }}
+                                    transition={{ duration: 0.2 }}
+                                 >
+                                    {errors.errorMsg.username}
+                                 </motion.div>
+                              )}
+                           </AnimatePresence>
+                        }
                      />
                   </div>
                   <div className="mt-5 max-md:flex-col">
@@ -213,7 +233,21 @@ const Login = () => {
                         onBlur={checkPassword}
                         onChange={handlePassword}
                         isInvalid={errors.isError.password}
-                        errorMessage={errors.errorMsg.password}
+                        errorMessage={
+                           <AnimatePresence>
+                              {errors.isError.password && (
+                                 <motion.div
+                                    layout
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: 10 }}
+                                    transition={{ duration: 0.2 }}
+                                 >
+                                    {errors.errorMsg.password}
+                                 </motion.div>
+                              )}
+                           </AnimatePresence>
+                        }
                      />
                   </div>
                </div>
@@ -254,7 +288,7 @@ const Login = () => {
                      Sign up
                   </Link>
                </div>
-            </div>
+            </motion.div>
          </div>
       </div>
    );
