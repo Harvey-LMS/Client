@@ -9,7 +9,7 @@ export interface ICourse {
    category: string;
    thumnailURL: string;
    updateAt: string;
-   status: string;
+   status: "Active" | "Not-Active" | "Upcoming"
 }
 
 export interface ILesson {
