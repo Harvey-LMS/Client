@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Item } from '@/components/reorder/item-drag';
 import { Button, Input, useDisclosure } from '@nextui-org/react';
@@ -50,7 +52,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
 
          const newLesson = {
             id: currentChapter.lessons.length + 1,
-            title: `Lesson ${currentChapter.lessons.length + 1}: ` + title,
+            title: title,
             content: 'This is default content',
             url: '',
             orderIndex: currentChapter.lessons.length + 1,
@@ -90,13 +92,13 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                setData((prev) => {
                   const updatedItems = prev.map((item) => {
                      if (item.id === lessonId) {
-                        return { ...item, title: `Lesson ${item.orderIndex}: ` + newTitle };
+                        return { ...item, title: newTitle };
                      }
                      return item;
                   });
                   return updatedItems;
                });
-               return { ...lesson, title: `Lesson ${lesson.orderIndex}: ` + newTitle };
+               return { ...lesson, title: newTitle };
             }
 
             return lesson;
@@ -201,7 +203,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
    const handleReorder = (newItems: ILesson[]) => {
       const updatedItems = newItems.map((item, index) => ({
          ...item,
-         title: `Lesson ${index + 1}: ${item.title.split(': ')[1]}`,
+         title: item.title,
          orderIndex: index + 1,
       }));
       setData(updatedItems);
@@ -219,18 +221,26 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
       }));
    };
 
-   const handleShowEditTitle = (lessonId: string, currentTitle: string) => {
+   const handleShowEditTitle = (lessonId: string, currentTitle: string, content: string) => {
       setTitleInput(currentTitle);
       setIsShowEditTitle((prev) => (prev === lessonId ? null : lessonId));
+      if (isShowEditContent) {
+         handleUpdateContent(lessonId, content);
+         setIsShowEditContent(null);
+      }
    };
 
    const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
       setTitleInput(e.target.value);
    };
 
-   const handleShowEditContent = (lessonId: string, currentContent: string) => {
+   const handleShowEditContent = (lessonId: string, currentContent: string, title: string) => {
       setContentInput(currentContent);
       setIsShowEditContent((prev) => (prev === lessonId ? null : lessonId));
+      if (isShowEditTitle) {
+         handleUpdateTitle(lessonId, title);
+         setIsShowEditTitle(null);
+      }
    };
 
    const handleShowEditUpload = (lessonId: string, currentUrl: string, currentType: string) => {
@@ -367,7 +377,8 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                                              onClick={() =>
                                                 handleShowEditTitle(
                                                    lesson.id,
-                                                   lesson.title.split(': ')[1],
+                                                   lesson.title,
+                                                   contentInput,
                                                 )
                                              }
                                              className="flex flex-row gap-2"
@@ -388,33 +399,31 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                                           value={titleInput}
                                        />
                                     ) : (
-                                       <span className="text-sm">
-                                          {lesson.title.split(': ')[1]}
-                                       </span>
+                                       <span className="text-sm">{lesson.title}</span>
                                     )}
-                                 </div>
-                                 <div className="my-2">
-                                    {isShowEditTitle === lesson.id ? (
-                                       <div className="flex flex-row gap-6 justify-end">
-                                          <Button
-                                             onClick={() => setIsShowEditTitle(null)}
-                                             variant="light"
-                                             className="text-red-600"
-                                          >
-                                             Cancel
-                                          </Button>
-                                          <Button
-                                             onClick={() =>
-                                                handleUpdateTitle(lesson.id, titleInput)
-                                             }
-                                             color="primary"
-                                          >
-                                             Save
-                                          </Button>
-                                       </div>
-                                    ) : (
-                                       ''
-                                    )}
+                                    <div className="">
+                                       {isShowEditTitle === lesson.id ? (
+                                          <div className="flex flex-row gap-6 justify-end">
+                                             <Button
+                                                onClick={() => setIsShowEditTitle(null)}
+                                                variant="light"
+                                                className="text-red-600"
+                                             >
+                                                Cancel
+                                             </Button>
+                                             <Button
+                                                onClick={() =>
+                                                   handleUpdateTitle(lesson.id, titleInput)
+                                                }
+                                                color="primary"
+                                             >
+                                                Save
+                                             </Button>
+                                          </div>
+                                       ) : (
+                                          <></>
+                                       )}
+                                    </div>
                                  </div>
                               </div>
 
@@ -431,7 +440,11 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                                        ) : (
                                           <Button
                                              onClick={() =>
-                                                handleShowEditContent(lesson.id, lesson.content)
+                                                handleShowEditContent(
+                                                   lesson.id,
+                                                   lesson.content,
+                                                   titleInput,
+                                                )
                                              }
                                              className="flex flex-row gap-2"
                                              variant="light"
@@ -454,29 +467,29 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                                     ) : (
                                        <span className="text-sm">{lesson.content}</span>
                                     )}
-                                 </div>
-                                 <div className="my-2">
-                                    {isShowEditContent === lesson.id ? (
-                                       <div className="flex flex-row gap-6 justify-end">
-                                          <Button
-                                             onClick={() => setIsShowEditContent(null)}
-                                             variant="light"
-                                             className="text-red-600"
-                                          >
-                                             Cancel
-                                          </Button>
-                                          <Button
-                                             onClick={() =>
-                                                handleUpdateContent(lesson.id, contentInput)
-                                             }
-                                             color="primary"
-                                          >
-                                             Save
-                                          </Button>
-                                       </div>
-                                    ) : (
-                                       ''
-                                    )}
+                                    <div className="">
+                                       {isShowEditContent === lesson.id ? (
+                                          <div className="flex flex-row gap-6 justify-end">
+                                             <Button
+                                                onClick={() => setIsShowEditContent(null)}
+                                                variant="light"
+                                                className="text-red-600"
+                                             >
+                                                Cancel
+                                             </Button>
+                                             <Button
+                                                onClick={() =>
+                                                   handleUpdateContent(lesson.id, contentInput)
+                                                }
+                                                color="primary"
+                                             >
+                                                Save
+                                             </Button>
+                                          </div>
+                                       ) : (
+                                          <></>
+                                       )}
+                                    </div>
                                  </div>
                               </div>
 

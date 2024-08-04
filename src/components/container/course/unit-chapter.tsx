@@ -31,18 +31,31 @@ const Chapter = () => {
       onOpenChange();
    };
 
-   const handleShowEditTitle = (chapterId: string, currentTitle: string) => {
+   const handleShowEditTitle = (chapterId: string, currentTitle: string, description: string) => {
       setTitleInput(currentTitle);
       setIsShowEditTitle((prev) => (prev === chapterId ? null : chapterId));
+      if (isShowEditDescription) {
+         handleUpdateDescription(chapterId, description);
+         setIsShowEditDescription(null);
+      }
    };
 
    const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
       setTitleInput(e.target.value);
    };
 
-   const handleShowEditDescription = (chapterId: string, currentDescription: string) => {
+   const handleShowEditDescription = (
+      chapterId: string,
+      currentDescription: string,
+      title: string,
+   ) => {
       setDescriptionInput(currentDescription);
       setIsShowEditDescription((prev) => (prev === chapterId ? null : chapterId));
+
+      if (isShowEditTitle) {
+         handleUpdateTitle(chapterId, title);
+         setIsShowEditTitle(null);
+      }
    };
 
    const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,7 +68,8 @@ const Chapter = () => {
       const dataGet = await axios.get(apiUrl as string);
       const newChapter = {
          id: (dataGet.data.length + 1).toString(),
-         title: `Chapter ${dataGet.data.length + 1}: ` + chapterName,
+         title: chapterName,
+         // title: `Chapter ${dataGet.data.length + 1}: ` + chapterName,
          description: 'This is default description',
          lessons: [],
          orderIndex: dataGet.data.length + 1,
@@ -85,7 +99,7 @@ const Chapter = () => {
          const currentData = currentDataResponse.data;
          const updatedData = {
             ...currentData,
-            title: `Chapter ${currentData.orderIndex}: ` + newTitle,
+            title: newTitle,
          };
          const response = await axios.put(`${apiUrl}/${chapterId}`, updatedData);
          if (response.status === 200) {
@@ -151,7 +165,7 @@ const Chapter = () => {
       return chapters.map((chapter, index) => ({
          ...chapter,
          // id: (index + 1).toString(),
-         title: `Chapter ${index + 1}: ${chapter.title.split(': ')[1]}`,
+         title: chapter.title,
          orderIndex: index + 1,
       }));
    };
@@ -237,7 +251,7 @@ const Chapter = () => {
                      {openChapters === item.id && (
                         <div className="">
                            <div className="flex flex-col mx-4">
-                              <div className="mx-5">
+                              <div className="m-5">
                                  <div
                                     className={`flex flex-col p-2 ${
                                        isShowEditTitle ? 'gap-2' : 'gap-0'
@@ -252,7 +266,8 @@ const Chapter = () => {
                                              onClick={() =>
                                                 handleShowEditTitle(
                                                    item.id,
-                                                   item.title.split(': ')[1],
+                                                   item.title,
+                                                   descriptionInput,
                                                 )
                                              }
                                              className="flex flex-row gap-2 "
@@ -273,29 +288,31 @@ const Chapter = () => {
                                           value={titleInput}
                                        />
                                     ) : (
-                                       <span className="text-sm">{item.title.split(': ')[1]}</span>
+                                       <span className="text-sm">{item.title}</span>
                                     )}
-                                 </div>
-                                 <div className="m-2">
-                                    {isShowEditTitle === item.id ? (
-                                       <div className="flex flex-row gap-6 justify-end">
-                                          <Button
-                                             onClick={() => setIsShowEditTitle(null)}
-                                             variant={'light'}
-                                             className="text-red-600"
-                                          >
-                                             Cancel
-                                          </Button>
-                                          <Button
-                                             onClick={() => handleUpdateTitle(item.id, titleInput)}
-                                             color={'primary'}
-                                          >
-                                             Save
-                                          </Button>
-                                       </div>
-                                    ) : (
-                                       <div className="flex flex-row gap-6 justify-end"></div>
-                                    )}
+                                    <div className="">
+                                       {isShowEditTitle === item.id ? (
+                                          <div className="flex flex-row gap-6 justify-end">
+                                             <Button
+                                                onClick={() => setIsShowEditTitle(null)}
+                                                variant={'light'}
+                                                className="text-red-600"
+                                             >
+                                                Cancel
+                                             </Button>
+                                             <Button
+                                                onClick={() =>
+                                                   handleUpdateTitle(item.id, titleInput)
+                                                }
+                                                color={'primary'}
+                                             >
+                                                Save
+                                             </Button>
+                                          </div>
+                                       ) : (
+                                          <div className="flex flex-row gap-6 justify-end"></div>
+                                       )}
+                                    </div>
                                  </div>
                               </div>
                               <div className="mx-5">
@@ -311,7 +328,11 @@ const Chapter = () => {
                                        ) : (
                                           <Button
                                              onClick={() =>
-                                                handleShowEditDescription(item.id, item.description)
+                                                handleShowEditDescription(
+                                                   item.id,
+                                                   item.description,
+                                                   titleInput,
+                                                )
                                              }
                                              className="flex flex-row gap-2 "
                                              variant={'light'}
@@ -334,29 +355,32 @@ const Chapter = () => {
                                     ) : (
                                        <span className="text-sm">{item.description}</span>
                                     )}
-                                 </div>
-                                 <div className="m-2">
-                                    {isShowEditDescription === item.id ? (
-                                       <div className="flex flex-row gap-6 justify-end">
-                                          <Button
-                                             onClick={() => setIsShowEditDescription(null)}
-                                             variant={'light'}
-                                             className="text-red-600"
-                                          >
-                                             Cancel
-                                          </Button>
-                                          <Button
-                                             onClick={() =>
-                                                handleUpdateDescription(item.id, descriptionInput)
-                                             }
-                                             color={'primary'}
-                                          >
-                                             Save
-                                          </Button>
-                                       </div>
-                                    ) : (
-                                       <div className="flex flex-row gap-6 justify-end"></div>
-                                    )}
+                                    <div className="">
+                                       {isShowEditDescription === item.id ? (
+                                          <div className="flex flex-row gap-6 justify-end">
+                                             <Button
+                                                onClick={() => setIsShowEditDescription(null)}
+                                                variant={'light'}
+                                                className="text-red-600"
+                                             >
+                                                Cancel
+                                             </Button>
+                                             <Button
+                                                onClick={() =>
+                                                   handleUpdateDescription(
+                                                      item.id,
+                                                      descriptionInput,
+                                                   )
+                                                }
+                                                color={'primary'}
+                                             >
+                                                Save
+                                             </Button>
+                                          </div>
+                                       ) : (
+                                          <></>
+                                       )}
+                                    </div>
                                  </div>
                                  <div className="border border-gray-300 bg-white mt-2"></div>
                               </div>
