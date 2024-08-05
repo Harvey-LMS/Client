@@ -5,7 +5,7 @@ import Lesson from './unit-lesson';
 import { Item } from '@/components/reorder/item-drag';
 import { Reorder } from 'framer-motion';
 import { Input } from '@nextui-org/input';
-import { Button, useDisclosure } from '@nextui-org/react';
+import { Button, Skeleton, useDisclosure } from '@nextui-org/react';
 import { IoIosAdd } from 'react-icons/io';
 import { FaEdit } from 'react-icons/fa';
 import ModalCreate from './modal-create';
@@ -24,6 +24,8 @@ const Chapter = () => {
 
    const [isShowEditTitle, setIsShowEditTitle] = useState<string | null>(null);
    const [isShowEditDescription, setIsShowEditDescription] = useState<string | null>(null);
+
+   const [isFetching, setIsFetching] = useState<boolean>(false);
 
    const { isOpen, onOpenChange } = useDisclosure();
 
@@ -212,6 +214,7 @@ const Chapter = () => {
             const response = await axios.get(apiUrl as string);
             const data = [...response.data].sort((a, b) => a.orderIndex - b.orderIndex);
             setData(data);
+            if (data) setIsFetching(true);
          } catch (error) {
             console.error('Error: ', error);
          }
@@ -247,6 +250,7 @@ const Chapter = () => {
                         type="chapter"
                         isDropdown={openChapters === item.id}
                         fileType=""
+                        isFetching={isFetching}
                      ></Item>
                      {openChapters === item.id && (
                         <div className="">

@@ -11,7 +11,6 @@ import { FaEdit } from 'react-icons/fa';
 import ModalCreate from './modal-create';
 import { ILesson } from '@/types/course';
 import axios from 'axios';
-import { url } from 'inspector';
 
 interface Props {
    chapterId: string;
@@ -325,7 +324,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
          default:
             return (
                <div>
-                  <span>Click edit to upload</span>
+                  <span className="font-semibold opacity-70">Click edit to upload</span>
                </div>
             );
       }
@@ -357,6 +356,7 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                         type="lesson"
                         isDropdown={openLessons === lesson.id}
                         fileType={fileUploads[lesson.id]?.type || ''}
+                        isFetching={true}
                      />
                      {openLessons === lesson.id && (
                         <div>
@@ -494,17 +494,9 @@ const Lesson = ({ chapterId, lessons, setLessons }: Props) => {
                               </div>
 
                               <div className="my-2">
-                                 <div className="flex flex-col gap-4  border-1 border-solid rounded-md p-2">
+                                 <div className="flex flex-col gap-4 border-1 border-solid rounded-md p-2 bg-[#F3F3F3]">
                                     <div className="flex flex-row justify-between ">
                                        <span className="text-md font-semibold">Upload</span>
-                                       {/* <UploadFile
-                                          isShowEdit={true}
-                                          value={fileUrl}
-                                          onFileUpload={(file, type) => {
-                                             setFileUrl(file);
-                                             setFileType(type);
-                                          }}
-                                       /> */}
                                        {isShowEditUpload === lesson.id ? (
                                           <UploadFile
                                              isShowEdit={isShowEditUpload === lesson.id}

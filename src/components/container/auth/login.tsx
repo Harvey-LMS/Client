@@ -282,8 +282,8 @@ const Login = () => {
                      <Image alt="twitter-sign-in" loading="lazy" src={Twitter} className="w-12" />
                   </Link>
                </div>
-               <div className="tracking-normal text-center text-lime-600">
-                  <span className="text-zinc-700">{`Don't have an account ?`}</span>{' '}
+               <div className="flex flex-row justify-center items-center gap-2 text-center text-lime-600">
+                  <span className="text-zinc-700">{`Don't have an account ?`}</span>
                   <Link href={'/register'} className="text-lime-600 hover:underline">
                      Sign up
                   </Link>
