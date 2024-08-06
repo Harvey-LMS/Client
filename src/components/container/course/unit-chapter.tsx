@@ -16,6 +16,15 @@ import { IChapter } from '@/types/course';
 
 dotenv.config();
 
+const debounce = (func: Function, delay: number) => {
+   let timeout: NodeJS.Timeout;
+   return (...args: any[]) => {
+      const context = this;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(context, args), delay);
+   };
+};
+
 const Chapter = () => {
    const [data, setData] = useState<IChapter[]>([]);
    const [openChapters, setOpenChapters] = useState<string | null>(null);
@@ -71,7 +80,6 @@ const Chapter = () => {
       const newChapter = {
          id: (dataGet.data.length + 1).toString(),
          title: chapterName,
-         // title: `Chapter ${dataGet.data.length + 1}: ` + chapterName,
          description: 'This is default description',
          lessons: [],
          orderIndex: dataGet.data.length + 1,
@@ -151,7 +159,6 @@ const Chapter = () => {
          const response = await axios.delete(`${apiUrl}/${itemId}`);
 
          if (response.status === 200) {
-            // setData((prevData) => prevData.filter((item) => item.id !== itemId));
             const newData = data.filter((item) => item.id !== itemId);
             const updatedChapters = updateChaptersIndex(newData);
             setData(updatedChapters);
@@ -166,13 +173,16 @@ const Chapter = () => {
    const updateChaptersIndex = (chapters: IChapter[]) => {
       return chapters.map((chapter, index) => ({
          ...chapter,
-         // id: (index + 1).toString(),
          title: chapter.title,
          orderIndex: index + 1,
       }));
    };
 
+   let apiCall = 0;
+
    const handleReorder = async (newData: IChapter[]) => {
+      // apiCall++;
+      // console.log('call: ', apiCall);
       const updatedChapters = updateChaptersIndex(newData);
       setData(updatedChapters);
 
@@ -228,7 +238,8 @@ const Chapter = () => {
             <Reorder.Group
                className="flex flex-col gap-4 p-2"
                axis="y"
-               onReorder={handleReorder}
+               onReorder={debounce(handleReorder, 1000)}
+               // onReorder={handleReorder}
                values={data}
             >
                {data.map((item) => (
