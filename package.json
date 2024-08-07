@@ -11,7 +11,7 @@
     "test:watch": "jest --watch",
     "api": "json-server --watch ./db/course.json --port 4000"
   },
-  "prisma" :{
+  "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts "
   },
   "dependencies": {
@@ -37,6 +37,7 @@
     "framer-motion": "^11.2.10",
     "input-otp": "^1.2.4",
     "json-server": "^1.0.0-beta.1",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.383.0",
     "next": "14.2.3",
     "next-themes": "^0.3.0",

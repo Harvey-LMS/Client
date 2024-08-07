@@ -184,7 +184,7 @@ const Login = () => {
             >
                <div className="flex flex-row gap-3 max-md:hidden justify-center items-center  pb-8 text-2xl font-semibold tracking-wide whitespace-nowrap text-zinc-700 text-opacity-90">
                   <Image alt="brand" priority={true} src={Brand} className="" />
-                  <div className="mt-2.5">HarveyOD</div>
+                  <div className="">HarveyOD</div>
                </div>
                <div className="flex flex-col">
                   <div className="text-xl font-semibold leading-8 text-zinc-700 text-opacity-90">

@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
+import { Button } from "@nextui-org/react";
+import { IoAddOutline } from "react-icons/io5";
 
 interface ChooseBarProps {
     tabs: {
@@ -16,24 +18,16 @@ interface ChooseBarProps {
         title: string;
         onClick: () => void;
     }
+    title: string
 }
 
-const ChooseBarProps: React.FC<ChooseBarProps> = ({ tabs, create }: ChooseBarProps) => {
+const ChooseBarProps: React.FC<ChooseBarProps> = ({ tabs, create, title }: ChooseBarProps) => {
 
     const { theme } = useTheme();
 
     const searchParams = useSearchParams();
     const router = useRouter();
     const pathName = usePathname();
-
-    useEffect(() => {
-        if (searchParams.has("tab")) {
-            const tab = searchParams.get("tab");
-            if (tab && tabs.value.includes(tab)) {
-                tabs.change(tab);
-            }
-        }
-    }, [searchParams]);
 
     const handleTabClick = (tab: string) => {
         tabs.change(tab);
@@ -57,7 +51,7 @@ const ChooseBarProps: React.FC<ChooseBarProps> = ({ tabs, create }: ChooseBarPro
                 </motion.div>
 
                 <div className="rounded-md flex flex-row justify-center items-center">
-                    <p className="font-bold text-3xl">Course Detail</p>
+                    <p className="font-bold text-3xl">{title}</p>
                 </div>
             </div>
 
@@ -95,9 +89,23 @@ const ChooseBarProps: React.FC<ChooseBarProps> = ({ tabs, create }: ChooseBarPro
                                 );
                             })
                         }
+
+
                     </div>
 
+                    {create &&
+                        <Button 
+                        variant="flat"
+                        color="primary"
+                        onClick={create.onClick} 
+                            className="font-medium text-md"
+                        startContent={
+                            <div className=" ">
+                                <IoAddOutline />
+                            </div>
 
+                        }>{create?.title}</Button>
+                    }
                 </div>
             </div>
 

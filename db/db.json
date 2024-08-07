@@ -1,19 +1,106 @@
 {
-    "user": {
-        "id": 1,
-        "usename": "admin",
-        "password": "admin",
-        "email": "admin@gmail.com",
-        "AccountRoleId": {
-            "id": 1,
-            "name": "Admin",
-            "description": "Admin",
-            "permissions": [
-                "create",
-                "read",
-                "update",
-                "delete"
-            ]
-        }
+  "accounts": [
+    {
+      "id": "1",
+      "username": "colnat",
+      "password": "12345678Loc",
+      "email": ""
+    },
+    {
+      "id": "2",
+      "username": "testuser",
+      "password": "11223344Test",
+      "email": ""
     }
+  ],
+  "chapters": [
+    {
+      "id": "1",
+      "title": "Chapter 1: Getting started chapter",
+      "description": "Description started",
+      "lessons": [
+        {
+          "id": 1,
+          "title": "Lesson 1: Introduction",
+          "content": "Content update",
+          "url": "",
+          "orderIndex": 1
+        }
+      ],
+      "orderIndex": 1
+    },
+    {
+      "id": "2",
+      "title": "Chapter 2: Basic",
+      "description": "Description basic",
+      "lessons": [
+        {
+          "id": 1,
+          "title": "Lesson 1: Basics Reading",
+          "content": "Content 21",
+          "url": "",
+          "orderIndex": 1
+        },
+        {
+          "id": 2,
+          "title": "Lesson 2: Basics Writing",
+          "content": "Content 22",
+          "url": "",
+          "orderIndex": 2
+        }
+      ],
+      "orderIndex": 2
+    },
+    {
+      "id": "3",
+      "title": "Chapter 3: Practice",
+      "description": "Description practice",
+      "lessons": [
+        {
+          "id": 1,
+          "title": "Lesson 1: Exercises",
+          "content": "Content",
+          "url": "",
+          "orderIndex": 1
+        },
+        {
+          "id": 2,
+          "title": "Lesson 2: Practice 1",
+          "content": "Content 32",
+          "url": "",
+          "orderIndex": 2
+        },
+        {
+          "id": 3,
+          "title": "Lesson 3: Practice 2",
+          "content": "Content 33",
+          "url": "",
+          "orderIndex": 3
+        }
+      ],
+      "orderIndex": 3
+    },
+    {
+      "id": "4",
+      "title": "Chapter 4: Exam",
+      "description": "Description test",
+      "lessons": [
+        {
+          "id": 1,
+          "title": "Lesson 1: Practice Test",
+          "content": "Content 41",
+          "url": "",
+          "orderIndex": 1
+        },
+        {
+          "id": 2,
+          "title": "Lesson 2: Final Test",
+          "content": "Content 42",
+          "url": "",
+          "orderIndex": 2
+        }
+      ],
+      "orderIndex": 4
+    }
+  ]
 }

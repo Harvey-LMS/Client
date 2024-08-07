@@ -28,7 +28,7 @@ interface reponseCoursePage {
   items: number,
   data: ICourse[]
 }
-interface Props{
+interface Props {
   tab: string;
   course: ICourse[],
   coursePage: number,
@@ -36,7 +36,7 @@ interface Props{
 }
 
 
-const Course:React.FC<Props> = ({tab, course = [], coursePage = 0, courseTotalPage = 0}: Props) => {
+const Course: React.FC<Props> = ({ tab, course = [], coursePage = 0, courseTotalPage = 0 }: Props) => {
   const { isOpen: isOpenDelete, onOpen: onOpenDelete, onOpenChange: onOpenChangeDelete } = useDisclosure();
   const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeCreate } = useDisclosure();
 
@@ -59,8 +59,8 @@ const Course:React.FC<Props> = ({tab, course = [], coursePage = 0, courseTotalPa
     setIsFetching(true);
     const fetchData = async () => {
       try {
-        if (tab === "Course"){
-          const pageCall = 1;
+        if (tab === "Course") {
+          const pageCall = 1
           const limitCall = 2;
           const response = await axios.get<reponseCoursePage>(`http://localhost:4000/courses?_page=${pageCall}&_per_page=${limitCall}`);
 
@@ -69,8 +69,8 @@ const Course:React.FC<Props> = ({tab, course = [], coursePage = 0, courseTotalPa
           setData(response.data.data)
           setTotalPage(response.data.pages);
         }
-        else if (tab === "Draft-Course"){
-          const pageCall = 1;
+        else if (tab === "Draft-Course") {
+          const pageCall = 1
           const limitCall = 2;
           const response = await axios.get<reponseCoursePage>(`http://localhost:4000/courses?_page=${pageCall}&_per_page=${limitCall}}&status=Not-Active`);
 
@@ -86,16 +86,24 @@ const Course:React.FC<Props> = ({tab, course = [], coursePage = 0, courseTotalPa
       }
     }
     fetchData();
-  }, [tab]);
+    setPage(1);
+    }, [tab]);
 
 
   const handleChangePage = async (pageInput: number) => {
     try {
-      const response = await axios.get(`http://localhost:4000/courses?_page=${pageInput}&_per_page=2`);
-      const dataReponse: ICourse[] = response.data.data
-      setData(dataReponse);
-      setPage(pageInput)
-
+      if (tab === "Course") {
+        const response = await axios.get<reponseCoursePage>(`http://localhost:4000/courses?_page=${pageInput}&_per_page=2`);
+        const dataReponse: ICourse[] = response.data.data;
+        setData(dataReponse);
+        setPage(pageInput);
+      }
+      else if (tab === "Draft-Course") {
+        const response = await axios.get<reponseCoursePage>(`http://localhost:4000/courses?_page=${pageInput}&_per_page=2&status=Not-Active`);
+        const dataReponse: ICourse[] = response.data.data;
+        setData(dataReponse);
+        setPage(pageInput);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -103,17 +111,42 @@ const Course:React.FC<Props> = ({tab, course = [], coursePage = 0, courseTotalPa
 
   const handleDelete = async (id: string) => {
     try {
-      const reponse = await deleteCourse(id);
-      const redata = await axios.get(`http://localhost:4000/courses?_page=${page}&_per_page=2`);
-      const dataReponse: ICourse[] = redata.data.data;
-      console.log(redata);
-      setData(dataReponse);
-      if (totalPage !== redata.data.pages) {
-        setTotalPage(redata.data.pages);
-        setPage(page - 1);
+      const response = await deleteCourse(id);
+      if (response) {
+        try {
+          if (tab === "Course") {
+            const pageCall = page
+            const limitCall = 2;
+            const response = await axios.get<reponseCoursePage>(`http://localhost:4000/courses?_page=${pageCall}&_per_page=${limitCall}`);
+
+            console.log("tab Course data", response.data.data);
+
+            setData(response.data.data)
+            setTotalPage(response.data.pages);
+            if (totalPage !== response.data.pages) {
+              setTotalPage(response.data.pages);
+              setPage(page - 1);
+            }
+          }
+          else if (tab === "Draft-Course") {
+            const pageCall = page
+            const limitCall = 2;
+            const response = await axios.get<reponseCoursePage>(`http://localhost:4000/courses?_page=${pageCall}&_per_page=${limitCall}}&status=Not-Active`);
+
+            console.log("tab DraftCourse data", response.data.data);
+
+            setData(response.data.data)
+            if (totalPage !== response.data.pages) {
+              setTotalPage(response.data.pages);
+              setPage(page - 1);
+            }
+          }
+        } catch (error) {
+
+        } finally {
+          setIsFetching(false);
+        }
       }
-
-
     } catch (error) {
       console.log(error);
     }
@@ -197,7 +230,7 @@ const Course:React.FC<Props> = ({tab, course = [], coursePage = 0, courseTotalPa
                 <thead>
                   <tr className="border-2">
                     <th className="px-2 py-2 w-[30px] border-r-1"></th>
-                    <th className="px-7 py-2  border-r-1">Image</th>
+                    <th className="px-7 py-2  border-r-1">Thumnail</th>
                     <th className="px-32 py-2  border-r-1">Title</th>
                     <th className="px-6 py-2 border-r-1">Update</th>
                     <th className="px-6 py-2 border-r-1">Price</th>
@@ -225,7 +258,11 @@ const Course:React.FC<Props> = ({tab, course = [], coursePage = 0, courseTotalPa
                       <tr key={item.id} className="hover:bg-hover border-b-1 border-gray-200 odd:bg-gray-100">
                         <td className=" w-[30px] py-4 px-3 font-semibold text-center">{item.id}</td>
                         <td className="py-4 px-3 flex justify-center items-center">
-                          <Image src={item.thumnailURL} alt={item.title} width={100} height={70} />
+                          <Image src={item.thumnailURL}
+                            alt={item.title}
+                            // className="max-w-96 max-h-16 truncate object-cover" 
+                            className="truncate object-cover"
+                            width={100} height={70} />
                         </td>
                         <td className="py-4 px-3 font-semibold text-lg truncate">{item.title}</td>
                         <td className="py-4 px-3 text-center text-sm">{item.updateAt}</td>

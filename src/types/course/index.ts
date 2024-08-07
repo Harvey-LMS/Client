@@ -3,11 +3,11 @@ export interface ICourse {
    title: string;
    descriptions: string;
    language: string;
-   level: string;
+   level: "Easy" | "Medium" | "Hard" | "Plus";
    price: number;
    discountPrice: number;
    category: string;
-   thumnailURL: string;
+   thumnailURL: string | "";
    updateAt: string;
    status: "Active" | "Not-Active" | "Upcoming"
 }

@@ -81,3 +81,8 @@
    font-size: 1rem;
    line-height: 1.5;
 }
+
+.ql-description-overflow .ql-editor {
+   width: 100%;
+   overflow-y: hidden;
+}

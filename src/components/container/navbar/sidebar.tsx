@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
+import { MdNavigateNext, MdNavigateBefore, MdKeyboardArrowDown } from "react-icons/md";
 import { Button } from "@nextui-org/react";
 import { MdOutlineDashboard } from "react-icons/md";
 
@@ -100,7 +100,7 @@ const SidebarSusbItem = ({ expanded, icon, title, children, url, isOpenSubitem }
       setIsDown(currentIsShow)
     }
 
-  }, [expanded, currentIsShow])
+  }, [expanded, currentIsShow, isDown])
 
   useEffect(() => {
     if (currentRef.current) {
@@ -129,7 +129,7 @@ const SidebarSusbItem = ({ expanded, icon, title, children, url, isOpenSubitem }
             </div>
           </Button>
         ) : (<Button
-          className={`data-[hover=true]:opacity-100 hover:text-primary-foreground z-50 text-background-foreground bg-background my-2 w-full flex flex-row min-w-0 justify-center items-center rounded-lg font-bold text-xl hover:bg-primary ${expanded ? ("") : ("p-2")}`}
+          className={`data-[hover=true]:opacity-100 hover:text-primary-foreground z-50 text-background-foreground bg-background my-2 w-full flex flex-row min-w-0 justify-center items-center rounded-lg  text-xl hover:bg-primary ${expanded ? ("") : ("p-2")}`}
           onClick={() => { setIsDown(!isDown) }}
         >
           <div className={` w-full h-full flex flex-row items-center  ${expanded ? ("py-2 px-2 justify-start gap-3") : ("m-auto justify-center")}`} >
@@ -139,8 +139,8 @@ const SidebarSusbItem = ({ expanded, icon, title, children, url, isOpenSubitem }
             <p className="truncate">{expanded ? (title) : ("")}</p>
           </div>
 
-          <motion.div className={`${expanded ? "block" : "hidden"}`} animate={{ rotate: isDown ? 0 : 90 }} transition={{ duration: 0.1 }}>
-            <FaAngleDown />
+          <motion.div className={`font-thin ${expanded ? "block" : "hidden"}`} animate={{ rotate: isDown ? 0 : 90 }} transition={{ duration: 0.1 }}>
+              <MdKeyboardArrowDown />
           </motion.div>
 
         </Button>)}

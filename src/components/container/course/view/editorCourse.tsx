@@ -30,23 +30,22 @@ const EditorCourse = ({ title, value }: EditorCourseProps) => {
 
     const [data, setData] = useState<string>(value);
 
-    const [isShow, setIsShow] = useState<boolean>(true);
+    const [isShow, setIsShow] = useState<boolean>(false);
 
     const [hideShowMore, setHideShowMore] = useState<boolean>(false);
-
-
-
-
-    useEffect(() => {
-        if (data.length > 2000) {
-            setHideShowMore(true);
-        }
-    }, [data]);
 
     const handleSave = () => {
         setData(valueInput);
         setEditMode(false);
-        console.log(valueInput)
+        if (contentRef.current) {
+            const newHeight = contentRef.current.scrollHeight;
+            setHeight(newHeight);
+            if (newHeight > 250) {
+                setHideShowMore(true);
+            } else {
+                setHideShowMore(false);
+            }
+        }
     }
 
     const handleCancel = () => {
@@ -54,27 +53,21 @@ const EditorCourse = ({ title, value }: EditorCourseProps) => {
         setEditMode(false);
     }
 
-
-
-    // Test
-
-    const [maxHeight, setMaxHeight] = useState(0);
+    const [height, setHeight] = useState<number>(0);
     const contentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (contentRef.current) {
-            setMaxHeight(contentRef.current.scrollHeight);
-            if (data.length > 2000) {
+            const initialHeight = contentRef.current.scrollHeight;
+            setHeight(initialHeight);
+            if (initialHeight > 250) {
                 setHideShowMore(true);
             }
-            else {
-                setHideShowMore(false);
-            }
         }
-    }, [isShow, data]);
+    }, [contentRef.current]);
 
 
-
+    const [isOpen, setIsOpen] = useState(false);
 
     const modules = {
         toolbar: [
@@ -114,11 +107,16 @@ const EditorCourse = ({ title, value }: EditorCourseProps) => {
 
             <div className="flex flex-row justify-between items-center gap-3 w-full">
                 <p className="font-bold text-lg text-foreground">Course {title}</p>
-                <div className="flex flex-row gap-3 justify-center items-center px-3 rounded-md text-md font-semibold text-black dark:text-white cursor-pointer hover:bg-hover"
+                <div className="flex flex-row gap-3 justify-center items-center p-3 2xl:px-3 2xl:py-0 rounded-md text-md font-semibold text-black dark:text-white cursor-pointer hover:bg-hover"
                     onClick={() => { setEditMode(!editMode) }}
                 >
-                    <FiEdit></FiEdit>
-                    Edit {title.toLowerCase()}
+                    <div>
+                        <FiEdit />
+                    </div>
+
+                    <p className="hidden 2xl:block">
+                        Edit {title.toLowerCase()}
+                    </p>
                 </div>
             </div>
 
@@ -136,30 +134,40 @@ const EditorCourse = ({ title, value }: EditorCourseProps) => {
 
                 ) : (
                     <div className="w-full">
-                            <motion.div 
-                            ref={contentRef} 
+                        <motion.div
+                            ref={contentRef}
+                            initial={{ height: 0 }}
+                            transition={{ duration: 0.5 }}
+                            animate={{
+                                height: isShow ? 250 : height ,
+                                maskImage: hideShowMore ?
+                                    (isShow
+                                        ? "linear-gradient(to bottom, rgba(0, 0, 0, 1.0) 100%, transparent 100%)"
+                                        : "linear-gradient(to bottom, rgba(0, 0, 0, 1.0) 0 %, transparent 100 %)"
+                                    )
+                                    : ""
+                            }}
 
-                            initial={{ height: 0 }} 
-                            animate={{ 
-                                height: isShow ? 250 : maxHeight ,
-                                maskImage: isShow ? "linear-gradient(to bottom, rgba(0, 0, 0, 1.0) 0%, transparent 100%)" : "linear-gradient(to bottom, rgba(0, 0, 0, 1.0) 100%, transparent 100%)"
-                            }} 
-
-                            dangerouslySetInnerHTML={{ __html: data }} 
-                                className={`ql-editor overflow-hidden text-ellipsis break-words`}>
+                            dangerouslySetInnerHTML={{ __html: data }}
+                            className={`overflow-hidden overflow-y-hidden text-ellipsis break-words ql-editor `}
+                            style={{ overflowY: "hidden" }}>
 
                         </motion.div>
                         {hideShowMore && (
-                            <div className="cursor-pointer text-center flex flex-col items-center justify-center font-bold" onClick={() => { setIsShow(!isShow) }}>
+                            <div className="cursor-pointer text-center flex flex-col items-center justify-center font-bold border" onClick={() => { setIsShow(!isShow) }}>
                                 {isShow ? (
                                     <div className="flex flex-col items-center justify-center font-bold">
                                         Show More
-                                        <MdExpandMore className="text-2xl"></MdExpandMore>
+                                        <div>
+                                            <MdExpandMore className="text-2xl" />
+                                        </div>
                                     </div>
                                 ) : (
                                     <div className="flex flex-col items-center justify-center font-bold">
                                         Show Less
-                                        <MdExpandLess className="text-2xl"></MdExpandLess>
+                                        <div>
+                                            <MdExpandLess className="text-2xl" />
+                                        </div>
                                     </div>
                                 )
                                 }

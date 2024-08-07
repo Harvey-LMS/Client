@@ -46,13 +46,18 @@ const ThumbnailCourseField = ({ title, value }: ThumnailCourseProps) => {
          <div className="flex flex-row justify-between items-center gap-3 w-full">
             <p className="font-bold text-lg text-foreground">Course {title}</p>
             <div
-               className="flex flex-row gap-3 justify-center items-center px-3 rounded-md text-md font-semibold text-black dark:text-white cursor-pointer hover:bg-hover"
+               className="flex flex-row gap-3 justify-center items-center p-3 2xl:px-3 2xl:py-0 rounded-md text-md font-semibold text-black dark:text-white cursor-pointer hover:bg-hover"
                onClick={() => {
                   setEditMode(!editMode);
                }}
             >
-               <FiEdit></FiEdit>
-               Edit {title.toLowerCase()}
+               <div>
+                  <FiEdit />
+               </div>
+
+               <p className="hidden 2xl:block">
+                  Edit {title.toLowerCase()}
+               </p>
             </div>
          </div>
 

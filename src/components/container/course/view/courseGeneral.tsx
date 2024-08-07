@@ -28,8 +28,8 @@ const CourseGeneral: React.FC = () => {
             </div>
 
 
-            <div className="flex flex-row justify-start items-start w-full gap-2 p-4 ">
-                <div className="w-9/12 border rounded-lg px-3 shadow-md py-3 ">
+            <div className="flex flex-col lg:flex-row justify-start items-start w-full gap-2 p-4 ">
+                <div className="w-full lg:w-9/12 border rounded-lg px-3 shadow-md py-3 ">
                     <div className="flex flex-row justify-start items-center gap-3">
                         <MdOutlineSubtitles className="text-5xl"></MdOutlineSubtitles>
                         <p className="font-bold text-2xl">Course Details</p>
@@ -42,7 +42,7 @@ const CourseGeneral: React.FC = () => {
                     ></FieldCourse>
                     <EditorCourse
                         title="Description"
-                        value={`<p><em>aspdlkjsa;kldjaslkdjaslkdjlkasdjlksajd </em></p><p><br></p><p><u>asd;ljas;dkas ;ldsa;d;asl dk</u></p><p class="ql-align-center">;asldk;askd;laskd</p><p class="ql-align-right">asd;lja;sldk</p><p>asd;jasd</p><ol><li>asdjas</li></ol><ul><li>daskd</li></ul><h1><span class="ql-font-serif">asdjasd</span></h1><h1>dk'</h1><p><br></p>`}
+                        value={`<p><em>aspdlkjsa;kldjaslkdjaslkdjlkasdjlksajd </em></p><p><br></p><p><u>asd;ljas;dkas ;ldsa;d;asl dk</u></p><p class="ql-align-center">;asldk;askd;laskd</p><p class="ql-align-right">asd;lja;sldk</p><p>asd;jasd</p><ol><li>asdjas</li></ol><ul><li>daskd</li></ul><h1><span class="ql-font-serif">asdjasd</span></h1><h1>dk'</h1>`}
                     ></EditorCourse>
                     <ThumbnailCourseField
                         title="Thumbnail"
@@ -50,7 +50,7 @@ const CourseGeneral: React.FC = () => {
                     ></ThumbnailCourseField>
                 </div>
 
-                <div className="w-3/12 sticky top-20 block overflow-x-hidden h-full overflow-y-auto">
+                <div className="w-full lg:w-3/12 sticky top-20 block overflow-x-hidden h-full overflow-y-auto">
                     <div className="flex flex-col gap-2">
                         <div className=" border rounded-lg px-3 shadow-sm py-3">
                             <div className="flex flex-row justify-start items-center gap-3">
@@ -61,12 +61,12 @@ const CourseGeneral: React.FC = () => {
                             </div>
                             <PriceFieldCourse
                                 title="Price"
-                                value="4"
+                                value={13.5}
                             />
 
                             <PriceFieldCourse
                                 title="Discount"
-                                value="3"
+                                value={30.5}
                                 type="discount"
                             />
                         </div>

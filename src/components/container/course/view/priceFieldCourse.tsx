@@ -7,15 +7,15 @@ import { FiEdit } from "react-icons/fi";
 
 interface PriceFieldCourseProps {
     title: string | "";
-    value: string | "0.00";
+    value: number ;
     type?: "price" | "discount";
 }
 
 const PriceFieldCourse: React.FC<PriceFieldCourseProps> = ({ title, value, type = "price" }: PriceFieldCourseProps) => {
     const [editMode, setEditMode] = useState<boolean>(false);
-    const [valueInput, setValueInput] = useState<string | "0.00">(value);
+    const [valueInput, setValueInput] = useState<number>(value);
 
-    const [data, setData] = useState<string | "0.00">(value);
+    const [data, setData] = useState<number>(value);
 
 
     const handleSave = () => {
@@ -28,6 +28,32 @@ const PriceFieldCourse: React.FC<PriceFieldCourseProps> = ({ title, value, type 
         setEditMode(false);
     }
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        const numericValue = Number(value);
+
+        if (isNaN(numericValue) || numericValue < 0) {
+            return;
+        }
+
+        if (type === "price"){
+            setValueInput(numericValue);
+        }
+        else if (type === "discount"){
+            if (numericValue <= 100 && numericValue >= 0){
+                setValueInput(numericValue);
+            }
+        }
+
+
+  
+    }
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === '-' || e.key === '+' || e.key === 'e') {
+            e.preventDefault();
+        }
+    }
+
     return (
 
 
@@ -38,11 +64,16 @@ const PriceFieldCourse: React.FC<PriceFieldCourseProps> = ({ title, value, type 
 
             <div className="flex flex-row justify-between items-center gap-3 w-full">
                 <p className="font-bold text-lg text-foreground">Course {title}</p>
-                <div className="flex flex-row gap-3 justify-center items-center px-3 rounded-md text-md font-semibold text-black dark:text-white cursor-pointer hover:bg-hover"
+                <div className="flex flex-row gap-3 justify-center items-center p-3 2xl:px-3 2xl:py-0 rounded-md text-md font-semibold text-black dark:text-white cursor-pointer hover:bg-hover"
                     onClick={() => { setEditMode(!editMode) }}
                 >
-                    <FiEdit></FiEdit>
-                    Edit {title.toLowerCase()}
+                    <div>
+                        <FiEdit />
+                    </div>
+
+                    <p className="hidden 2xl:block">
+                        Edit {title.toLowerCase()}
+                    </p>
                 </div>
             </div>
 
@@ -50,9 +81,10 @@ const PriceFieldCourse: React.FC<PriceFieldCourseProps> = ({ title, value, type 
                 {editMode ? (
                     <Input type="number" className="p-0 w-full border border-border rounded-md  group-data-[focus=true]:bg-white"
                         classNames={{ inputWrapper: " group-data-[focus=true]:bg-white group-data-[focus=true]:border-primary" }}
-                        value={valueInput}
-                        placeholder={data ? data : "Enter value"}
-                        onChange={(e) => setValueInput(e.target.value)}
+                        value={valueInput.toString()}
+                        placeholder={data ? data.toString() : "Enter value"}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyDown}
                         min={0}
                         step={1}
                         max={type === "price" ? "" : 100}

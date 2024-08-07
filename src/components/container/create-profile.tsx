@@ -40,7 +40,7 @@ const Page = () => {
     }
 
     return (
-        <motion.div className="flex flex-row items-start justify-center gap-10 mt-32"
+        <motion.div className="flex flex-row items-center min-h-screen my-auto justify-center gap-10 "
             variants={variants}
             initial="initial"
             animate="visible"

@@ -16,13 +16,11 @@ interface ListItemsCourseProps {
 
 const ListItemsCourse:React.FC<ListItemsCourseProps> = ({ title = "", value = [], list = [], add = false }: ListItemsCourseProps) => {
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-
     const { isOpen: isOpenAdd, onOpen: onOpenAdd, onOpenChange: onOpenChangeAdd, onClose: onCloseAdd} = useDisclosure();
-
     const [showMoreItem, setShowMoreItem] = useState<boolean>(false);
-
+    
+    
     const [inputAdd, setInputAdd] = useState<string>("");
-
     //ListItem have when *Search*
     const [listItem, setListItem] = useState<string[]>(list);
     // Value of the list
@@ -73,7 +71,7 @@ const ListItemsCourse:React.FC<ListItemsCourseProps> = ({ title = "", value = []
     }
 
     return (<div  className="w-full">
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl" onClose={handleCancel}>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl" onClose={handleSave}>
             <ModalContent>
                 {(onClose) => (
                     <>
@@ -82,17 +80,18 @@ const ListItemsCourse:React.FC<ListItemsCourseProps> = ({ title = "", value = []
                             <div className="flex flex-wrap">
 
                                 {add && <Chip
-                                    className="m-1 border-primary hover:bg-primary hover:text-primary-foreground select-none"
+                                    className="cursor-pointer m-1 border-primary hover:bg-primary hover:text-primary-foreground select-none"
                                     variant="bordered"
                                     onClick={() => { onOpenAdd() }}
                                 >
                                     <IoIosAdd />
 
                                 </Chip>}
-                                {valueList.slice(0, (list && list.length > 0)? 7: valueList.length).map((item) => (
+                                {valueList.slice(0, (list && list.length > 0 && !showMoreItem)? 7: valueList.length).map((item) => (
                                     <Chip key={item}
                                         className="m-1 border-primary select-none"
-                                        variant="bordered"
+                                        classNames={{ content: " truncate max-w-[150px]"}}
+                                        variant="bordered"  
                                         onClose={() => { handleClose(item) }}
                                     >
                                         {item}
@@ -102,6 +101,7 @@ const ListItemsCourse:React.FC<ListItemsCourseProps> = ({ title = "", value = []
 
                                 {list && list.length > 0 && valueList.length > 7 && !showMoreItem && (<Chip
                                     className="m-1 border-primary hover:bg-primary hover:text-primary-foreground select-none"
+                                    classNames={{ content: " truncate max-w-[150px]" }}
                                     variant="bordered"
                                     onClick={() => { setShowMoreItem(true) }}
                                 >
@@ -176,11 +176,16 @@ const ListItemsCourse:React.FC<ListItemsCourseProps> = ({ title = "", value = []
 
             <div className="flex flex-row justify-between items-center gap-3 w-full">
                 <p className="font-bold text-lg text-foreground">Course {title}</p>
-                <div className="flex flex-row gap-3 justify-center items-center px-3 rounded-md text-md font-semibold text-black dark:text-white cursor-pointer hover:bg-hover"
+                <div className="flex flex-row gap-3 items-center text-end p-3 2xl:px-3 2xl:py-0 rounded-md text-md font-semibold text-black dark:text-white cursor-pointer hover:bg-hover"
                     onClick={() => { onOpen() }}
                 >
-                    <FiEdit></FiEdit>
-                    Edit {title.toLowerCase()}
+                    <div>
+                        <FiEdit />
+                    </div>
+
+                    <p className="hidden 2xl:block truncate">
+                        Edit {title.toLowerCase()}
+                    </p>
                 </div>
             </div>
 
@@ -188,8 +193,9 @@ const ListItemsCourse:React.FC<ListItemsCourseProps> = ({ title = "", value = []
                 <div className="flex flex-wrap">
                     {data.slice(0, 5).map((item) => (
                         <Chip key={item} 
-                            className="m-1 border-primary select-none"
+                            className="m-1 border-primary select-none max-w-full truncate"
                             variant="bordered"
+                            classNames={{ content: " truncate ", base: "max-w-full"}}
                         >{item}</Chip>
                     ))}
                     {data.length > 5 && <Chip

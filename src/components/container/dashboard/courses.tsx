@@ -16,11 +16,14 @@ import Link from 'next/link';
 import { Suspense, useEffect, useLayoutEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import path from 'path';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import ChooseBarProps from '../layout/ChooseBar';
 import Course from "@/components/container/dashboard/course/course";
 import { ICourse } from '@/types/course';
 import axios from 'axios';
+import { add } from 'lodash';
+import { title } from 'process';
+import { addCourse } from '@/app/dashboard/(courses)/courses/handle';
 
 interface reponseCoursePage {
   first: number,
@@ -38,16 +41,15 @@ interface Props {
   courseTotalPage: number
 }
 
-const tabs: [string, string, ...string[]] = ["Course", "Draft-Course"];
+const tabs = ["Course", "Draft-Course"] as [string, string, ...string[]];
 
-const Courses: React.FC<Props> = ({course, coursePage, courseTotalPage}: Props) => {
-  const [initialTab, setInitialTab] = useState<string>(tabs[0]);
+const Courses: React.FC<Props> = ({ course, coursePage, courseTotalPage }: Props) => {
+  const [initialTab, setInitialTab] = useState<string>("");
+  const [titleCreate, setTitleCreate] = useState<string>("");
+  const [errorMessageCreate, setErrorMessageCreate] = useState<string>("");
+  const [isErrorCreate, setIsErrorCreate] = useState<boolean>(false);
 
-  const tabsProps = {
-    key: tabs,
-    change: (a: string) => setInitialTab(a),
-    value: initialTab
-  };
+  const router = useRouter();
 
   const searchParams = useSearchParams();
 
@@ -56,19 +58,48 @@ const Courses: React.FC<Props> = ({course, coursePage, courseTotalPage}: Props) 
   useEffect(() => {
     if (searchParams.has("tab")) {
       const tab = searchParams.get("tab");
+
       if (tab && tabs.includes(tab)) {
         setInitialTab(tab);
       }
     }
+    else {
+      setInitialTab(tabs[0]);
+    }
   }, [searchParams]);
 
-  const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeCreate } = useDisclosure();
+  const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeCreate, onClose: onCloseCreate } = useDisclosure();
 
+  const handleOnOpenChangeCreate = () => {
+    onOpenChangeCreate();
+    setTitleCreate("");
+    setErrorMessageCreate("")
+    setIsErrorCreate(false)
+  }
+
+  const handleSaveCourse = async () => {
+    if (titleCreate === "") {
+      return;
+    }
+    const response = addCourse(titleCreate);
+    onCloseCreate();
+    const id = (await response).id;
+    router.push(`/dashboard/courses/edit/${id}`);
+
+  }
+
+  const handleBlurErroCreate = () => {
+    if (titleCreate === "") {
+      setErrorMessageCreate("Title can't be empty")
+      setIsErrorCreate(true)
+    }
+  }
 
 
   return (
-    <div className=''>
-      <Modal size="3xl" isOpen={isOpenCreate} onOpenChange={onOpenChangeCreate}>
+    <>
+
+      <Modal classNames={{ wrapper: " transition-height duration-1000 ease-in-out" }} size="3xl" isOpen={isOpenCreate} onOpenChange={handleOnOpenChangeCreate}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -79,15 +110,36 @@ const Courses: React.FC<Props> = ({course, coursePage, courseTotalPage}: Props) 
                   <p>{`What would you like to name your course? Don't worry, you can always change later`}</p>
                 </div>
                 <div>
-                  <p className="font-medium">Course title</p>
-                  <Input variant="bordered" placeholder={`e.g. "Toeic"`} classNames={{ input: "px-3" }} />
+                  <p className="font-semibold">Course title</p>
+                  <Input
+                    value={titleCreate}
+                    onChange={(e) => setTitleCreate(e.target.value)}
+                    variant="bordered"
+                    placeholder={`e.g. "Toeic"`}
+                    classNames={{ input: "px-3" }}
+                    onBlur={handleBlurErroCreate}
+                    errorMessage={
+                      <AnimatePresence>
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.2 }}
+                          className="whitespace-wrap w-full"
+                        >
+                          {errorMessageCreate}
+                        </motion.div>
+                      </AnimatePresence>
+                    }
+                    isInvalid={isErrorCreate}
+                  />
                 </div>
               </ModalBody>
               <ModalFooter className="justify-center">
                 <Button color="primary" variant="light" onPress={onClose}>
                   Cancel
                 </Button>
-                <Button color="primary" onPress={onClose}>
+                <Button color="primary" onPress={handleSaveCourse}>
                   Create
                 </Button>
               </ModalFooter>
@@ -96,11 +148,14 @@ const Courses: React.FC<Props> = ({course, coursePage, courseTotalPage}: Props) 
         </ModalContent>
       </Modal>
 
-      <ChooseBarProps tabs={tabsProps}>
+      <ChooseBarProps
+        title='Courses'
+        tabs={{ key: tabs, change: (a: string) => setInitialTab(a), value: initialTab }}
+        create={{ title: "Create Course", onClick: onOpenCreate }}
+      />
 
-      </ChooseBarProps>
       <Course course={course} coursePage={coursePage} courseTotalPage={courseTotalPage} tab={initialTab}></Course>
-    </div>
+    </>
   );
 }
 export default Courses;
