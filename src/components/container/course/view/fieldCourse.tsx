@@ -7,7 +7,7 @@ import { FiEdit } from "react-icons/fi";
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
 import { text } from "stream/consumers";
-import sanitizeHtml from "@/until/sanitizeHtml"
+import sanitizeHtml from "@/util/sanitizeHtml"
 import { motion } from "framer-motion";
 import { Select, SelectItem } from "@nextui-org/react";
 

@@ -162,7 +162,7 @@ const Nav: React.FC<Props> = ({ children }: Props) => {
                </NavbarContent>
             </Navbar>
             <div className="w-full flex flex-row justify-start items-start">
-               <Sidebar expanded={expand}></Sidebar>
+               <Sidebar></Sidebar>
 
                <div className="w-full mt-5">
                   {children}

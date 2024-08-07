@@ -4,6 +4,7 @@ import ChooseBarProps from "@/components/container/layout/ChooseBar";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import CourseGeneral from "../courseGeneral";
+import Chapter from "../../unit-chapter";
 
 interface Props{
     
@@ -32,8 +33,10 @@ const CourseEdit: React.FC<Props> = () => {
                 title="Course Edit"
                 tabs={{ key: tabs, change: (a: string) => setInitialTab(a), value: initialTab }}
             />
-            {initialTab === "General" && (
+            {initialTab === "General" ? (
                 <CourseGeneral/>
+            ):(
+                <Chapter></Chapter>
             )}
         </>
      );
