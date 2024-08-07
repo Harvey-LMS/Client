@@ -1,10 +1,9 @@
 'use client';
 
-import * as React from 'react';
 import { useMotionValue, Reorder, useDragControls } from 'framer-motion';
 import { useRaisedShadow } from '@/components/reorder/use-raised-shadow';
 import { ReorderIcon } from '@/components/reorder/icon';
-import { Button, Input, useDisclosure } from '@nextui-org/react';
+import { Button, Skeleton, useDisclosure } from '@nextui-org/react';
 
 import { MdDeleteOutline, MdOutlineAudioFile, MdOutlineEdit } from 'react-icons/md';
 import { FaRegFilePdf, FaVideo } from 'react-icons/fa6';
@@ -13,7 +12,7 @@ import { ImFileEmpty } from 'react-icons/im';
 
 import ConfirmDeleteModal from '../container/course/modal-confirm';
 import { IChapter, ILesson } from '@/types/course';
-import { DivideCircle } from 'lucide-react';
+import { useState } from 'react';
 
 interface Props {
    item: IChapter | ILesson;
@@ -22,25 +21,26 @@ interface Props {
    type: string;
    isDropdown: boolean;
    fileType: string;
+   isFetching: boolean;
 }
 
-export const Item = ({ item, handleDelete, handleDropdown, type, isDropdown, fileType }: Props) => {
+export const Item = ({
+   item,
+   handleDelete,
+   handleDropdown,
+   type,
+   isDropdown,
+   fileType,
+   isFetching,
+}: Props) => {
    const y = useMotionValue(0);
    const boxShadow = useRaisedShadow(y);
    const dragControls = useDragControls();
-
-   const [value, setValue] = React.useState<IChapter | ILesson>(item);
-
    const { isOpen, onOpenChange } = useDisclosure();
 
    const handleShowModalConfirm = () => {
       onOpenChange();
    };
-
-   // const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-   //    setValue(e.target.value);
-   //    handleChangeTitleChapter(e);
-   // };
 
    return (
       <div className="flex flex-row">
@@ -74,20 +74,23 @@ export const Item = ({ item, handleDelete, handleDropdown, type, isDropdown, fil
                            {type !== 'chapter' && fileType === 'PDF' && (
                               <FaRegFilePdf className="w-7 h-5" />
                            )}
-                           {type !== 'chapter' && fileType === 'MP3' && (
+                           {type !== 'chapter' && fileType === 'MPEG' && (
                               <MdOutlineAudioFile className="w-7 h-5" />
                            )}
                            {type !== 'chapter' && fileType === '' && (
                               <ImFileEmpty className="w-7 h-5" />
                            )}
+
                            <div className="flex flex-row justify-between w-full min-h-10">
-                              <span
+                              <div
                                  className={`flex justify-center items-center select-none ${
                                     type === 'chapter' ? 'text-md font-semibold ' : 'text-sm'
                                  }`}
                               >
-                                 {item.title}
-                              </span>
+                                 {type === 'chapter'
+                                    ? `Chapter ${item.orderIndex}: ` + item.title
+                                    : `Lesson ${item.orderIndex}: ` + item.title}
+                              </div>
                               {type === 'chapter' ? (
                                  <div className="flex flex-row gap-1 justify-center items-center">
                                     <Button
