@@ -14,6 +14,7 @@ import { MdExpandLess, MdExpandMore } from "react-icons/md";
 
 
 import "./quill.css"
+import { init } from "next/dist/compiled/webpack/webpack";
 
 const QuillEditor = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -38,12 +39,15 @@ const EditorCourse = ({ title, value }: EditorCourseProps) => {
         setData(valueInput);
         setEditMode(false);
         if (contentRef.current) {
-            const newHeight = contentRef.current.scrollHeight;
-            setHeight(newHeight);
-            if (newHeight > 250) {
+            const initialHeight = contentRef.current.scrollHeight;
+
+            if (initialHeight > 250) {
                 setHideShowMore(true);
-            } else {
-                setHideShowMore(false);
+                setMaxHeight(initialHeight);
+            }
+            else {
+                setHideShowMore(false)
+                setMaxHeight(initialHeight);
             }
         }
     }
@@ -54,20 +58,23 @@ const EditorCourse = ({ title, value }: EditorCourseProps) => {
     }
 
     const [height, setHeight] = useState<number>(0);
+    const [maxHeight, setMaxHeight] = useState<number>(0);
     const contentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (contentRef.current) {
             const initialHeight = contentRef.current.scrollHeight;
-            setHeight(initialHeight);
+
             if (initialHeight > 250) {
                 setHideShowMore(true);
+                setMaxHeight(initialHeight);
+            }
+            else {
+                setHideShowMore(false)
+                setMaxHeight(initialHeight);
             }
         }
-    }, [contentRef.current]);
-
-
-    const [isOpen, setIsOpen] = useState(false);
+    }, [contentRef, valueInput]);
 
     const modules = {
         toolbar: [
@@ -139,7 +146,7 @@ const EditorCourse = ({ title, value }: EditorCourseProps) => {
                             initial={{ height: 0 }}
                             transition={{ duration: 0.5 }}
                             animate={{
-                                height: isShow ? 250 : height ,
+                                height: hideShowMore ? (isShow ? maxHeight : 250) : maxHeight,
                                 maskImage: hideShowMore ?
                                     (isShow
                                         ? "linear-gradient(to bottom, rgba(0, 0, 0, 1.0) 100%, transparent 100%)"

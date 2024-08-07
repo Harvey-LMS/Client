@@ -16,6 +16,7 @@ import PriceFieldCourse from "./priceFieldCourse";
 // DATA
 import { Ilanguage, language } from "@/data/language";
 import DateTimeFieldCourse from "./dateTimeCourseField";
+import { ExpandableComponent } from "./temp";
 
 const CourseGeneral: React.FC = () => {
     return (
@@ -116,6 +117,8 @@ const CourseGeneral: React.FC = () => {
                 </div>
 
             </div>
+
+            <ExpandableComponent></ExpandableComponent>
         </div>);
 }
 
