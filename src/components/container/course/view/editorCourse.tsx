@@ -15,6 +15,7 @@ import { MdExpandLess, MdExpandMore } from "react-icons/md";
 
 import "./quill.css"
 import { init } from "next/dist/compiled/webpack/webpack";
+import { ExpandableComponent } from "./temp";
 
 const QuillEditor = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -110,7 +111,7 @@ const EditorCourse = ({ title, value }: EditorCourseProps) => {
 
         <div className=" my-3 flex flex-col justify-start items-start w-full px-3 py-2 pb-3 border rounded-lg bg-gray-100 dark:bg-stone-950">
 
-
+            <ExpandableComponent></ExpandableComponent>
 
             <div className="flex flex-row justify-between items-center gap-3 w-full">
                 <p className="font-bold text-lg text-foreground">Course {title}</p>

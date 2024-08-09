@@ -73,7 +73,7 @@ const Nav: React.FC<Props> = ({ children }: Props) => {
    return (
       <div className="flex flex-row justify-center items-start w-full">
          <div className="w-full flex flex-col justify-start items-start">
-            <Navbar position="sticky" className=" bg-white shadow-sm h-[64px] w-full" classNames={{ wrapper: "px-4" }} maxWidth="full" height={64}>
+            <Navbar position="sticky" className=" bg-white shadow-sm h-16 w-full" classNames={{ wrapper: "px-4" }} maxWidth="full" height={64}>
                <NavbarBrand className="flex w-full gap-5">
                   <div className=" rounded-full hover:bg-hover p-3" onClick={() => { setExpand(!expand) }} >
                      <IoMenu className="text-2xl"
